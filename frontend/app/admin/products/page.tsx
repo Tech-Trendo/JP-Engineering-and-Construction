@@ -8,6 +8,7 @@ import {
   AdminProduct,
   AdminCategory,
   unwrapAdminResults,
+  getMediaUrl,
 } from "@/lib/admin-api";
 
 interface LocalSpec {
@@ -131,7 +132,7 @@ function ProductsContent() {
         product.images && product.images.length > 0
           ? product.images.map((img) => ({
               id: img.id,
-              previewUrl: typeof img.image === "string" ? img.image : "",
+              previewUrl: typeof img.image === "string" ? getMediaUrl(img.image) : "",
               alt_text: img.alt_text || "",
               is_primary: img.is_primary,
             }))
@@ -490,7 +491,7 @@ function ProductsContent() {
                       <td className="px-5 py-3 whitespace-nowrap">
                         {primaryImg && typeof primaryImg === "string" ? (
                           <img
-                            src={primaryImg}
+                            src={getMediaUrl(primaryImg)}
                             alt={prod.name}
                             className="h-10 w-10 rounded-lg object-cover bg-slate-800 border border-slate-700"
                           />
@@ -917,7 +918,7 @@ function ProductsContent() {
                             {/* Image Thumbnail */}
                             <div className="relative h-32 w-full rounded-lg overflow-hidden bg-slate-950 border border-slate-800 mb-2.5">
                               <img
-                                src={img.previewUrl}
+                                src={getMediaUrl(img.previewUrl)}
                                 alt={img.alt_text || "Product image"}
                                 className="h-full w-full object-cover"
                               />

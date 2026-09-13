@@ -8,6 +8,7 @@ import {
   getPublicProducts,
   PublicCategory,
   PublicProductListItem,
+  getMediaUrl,
 } from "@/lib/public-api";
 import {
   Button,
@@ -308,7 +309,7 @@ function ProductsContent() {
                       >
                         {prod.primary_image ? (
                           <img
-                            src={prod.primary_image}
+                            src={getMediaUrl(prod.primary_image)}
                             alt={prod.name}
                             className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-300"
                           />

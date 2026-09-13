@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { useAdminAuth } from "@/lib/admin-auth-context";
-import { adminFetch, AdminPartner, unwrapAdminResults } from "@/lib/admin-api";
+import { adminFetch, AdminPartner, unwrapAdminResults, getMediaUrl } from "@/lib/admin-api";
 
 interface PartnerFormData {
   id?: number;
@@ -201,7 +201,7 @@ export default function AdminPartnersPage() {
                     <td className="px-5 py-3 whitespace-nowrap">
                       {partner.logo ? (
                         <img
-                          src={partner.logo}
+                          src={getMediaUrl(partner.logo)}
                           alt={partner.name}
                           className="h-9 w-16 rounded-md object-contain bg-slate-950 p-1 border border-slate-800"
                         />
@@ -325,7 +325,7 @@ export default function AdminPartnersPage() {
                 {formData.current_logo && !formData.file && (
                   <div className="mb-2 flex items-center gap-2">
                     <img
-                      src={formData.current_logo}
+                      src={getMediaUrl(formData.current_logo)}
                       alt="Current logo"
                       className="h-8 w-14 rounded-md object-contain bg-slate-950 p-1 border border-slate-700"
                     />

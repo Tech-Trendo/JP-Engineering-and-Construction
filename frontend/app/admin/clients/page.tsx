@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { useAdminAuth } from "@/lib/admin-auth-context";
-import { adminFetch, AdminClient, unwrapAdminResults } from "@/lib/admin-api";
+import { adminFetch, AdminClient, unwrapAdminResults, getMediaUrl } from "@/lib/admin-api";
 
 interface ClientFormData {
   id?: number;
@@ -201,7 +201,7 @@ export default function AdminClientsPage() {
                     <td className="px-5 py-3 whitespace-nowrap">
                       {client.logo ? (
                         <img
-                          src={client.logo}
+                          src={getMediaUrl(client.logo)}
                           alt={client.name}
                           className="h-9 w-16 rounded-md object-contain bg-slate-950 p-1 border border-slate-800"
                         />
@@ -325,7 +325,7 @@ export default function AdminClientsPage() {
                 {formData.current_logo && !formData.file && (
                   <div className="mb-2 flex items-center gap-2">
                     <img
-                      src={formData.current_logo}
+                      src={getMediaUrl(formData.current_logo)}
                       alt="Current logo"
                       className="h-8 w-14 rounded-md object-contain bg-slate-950 p-1 border border-slate-700"
                     />

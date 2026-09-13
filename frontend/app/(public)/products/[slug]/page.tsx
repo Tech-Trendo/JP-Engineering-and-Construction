@@ -6,6 +6,7 @@ import { useParams } from "next/navigation";
 import {
   getPublicProductDetail,
   PublicProductDetail,
+  getMediaUrl,
 } from "@/lib/public-api";
 import {
   Button,
@@ -126,7 +127,7 @@ export default function ProductDetailPage() {
             <div className="relative h-80 sm:h-96 md:h-[440px] w-full rounded-2xl overflow-hidden bg-[#0a0f1d] border border-slate-800 shadow-premium-card">
               {activeImage ? (
                 <img
-                  src={activeImage.image}
+                  src={getMediaUrl(activeImage.image)}
                   alt={activeImage.alt_text || product.name}
                   className="h-full w-full object-cover"
                 />
@@ -157,7 +158,7 @@ export default function ProductDetailPage() {
                     }`}
                   >
                     <img
-                      src={img.image}
+                      src={getMediaUrl(img.image)}
                       alt={img.alt_text || `View ${idx + 1}`}
                       className="h-full w-full object-cover"
                     />
@@ -333,7 +334,7 @@ export default function ProductDetailPage() {
                     <div className="relative h-44 w-full overflow-hidden bg-slate-900 border-b border-slate-200">
                       {rel.primary_image ? (
                         <img
-                          src={rel.primary_image}
+                          src={getMediaUrl(rel.primary_image)}
                           alt={rel.name}
                           className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-300"
                         />

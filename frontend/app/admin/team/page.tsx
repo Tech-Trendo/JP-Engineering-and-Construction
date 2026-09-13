@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { useAdminAuth } from "@/lib/admin-auth-context";
-import { adminFetch, AdminTeamMember, unwrapAdminResults } from "@/lib/admin-api";
+import { adminFetch, AdminTeamMember, unwrapAdminResults, getMediaUrl } from "@/lib/admin-api";
 
 interface TeamFormData {
   id?: number;
@@ -201,7 +201,7 @@ export default function AdminTeamPage() {
                     <td className="px-5 py-3 whitespace-nowrap">
                       {member.photo ? (
                         <img
-                          src={member.photo}
+                          src={getMediaUrl(member.photo)}
                           alt={member.name}
                           className="h-10 w-10 rounded-full object-cover bg-slate-800 border border-slate-700"
                         />
@@ -312,7 +312,7 @@ export default function AdminTeamPage() {
                 {formData.current_photo && !formData.file && (
                   <div className="mb-2 flex items-center gap-2">
                     <img
-                      src={formData.current_photo}
+                      src={getMediaUrl(formData.current_photo)}
                       alt="Current"
                       className="h-10 w-10 rounded-full object-cover border border-slate-700"
                     />

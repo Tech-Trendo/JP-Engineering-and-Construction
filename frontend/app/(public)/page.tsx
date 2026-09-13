@@ -15,6 +15,7 @@ import {
   PublicClient,
   PublicTeamMember,
   PublicSiteContent,
+  getMediaUrl,
 } from "@/lib/public-api";
 import {
   Button,
@@ -89,19 +90,22 @@ export default function HomePage() {
       {/* 1. Real Editorial Hero (Solid Midnight Navy with CAD Blueprint Grid Texture & High-Contrast Typography) */}
       <section className="relative">
         <Container size="default">
-          <div className="relative rounded-3xl bg-[#0a0f1d] bg-blueprint-grid text-white border border-slate-800 p-8 sm:p-12 lg:p-14 xl:p-16 shadow-2xl overflow-hidden">
+          <div
+            style={{ backgroundColor: "#0a0f1d" }}
+            className="relative rounded-3xl bg-[#0a0f1d] bg-blueprint-grid text-white border border-slate-800 p-6 sm:p-10 lg:p-10 xl:p-14 2xl:p-16 shadow-2xl overflow-hidden"
+          >
             {/* Ambient Lighting Accents */}
             <div className="pointer-events-none absolute -top-24 -right-24 h-96 w-96 rounded-full bg-blue-600/15 blur-3xl"></div>
             <div className="pointer-events-none absolute -bottom-24 -left-24 h-96 w-96 rounded-full bg-blue-900/25 blur-3xl"></div>
 
-            <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 xl:gap-12 items-center">
+            <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-8 xl:gap-12 items-center">
               {/* Left Hero Content - min-w-0 ensures heading never overflows into adjacent column */}
               <div className="lg:col-span-7 min-w-0 space-y-6">
                 <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-950/90 border border-blue-700/60 text-xs font-semibold text-blue-300">
                   Industrial Machinery & Processing Plants
                 </div>
 
-                <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-[40px] xl:text-[48px] 2xl:text-6xl font-black tracking-tight text-white leading-[1.08] break-words">
+                <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-[36px] xl:text-[44px] 2xl:text-5xl font-black tracking-tight text-white leading-[1.1] break-words">
                   Engineering machinery at{" "}
                   <span className="underline decoration-blue-500/60 decoration-4 underline-offset-8">
                     industrial scale
@@ -155,7 +159,7 @@ export default function HomePage() {
 
               {/* Right Hero: Monolithic Technical Machinery Spec Card */}
               <div className="lg:col-span-5 min-w-0">
-                <div className="relative rounded-2xl bg-[#0d1424] text-white p-6 sm:p-8 border border-slate-700/80 shadow-2xl space-y-5 bg-blueprint-grid-subtle">
+                <div className="relative rounded-2xl bg-[#0d1424] text-white p-5 sm:p-6 lg:p-6 xl:p-7 border border-slate-700/80 shadow-2xl space-y-4 bg-blueprint-grid-subtle">
                   <div className="flex items-center justify-between border-b border-slate-800 pb-4">
                     <div>
                       <span className="text-xs font-semibold text-blue-400 uppercase tracking-wider block">
@@ -212,8 +216,7 @@ export default function HomePage() {
               layout="split"
               title="Industrial Machinery in Operation"
               description="Review photographic documentation and calibrated operational parameters of our primary processing lines and mechanical systems."
-              descriptionClassName="xl:text-[13px] 2xl:text-sm xl:whitespace-nowrap"
-              rightColumnClassName="lg:max-w-xl xl:max-w-2xl 2xl:max-w-3xl"
+              descriptionClassName="text-xs sm:text-xs xl:text-[13px] 2xl:text-sm text-slate-600 font-normal lg:whitespace-nowrap"
               action={
                 <Link
                   href="/products"
@@ -294,8 +297,7 @@ export default function HomePage() {
             layout="split"
             title="Manufacturing & Machinery Divisions"
             description="Explore our seven specialized machinery engineering divisions delivering turn-key plants and certified machinery across Nepal."
-            descriptionClassName="xl:text-[13px] 2xl:text-sm xl:whitespace-nowrap"
-            rightColumnClassName="lg:max-w-xl xl:max-w-2xl 2xl:max-w-3xl"
+            descriptionClassName="text-xs sm:text-xs xl:text-[13px] 2xl:text-sm text-slate-600 font-normal lg:whitespace-nowrap"
             action={
               <Link
                 href="/products"
@@ -368,7 +370,7 @@ export default function HomePage() {
                   <div className="relative h-52 w-full overflow-hidden bg-slate-900 border-b border-slate-200">
                     {prod.primary_image ? (
                       <img
-                        src={prod.primary_image}
+                        src={getMediaUrl(prod.primary_image)}
                         alt={prod.name}
                         className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-300"
                       />
@@ -523,7 +525,7 @@ export default function HomePage() {
                   >
                     {item.logo ? (
                       <img
-                        src={item.logo}
+                        src={getMediaUrl(item.logo)}
                         alt={item.name}
                         className="max-h-11 max-w-[140px] w-auto object-contain filter grayscale group-hover:grayscale-0 transition-all opacity-85 group-hover:opacity-100"
                       />
@@ -548,8 +550,7 @@ export default function HomePage() {
               layout="split"
               title="Engineering Management"
               description="Guided by licensed mechanical, electrical, and process engineers ensuring design integrity across every installation."
-              descriptionClassName="xl:text-[13px] 2xl:text-sm xl:whitespace-nowrap"
-              rightColumnClassName="lg:max-w-xl xl:max-w-2xl 2xl:max-w-3xl"
+              descriptionClassName="text-xs sm:text-xs xl:text-[13px] 2xl:text-sm text-slate-600 font-normal lg:whitespace-nowrap"
               action={
                 <Link
                   href="/about"
@@ -570,7 +571,7 @@ export default function HomePage() {
                   <div className="h-52 w-full rounded-xl overflow-hidden bg-slate-900 border border-slate-200">
                     {member.photo ? (
                       <img
-                        src={member.photo}
+                        src={getMediaUrl(member.photo)}
                         alt={member.name}
                         className="h-full w-full object-cover object-top"
                       />
@@ -598,7 +599,10 @@ export default function HomePage() {
       {/* 9. Consultation CTA Banner (Solid Midnight Navy with CAD Blueprint Grid & High-Contrast Typography) */}
       <section>
         <Container size="default">
-          <div className="rounded-3xl bg-[#0a0f1d] bg-blueprint-grid text-white p-8 sm:p-12 lg:p-16 border border-slate-800 relative overflow-hidden shadow-2xl">
+          <div
+            style={{ backgroundColor: "#0a0f1d" }}
+            className="rounded-3xl bg-[#0a0f1d] bg-blueprint-grid text-white p-8 sm:p-12 lg:p-16 border border-slate-800 relative overflow-hidden shadow-2xl"
+          >
             {/* Ambient Lighting Accents */}
             <div className="pointer-events-none absolute -top-24 -right-24 h-96 w-96 rounded-full bg-blue-600/15 blur-3xl"></div>
             <div className="pointer-events-none absolute -bottom-24 -left-24 h-96 w-96 rounded-full bg-blue-900/25 blur-3xl"></div>

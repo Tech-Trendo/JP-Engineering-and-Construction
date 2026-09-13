@@ -1,5 +1,19 @@
 import { apiClient } from "./api";
 
+/**
+ * Normalizes any backend media URL to a relative path (`/media/...`)
+ * so it routes through Next.js proxy rewrites without cross-origin or CORS blocks.
+ */
+export function getMediaUrl(url: string | null | undefined): string {
+  if (!url) return "";
+  if (url.startsWith("/media/")) return url;
+  const mediaIdx = url.indexOf("/media/");
+  if (mediaIdx !== -1) {
+    return url.slice(mediaIdx);
+  }
+  return url;
+}
+
 export interface PublicCategory {
   id: number;
   name: string;

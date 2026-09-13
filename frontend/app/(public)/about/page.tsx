@@ -9,6 +9,7 @@ import {
   PublicTeamMember,
   PublicPartner,
   PublicClient,
+  getMediaUrl,
 } from "@/lib/public-api";
 import {
   Container,
@@ -142,7 +143,7 @@ export default function AboutPage() {
                   <div className="h-60 sm:h-64 w-full rounded-xl overflow-hidden bg-slate-900 border border-slate-200">
                     {member.photo ? (
                       <img
-                        src={member.photo}
+                        src={getMediaUrl(member.photo)}
                         alt={member.name}
                         className="h-full w-full object-cover object-top"
                       />
@@ -193,7 +194,7 @@ export default function AboutPage() {
                 >
                   {partner.logo ? (
                     <img
-                      src={partner.logo}
+                      src={getMediaUrl(partner.logo)}
                       alt={partner.name}
                       className="max-h-11 max-w-[130px] w-auto object-contain filter grayscale group-hover:grayscale-0 transition-all opacity-85 group-hover:opacity-100"
                     />
@@ -245,7 +246,7 @@ export default function AboutPage() {
                 >
                   {client.logo ? (
                     <img
-                      src={client.logo}
+                      src={getMediaUrl(client.logo)}
                       alt={client.name}
                       className="max-h-11 max-w-[130px] w-auto object-contain filter grayscale group-hover:grayscale-0 transition-all opacity-85 group-hover:opacity-100"
                     />
@@ -274,7 +275,10 @@ export default function AboutPage() {
       {/* 5. Consultation Bottom CTA - Solid Midnight Navy with CAD Blueprint Grid */}
       <section>
         <Container size="default">
-          <div className="rounded-3xl bg-[#0a0f1d] bg-blueprint-grid text-white p-8 sm:p-12 lg:p-16 border border-slate-800 flex flex-col lg:flex-row lg:items-center justify-between gap-8 shadow-2xl">
+          <div
+            style={{ backgroundColor: "#0a0f1d" }}
+            className="rounded-3xl bg-[#0a0f1d] bg-blueprint-grid text-white p-8 sm:p-12 lg:p-16 border border-slate-800 flex flex-col lg:flex-row lg:items-center justify-between gap-8 shadow-2xl"
+          >
             <div className="max-w-xl space-y-3">
               <span className="text-xs font-semibold text-blue-400 uppercase tracking-wider block">
                 Technical Engagement

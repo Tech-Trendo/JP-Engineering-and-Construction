@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { useAdminAuth } from "@/lib/admin-auth-context";
-import { adminFetch, AdminCategory, unwrapAdminResults } from "@/lib/admin-api";
+import { adminFetch, AdminCategory, unwrapAdminResults, getMediaUrl } from "@/lib/admin-api";
 
 interface CategoryFormData {
   id?: number;
@@ -213,7 +213,7 @@ export default function AdminCategoriesPage() {
                     <td className="px-5 py-3 whitespace-nowrap">
                       {cat.icon_or_image ? (
                         <img
-                          src={cat.icon_or_image}
+                          src={getMediaUrl(cat.icon_or_image)}
                           alt={cat.name}
                           className="h-9 w-9 rounded-lg object-cover bg-slate-800 border border-slate-700"
                         />
@@ -337,7 +337,7 @@ export default function AdminCategoriesPage() {
                 {formData.current_image && !formData.file && (
                   <div className="mb-2 flex items-center gap-2">
                     <img
-                      src={formData.current_image}
+                      src={getMediaUrl(formData.current_image)}
                       alt="Current"
                       className="h-10 w-10 rounded-md object-cover border border-slate-700"
                     />

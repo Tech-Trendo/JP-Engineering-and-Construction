@@ -40,9 +40,9 @@ export function SectionHeading({
   if (layout === "split") {
     return (
       <div
-        className={`flex flex-col lg:flex-row lg:items-end justify-between gap-6 pb-8 border-b border-slate-200 dark:border-slate-800 ${className}`}
+        className={`flex flex-col lg:flex-row lg:items-end justify-between gap-4 lg:gap-8 pb-8 border-b border-slate-200 dark:border-slate-800 ${className}`}
       >
-        <div className="max-w-xl shrink-0">
+        <div className="w-full lg:w-auto lg:max-w-md xl:max-w-lg shrink-0">
           {badge && <div className="mb-3">{badge}</div>}
           {renderEyebrow()}
           <h2 className="text-2xl sm:text-3xl lg:text-4xl xl:text-[40px] font-black tracking-tight text-slate-900 dark:text-white leading-[1.1]">
@@ -51,7 +51,7 @@ export function SectionHeading({
         </div>
 
         {(description || action) && (
-          <div className={`lg:text-right space-y-3 max-w-xl xl:max-w-2xl 2xl:max-w-3xl shrink ${rightColumnClassName}`}>
+          <div className={`flex-1 min-w-0 lg:text-right space-y-2.5 ${rightColumnClassName}`}>
             {description && (
               <p className={`text-xs sm:text-sm text-slate-600 dark:text-slate-400 leading-relaxed font-normal ${descriptionClassName}`}>
                 {description}

@@ -4,7 +4,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
-import { PublicProductListItem } from "@/lib/public-api";
+import { PublicProductListItem, getMediaUrl } from "@/lib/public-api";
 import { Button, Badge } from "@/components/ui";
 
 interface ProductSliderProps {
@@ -92,7 +92,7 @@ export function ProductSlider({ products, className = "" }: ProductSliderProps) 
               {/* Product Background Image (Lazy Loaded) */}
               {product.primary_image ? (
                 <img
-                  src={product.primary_image}
+                  src={getMediaUrl(product.primary_image)}
                   alt={product.name}
                   loading={idx === 0 ? "eager" : "lazy"}
                   className="absolute inset-0 h-full w-full object-cover object-center filter brightness-[0.82] transition-transform duration-700 ease-out group-hover:scale-105"
