@@ -2,6 +2,7 @@ import React from "react";
 
 export interface SectionHeadingProps {
   eyebrow?: string;
+  dot?: boolean;
   title: string;
   description?: string;
   badge?: React.ReactNode;
@@ -12,6 +13,7 @@ export interface SectionHeadingProps {
 
 export function SectionHeading({
   eyebrow,
+  dot = false,
   title,
   description,
   badge,
@@ -19,22 +21,27 @@ export function SectionHeading({
   layout = "split",
   className = "",
 }: SectionHeadingProps) {
+  const renderEyebrow = () => {
+    if (!eyebrow) return null;
+    return (
+      <div className={`flex items-center gap-2 mb-2 ${layout === "center" ? "justify-center" : ""}`}>
+        {dot && <span className="h-1.5 w-1.5 rounded-full bg-[#1e40af] shrink-0"></span>}
+        <span className="text-xs font-semibold uppercase tracking-wider text-[#1e40af] dark:text-[#93c5fd]">
+          {eyebrow}
+        </span>
+      </div>
+    );
+  };
+
   if (layout === "split") {
     return (
       <div
-        className={`flex flex-col lg:flex-row lg:items-end justify-between gap-6 pb-8 border-b border-stone-200 dark:border-stone-800 ${className}`}
+        className={`flex flex-col lg:flex-row lg:items-end justify-between gap-6 pb-8 border-b border-slate-200 dark:border-slate-800 ${className}`}
       >
         <div className="max-w-2xl">
           {badge && <div className="mb-3">{badge}</div>}
-          {eyebrow && (
-            <div className="flex items-center gap-2 mb-2">
-              <span className="h-1.5 w-1.5 rounded-full bg-[#1e40af]"></span>
-              <span className="text-[11px] font-mono font-bold uppercase tracking-[0.18em] text-[#1e40af] dark:text-[#93c5fd]">
-                {eyebrow}
-              </span>
-            </div>
-          )}
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-stone-950 dark:text-white leading-[1.12]">
+          {renderEyebrow()}
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-slate-900 dark:text-white leading-[1.12]">
             {title}
           </h2>
         </div>
@@ -42,7 +49,7 @@ export function SectionHeading({
         {(description || action) && (
           <div className="max-w-md lg:text-right space-y-4">
             {description && (
-              <p className="text-sm text-stone-600 dark:text-stone-400 leading-relaxed font-normal">
+              <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed font-normal">
                 {description}
               </p>
             )}
@@ -57,15 +64,8 @@ export function SectionHeading({
     return (
       <div className={`text-center max-w-3xl mx-auto space-y-3 pb-8 ${className}`}>
         {badge && <div className="inline-block mb-1">{badge}</div>}
-        {eyebrow && (
-          <div className="flex items-center justify-center gap-2 mb-2">
-            <span className="h-1.5 w-1.5 rounded-full bg-[#1e40af]"></span>
-            <span className="text-[11px] font-mono font-bold uppercase tracking-[0.18em] text-[#1e40af] dark:text-[#93c5fd]">
-              {eyebrow}
-            </span>
-          </div>
-        )}
-        <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-slate-950 dark:text-white leading-[1.15]">
+        {renderEyebrow()}
+        <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-slate-900 dark:text-white leading-[1.15]">
           {title}
         </h2>
         {description && (
@@ -82,19 +82,12 @@ export function SectionHeading({
   return (
     <div className={`space-y-3 pb-6 max-w-2xl ${className}`}>
       {badge && <div>{badge}</div>}
-      {eyebrow && (
-        <div className="flex items-center gap-2 mb-1">
-          <span className="h-1.5 w-1.5 rounded-full bg-[#1e40af]"></span>
-          <span className="text-[11px] font-mono font-bold uppercase tracking-[0.18em] text-[#1e40af] dark:text-[#93c5fd]">
-            {eyebrow}
-          </span>
-        </div>
-      )}
-      <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-slate-950 dark:text-white leading-[1.12]">
+      {renderEyebrow()}
+      <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-slate-900 dark:text-white leading-[1.12]">
         {title}
       </h2>
       {description && (
-        <p className="text-sm text-stone-600 dark:text-stone-400 leading-relaxed font-normal">
+        <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed font-normal">
           {description}
         </p>
       )}

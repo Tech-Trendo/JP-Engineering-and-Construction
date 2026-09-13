@@ -4,6 +4,7 @@ export interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
   variant?: "primary" | "accent" | "neutral" | "outline" | "success";
   size?: "sm" | "md";
   dot?: boolean;
+  mono?: boolean;
 }
 
 export function Badge({
@@ -11,14 +12,15 @@ export function Badge({
   variant = "neutral",
   size = "sm",
   dot = false,
+  mono = false,
   children,
   ...props
 }: BadgeProps) {
   const baseStyles =
-    "inline-flex items-center font-medium font-mono uppercase tracking-wider rounded-md transition-colors select-none";
+    `inline-flex items-center font-medium rounded-md transition-colors select-none ${mono ? "font-mono uppercase tracking-wider" : "font-sans tracking-normal"}`;
 
   const sizeStyles = {
-    sm: "text-[10px] px-2 py-0.5 gap-1.5",
+    sm: "text-[11px] px-2 py-0.5 gap-1.5",
     md: "text-xs px-2.5 py-1 gap-2",
   };
 

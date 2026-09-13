@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { getPublicSiteContent, PublicSiteContent } from "@/lib/public-api";
-import { Container, Button, Badge } from "@/components/ui";
+import { Container, Button } from "@/components/ui";
 
 const FALLBACK_FULL_INTRO = `JP Engineering & Construction (P) Ltd. is a leading manufacturer and supplier of machinery for various industrial sectors since 10 years. Our product range includes machinery for community-based water treatment systems, industrial water plants, dairy plants, industrial refrigeration, solar energy and irrigation, solar energy and heat pump system and meat mincing and packaging.
 
@@ -57,7 +57,7 @@ export default function AboutIntroductionPage() {
     <div className="py-10 sm:py-16 space-y-16">
       <Container size="default">
         {/* Breadcrumb Navigation */}
-        <nav className="flex items-center gap-2 text-xs font-mono text-slate-500 pb-6 border-b border-slate-200 mb-8">
+        <nav className="flex items-center gap-2 text-xs text-slate-500 pb-6 border-b border-slate-200 mb-8 font-medium">
           <Link href="/" className="hover:text-blue-700 transition">
             Home
           </Link>
@@ -72,9 +72,8 @@ export default function AboutIntroductionPage() {
         </nav>
 
         {/* Page Header */}
-        <div className="max-w-4xl space-y-5 pb-10 border-b border-slate-200">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-50 border border-blue-200/80 text-[11px] font-mono uppercase tracking-[0.2em] text-blue-800">
-            <span className="h-1.5 w-1.5 rounded-full bg-blue-600 animate-pulse"></span>
+        <div className="max-w-4xl space-y-4 pb-10 border-b border-slate-200">
+          <div className="text-xs font-semibold text-blue-800 uppercase tracking-wider">
             Corporate Background & Manufacturing Scope
           </div>
 
@@ -96,9 +95,9 @@ export default function AboutIntroductionPage() {
                 key={index}
                 className="p-6 sm:p-7 rounded-2xl bg-white border border-slate-200 shadow-premium-card hover:border-slate-300 transition-colors"
               >
-                <div className="flex items-start gap-3">
-                  <span className="text-xs font-mono font-bold text-blue-700 shrink-0 mt-1">
-                    0{index + 1}.
+                <div className="flex items-start gap-4">
+                  <span className="text-xs font-bold text-blue-700 shrink-0 mt-1 bg-blue-50 px-2.5 py-1 rounded-md border border-blue-100">
+                    {String(index + 1).padStart(2, "0")}
                   </span>
                   <p className="text-slate-700 leading-relaxed">
                     {paragraph}
@@ -120,28 +119,28 @@ export default function AboutIntroductionPage() {
 
           {/* Right Column: Architectural Highlights Sidebar */}
           <aside className="lg:col-span-4 lg:sticky lg:top-24 space-y-6">
-            {/* Quick Metrics Card */}
-            <div className="p-6 rounded-2xl bg-[#0a0f1d] text-white border border-slate-800 shadow-xl space-y-5">
-              <span className="text-[11px] font-mono text-blue-400 font-bold uppercase tracking-widest block">
+            {/* Quick Metrics Card with Blueprint Grid */}
+            <div className="p-6 rounded-2xl bg-[#0a0f1d] text-white border border-slate-800 shadow-xl space-y-5 bg-blueprint-grid">
+              <span className="text-xs font-semibold text-blue-400 uppercase tracking-wider block">
                 At a Glance
               </span>
 
-              <div className="space-y-4 text-xs font-mono">
+              <div className="space-y-3 text-xs">
                 <div className="flex justify-between py-2 border-b border-slate-800">
-                  <span className="text-slate-400">Industry Presence</span>
-                  <span className="text-white font-bold">10+ Years</span>
+                  <span className="text-slate-400 font-medium">Industry Presence</span>
+                  <span className="text-white font-semibold">10+ Years Continuous</span>
                 </div>
                 <div className="flex justify-between py-2 border-b border-slate-800">
-                  <span className="text-slate-400">Primary Focus</span>
-                  <span className="text-white font-bold">Turnkey Machinery</span>
+                  <span className="text-slate-400 font-medium">Primary Focus</span>
+                  <span className="text-white font-semibold">Turnkey Industrial Plants</span>
                 </div>
                 <div className="flex justify-between py-2 border-b border-slate-800">
-                  <span className="text-slate-400">Quality Standard</span>
-                  <span className="text-white font-bold">ISO 9001:2015</span>
+                  <span className="text-slate-400 font-medium">Quality Standard</span>
+                  <span className="text-white font-semibold">ISO 9001:2015 Compliant</span>
                 </div>
                 <div className="flex justify-between py-2">
-                  <span className="text-slate-400">Field Support</span>
-                  <span className="text-blue-400 font-bold">24/7 Dispatch</span>
+                  <span className="text-slate-400 font-medium">Field Support</span>
+                  <span className="text-blue-400 font-semibold">24/7 Technical Dispatch</span>
                 </div>
               </div>
 
@@ -150,7 +149,7 @@ export default function AboutIntroductionPage() {
                   href="/contact"
                   variant="accent"
                   size="sm"
-                  className="w-full justify-center text-xs"
+                  className="w-full justify-center text-xs font-semibold"
                 >
                   Contact Engineering Desk &rarr;
                 </Button>
@@ -159,36 +158,36 @@ export default function AboutIntroductionPage() {
 
             {/* Specialized Sectors Card */}
             <div className="p-6 rounded-2xl bg-white border border-slate-200 shadow-premium-card space-y-4">
-              <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wider font-mono">
-                Key Industrial Sectors
+              <h3 className="text-sm font-bold text-slate-900 tracking-tight">
+                Seven Key Manufacturing Divisions
               </h3>
-              <ul className="space-y-2.5 text-xs text-slate-600 font-medium">
-                <li className="flex items-center gap-2">
-                  <span className="h-1.5 w-1.5 rounded-full bg-blue-600"></span>
+              <ul className="space-y-2.5 text-xs text-slate-600">
+                <li className="flex items-center gap-2.5">
+                  <span className="text-blue-600 font-bold">✓</span>
                   <span>Community & Industrial Water Treatment</span>
                 </li>
-                <li className="flex items-center gap-2">
-                  <span className="h-1.5 w-1.5 rounded-full bg-blue-600"></span>
+                <li className="flex items-center gap-2.5">
+                  <span className="text-blue-600 font-bold">✓</span>
                   <span>Turnkey Dairy Processing Plants</span>
                 </li>
-                <li className="flex items-center gap-2">
-                  <span className="h-1.5 w-1.5 rounded-full bg-blue-600"></span>
+                <li className="flex items-center gap-2.5">
+                  <span className="text-blue-600 font-bold">✓</span>
                   <span>Industrial Cold Storage & Blast Freezers</span>
                 </li>
-                <li className="flex items-center gap-2">
-                  <span className="h-1.5 w-1.5 rounded-full bg-blue-600"></span>
+                <li className="flex items-center gap-2.5">
+                  <span className="text-blue-600 font-bold">✓</span>
                   <span>Juice, Beverage & Bottling Machinery</span>
                 </li>
-                <li className="flex items-center gap-2">
-                  <span className="h-1.5 w-1.5 rounded-full bg-blue-600"></span>
+                <li className="flex items-center gap-2.5">
+                  <span className="text-blue-600 font-bold">✓</span>
                   <span>Solar Energy & Heat Pump Systems</span>
                 </li>
-                <li className="flex items-center gap-2">
-                  <span className="h-1.5 w-1.5 rounded-full bg-blue-600"></span>
+                <li className="flex items-center gap-2.5">
+                  <span className="text-blue-600 font-bold">✓</span>
                   <span>Structural Steel & Vessel Fabrication</span>
                 </li>
-                <li className="flex items-center gap-2">
-                  <span className="h-1.5 w-1.5 rounded-full bg-blue-600"></span>
+                <li className="flex items-center gap-2.5">
+                  <span className="text-blue-600 font-bold">✓</span>
                   <span>Meat Mincing & Packaging Lines</span>
                 </li>
               </ul>

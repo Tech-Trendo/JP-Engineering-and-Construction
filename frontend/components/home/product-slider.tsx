@@ -111,14 +111,13 @@ export function ProductSlider({ products, className = "" }: ProductSliderProps) 
               <div className="absolute inset-0 p-6 sm:p-10 lg:p-14 flex flex-col justify-end max-w-3xl z-10 space-y-4">
                 {/* Category & Status Badges */}
                 <div className="flex flex-wrap items-center gap-2">
-                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-900/80 border border-blue-700/60 text-blue-200 text-[11px] font-mono uppercase tracking-wider">
-                    <span className="h-1.5 w-1.5 rounded-full bg-blue-400"></span>
+                  <span className="inline-flex items-center px-3 py-1 rounded-full bg-blue-900/80 border border-blue-700/60 text-blue-200 text-xs font-semibold">
                     Featured Machinery
                   </span>
                   {product.categories.slice(0, 2).map((c) => (
                     <span
                       key={c.id}
-                      className="inline-flex text-[11px] font-mono px-2.5 py-1 rounded-full bg-slate-900/80 text-slate-300 border border-slate-700 backdrop-blur-xs"
+                      className="inline-flex text-xs font-medium px-2.5 py-1 rounded-full bg-slate-900/80 text-slate-300 border border-slate-700 backdrop-blur-xs"
                     >
                       {c.name}
                     </span>

@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import Link from "next/link";
 import {
   getPublicTeam,
   getPublicPartners,
@@ -12,9 +13,7 @@ import {
 import {
   Container,
   SectionHeading,
-  Card,
   Button,
-  Badge,
 } from "@/components/ui";
 
 export default function AboutPage() {
@@ -48,15 +47,12 @@ export default function AboutPage() {
 
   return (
     <div className="py-10 sm:py-16 space-y-20">
-      {/* 1. Hero & Company Introduction */}
+      {/* 1. Hero & Company Overview */}
       <section>
         <Container size="default">
           <div className="max-w-3xl space-y-6">
-            <div className="flex items-center gap-2">
-              <span className="h-1.5 w-1.5 rounded-full bg-blue-600"></span>
-              <span className="text-[11px] font-mono font-bold uppercase tracking-[0.2em] text-blue-800">
-                Company Profile & Leadership
-              </span>
+            <div className="text-xs font-semibold text-blue-800 uppercase tracking-wider">
+              Company Profile & Leadership
             </div>
 
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-slate-900 leading-[1.08]">
@@ -68,45 +64,51 @@ export default function AboutPage() {
             </h1>
 
             <p className="text-base sm:text-lg text-slate-600 leading-relaxed font-normal">
-              JP Engineering & Construction was established with a clear mandate: provide heavy construction enterprises with certified mechanical assets, rigorous preventative duty-cycle management, and turnkey infrastructure execution.
+              JP Engineering & Construction (P) Ltd. is a leading manufacturer and supplier of machinery for various industrial sectors across Nepal. With a decade of field-proven installations, we deliver turnkey processing plants, dairy lines, cold storage refrigeration, community water treatment skids, solar energy pumping, and food packaging machinery.
             </p>
+
+            <div className="pt-2">
+              <Button href="/about/introduction" variant="primary" size="md">
+                Read Full Corporate Introduction &rarr;
+              </Button>
+            </div>
           </div>
 
-          {/* Three Architectural Capability Pillars (Asymmetric) */}
+          {/* Three Architectural Capability Pillars */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-12">
             <div className="p-6 rounded-2xl bg-white border border-slate-200 space-y-3 shadow-premium-card hover:shadow-premium-hover hover:-translate-y-0.5 transition-all duration-200">
-              <span className="text-blue-800 font-mono text-xs font-bold uppercase tracking-widest block">
-                01. Certified Equipment
+              <span className="text-blue-800 text-xs font-bold uppercase tracking-wider block">
+                01. Certified Fabrication
               </span>
               <h3 className="text-base font-bold text-slate-900">
-                Pre-calibrated Fleet Assets
+                Food-Grade Stainless Skids
               </h3>
-              <p className="text-xs text-slate-500 leading-relaxed">
-                Every unit in our catalog undergoes rigorous hydrostatic pressure and hydraulic seal testing before release to any jobsite.
+              <p className="text-xs text-slate-600 leading-relaxed">
+                Precision TIG/MIG sanitary welding on SS304/SS316 alloys compliant with food, beverage, and pharmaceutical quality requirements.
               </p>
             </div>
 
             <div className="p-6 rounded-2xl bg-white border border-slate-200 space-y-3 shadow-premium-card hover:shadow-premium-hover hover:-translate-y-0.5 transition-all duration-200">
-              <span className="text-blue-800 font-mono text-xs font-bold uppercase tracking-widest block">
-                02. Engineering Governance
+              <span className="text-blue-800 text-xs font-bold uppercase tracking-wider block">
+                02. Engineering Standards
               </span>
               <h3 className="text-base font-bold text-slate-900">
-                ISO 9001:2015 Standards
+                ISO 9001:2015 Compliance
               </h3>
-              <p className="text-xs text-slate-500 leading-relaxed">
-                Adhering to strict occupational safety codes, ground stability modeling, and lifting capacity margins on all civil contracts.
+              <p className="text-xs text-slate-600 leading-relaxed">
+                Factory pressure-testing, flow-rate calibration, and electrical safety validation prior to on-site commissioning.
               </p>
             </div>
 
             <div className="p-6 rounded-2xl bg-white border border-slate-200 space-y-3 shadow-premium-card hover:shadow-premium-hover hover:-translate-y-0.5 transition-all duration-200">
-              <span className="text-blue-800 font-mono text-xs font-bold uppercase tracking-widest block">
-                03. Dedicated Mechanics
+              <span className="text-blue-800 text-xs font-bold uppercase tracking-wider block">
+                03. Field Engineering
               </span>
               <h3 className="text-base font-bold text-slate-900">
-                Field Dispatch & Rigging
+                On-Site Dispatch & Spares
               </h3>
-              <p className="text-xs text-slate-500 leading-relaxed">
-                Stationed mobile workshop vans equipped with OEM replacement components and on-site hydraulic technicians.
+              <p className="text-xs text-slate-600 leading-relaxed">
+                Trained process mechanics stationed nationwide for emergency troubleshooting, scheduled maintenance, and OEM component replacement.
               </p>
             </div>
           </div>
@@ -118,13 +120,12 @@ export default function AboutPage() {
         <Container size="default">
           <SectionHeading
             layout="split"
-            eyebrow="Leadership & Technical Direction"
-            title="Engineering Team"
-            description="Our personnel comprises certified structural, mechanical, and geotechnical specialists overseeing asset maintenance and project execution."
+            title="Engineering Team & Leadership"
+            description="Our leadership comprises certified mechanical, electrical, and water process engineers overseeing project design and operational commissioning."
           />
 
           {isLoading ? (
-            <div className="p-12 text-center text-xs font-mono text-slate-400">
+            <div className="p-12 text-center text-xs text-slate-400">
               Loading team directory...
             </div>
           ) : team.length === 0 ? (
@@ -132,7 +133,7 @@ export default function AboutPage() {
               Team members will be listed shortly.
             </div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-4">
               {team.map((member) => (
                 <div
                   key={member.id}
@@ -146,7 +147,7 @@ export default function AboutPage() {
                         className="h-full w-full object-cover"
                       />
                     ) : (
-                      <div className="h-full w-full flex items-center justify-center font-bold text-slate-400 text-3xl font-mono">
+                      <div className="h-full w-full flex items-center justify-center font-bold text-slate-400 text-3xl">
                         {member.name.charAt(0)}
                       </div>
                     )}
@@ -155,7 +156,7 @@ export default function AboutPage() {
                     <h4 className="text-base font-bold text-slate-900">
                       {member.name}
                     </h4>
-                    <p className="text-xs text-blue-700 font-mono font-medium mt-1">
+                    <p className="text-xs text-blue-700 font-medium mt-1">
                       {member.designation}
                     </p>
                   </div>
@@ -171,13 +172,12 @@ export default function AboutPage() {
         <Container size="default">
           <SectionHeading
             layout="split"
-            eyebrow="Supply Chain & Component Manufacturers"
             title="Equipment & Technology Partners"
-            description="We collaborate directly with tier-one OEM machinery manufacturers and certified hydraulic component fabricators."
+            description="We collaborate directly with global component leaders to integrate world-class pumps, compressors, and industrial controls into our machinery."
           />
 
           {isLoading ? (
-            <div className="p-12 text-center text-xs font-mono text-slate-400">
+            <div className="p-12 text-center text-xs text-slate-400">
               Loading partner directory...
             </div>
           ) : partners.length === 0 ? (
@@ -185,7 +185,7 @@ export default function AboutPage() {
               Partner alliances will be published shortly.
             </div>
           ) : (
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-5">
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5 mt-4">
               {partners.map((partner) => (
                 <div
                   key={partner.id}
@@ -198,7 +198,7 @@ export default function AboutPage() {
                       className="max-h-12 w-auto object-contain filter grayscale group-hover:grayscale-0 transition-all opacity-75 group-hover:opacity-100"
                     />
                   ) : (
-                    <span className="text-xs font-bold font-mono text-slate-500 group-hover:text-blue-700 transition-colors">
+                    <span className="text-xs font-semibold text-slate-700 group-hover:text-blue-700 transition-colors">
                       {partner.name}
                     </span>
                   )}
@@ -207,9 +207,9 @@ export default function AboutPage() {
                       href={partner.website_url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-[10px] text-slate-400 hover:text-blue-700 mt-2 truncate max-w-[120px]"
+                      className="text-xs text-slate-500 hover:text-blue-700 mt-2 truncate max-w-[140px]"
                     >
-                      Visit Site &rarr;
+                      Visit Website &rarr;
                     </a>
                   )}
                 </div>
@@ -224,13 +224,12 @@ export default function AboutPage() {
         <Container size="default">
           <SectionHeading
             layout="split"
-            eyebrow="Project References"
-            title="Enterprise Clients"
-            description="Organizations and engineering firms that rely on JP Engineering for mission-critical excavation and civil mobilization."
+            title="Institutional & Enterprise Clients"
+            description="Leading beverage plants, dairy cooperatives, healthcare institutions, and community water authorities operating JP machinery across Nepal."
           />
 
           {isLoading ? (
-            <div className="p-12 text-center text-xs font-mono text-slate-400">
+            <div className="p-12 text-center text-xs text-slate-400">
               Loading client references...
             </div>
           ) : clients.length === 0 ? (
@@ -238,7 +237,7 @@ export default function AboutPage() {
               Client references will be displayed shortly.
             </div>
           ) : (
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-5">
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5 mt-4">
               {clients.map((client) => (
                 <div
                   key={client.id}
@@ -251,7 +250,7 @@ export default function AboutPage() {
                       className="max-h-12 w-auto object-contain filter grayscale group-hover:grayscale-0 transition-all opacity-75 group-hover:opacity-100"
                     />
                   ) : (
-                    <span className="text-xs font-bold font-mono text-slate-500 group-hover:text-blue-700 transition-colors">
+                    <span className="text-xs font-semibold text-slate-700 group-hover:text-blue-700 transition-colors">
                       {client.name}
                     </span>
                   )}
@@ -260,9 +259,9 @@ export default function AboutPage() {
                       href={client.website_url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-[10px] text-slate-400 hover:text-blue-700 mt-2 truncate max-w-[120px]"
+                      className="text-xs text-slate-500 hover:text-blue-700 mt-2 truncate max-w-[140px]"
                     >
-                      Project Profile &rarr;
+                      Client Profile &rarr;
                     </a>
                   )}
                 </div>
@@ -272,22 +271,22 @@ export default function AboutPage() {
         </Container>
       </section>
 
-      {/* 5. Consultation Bottom CTA - Duotone Midnight Navy */}
+      {/* 5. Consultation Bottom CTA - Duotone Midnight Navy with CAD Blueprint Grid */}
       <section>
         <Container size="default">
-          <div className="rounded-3xl bg-gradient-to-br from-[#0a0f1d] via-[#0f172a] to-[#1e3a8a]/25 text-white p-8 sm:p-12 lg:p-16 border border-slate-800 flex flex-col lg:flex-row lg:items-center justify-between gap-8 shadow-2xl">
+          <div className="rounded-3xl bg-gradient-to-br from-[#0a0f1d] via-[#0f172a] to-[#1e3a8a]/30 text-white p-8 sm:p-12 lg:p-16 border border-slate-800 flex flex-col lg:flex-row lg:items-center justify-between gap-8 shadow-2xl bg-blueprint-grid">
             <div className="max-w-xl space-y-3">
-              <span className="text-xs font-mono font-bold text-blue-400 uppercase tracking-widest block">
+              <span className="text-xs font-semibold text-blue-400 uppercase tracking-wider block">
                 Technical Engagement
               </span>
               <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
                 Discuss Your Machinery Requirements
               </h2>
               <p className="text-sm text-slate-300 leading-relaxed">
-                Connect with our engineering staff to inspect available fleet items or review custom attachments.
+                Connect with our engineering staff to inspect available machinery models, schedule factory visits, or plan custom plant skids.
               </p>
             </div>
-            <div className="shrink-0 flex items-center gap-3">
+            <div className="shrink-0 flex items-center gap-4">
               <Button href="/contact" variant="accent" size="lg">
                 Contact Engineering Desk &rarr;
               </Button>

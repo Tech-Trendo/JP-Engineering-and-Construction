@@ -4,10 +4,10 @@ import React, { useState, useEffect, useMemo, Suspense } from "react";
 import Link from "next/link";
 import { useSearchParams, useRouter } from "next/navigation";
 import {
-  getPublicProducts,
   getPublicCategories,
-  PublicProductListItem,
+  getPublicProducts,
   PublicCategory,
+  PublicProductListItem,
 } from "@/lib/public-api";
 import {
   Button,
@@ -17,47 +17,48 @@ import {
   CardDescription,
   CardFooter,
   Container,
-  Badge,
 } from "@/components/ui";
 
 function ProductsContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
 
-  const [products, setProducts] = useState<PublicProductListItem[]>([]);
   const [categories, setCategories] = useState<PublicCategory[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [products, setProducts] = useState<PublicProductListItem[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  // Search & Filter State
-  const [searchQuery, setSearchQuery] = useState<string>("");
+  // Search filter query string
+  const [searchQuery, setSearchQuery] = useState("");
+
+  // Multi-category selection state: array of category slugs
   const [selectedCategorySlugs, setSelectedCategorySlugs] = useState<string[]>([]);
 
-  // Sync state with URL params on initial load
+  // Sync state from URL search params on mount
   useEffect(() => {
-    const catQuery = searchParams.get("category");
-    if (catQuery) {
-      const slugs = catQuery.split(",").map((s) => s.trim()).filter(Boolean);
+    const categoryParam = searchParams.get("category");
+    if (categoryParam) {
+      const slugs = categoryParam.split(",").map((s) => s.trim()).filter(Boolean);
       setSelectedCategorySlugs(slugs);
     }
-    const qQuery = searchParams.get("q");
-    if (qQuery) {
-      setSearchQuery(qQuery);
+    const qParam = searchParams.get("q");
+    if (qParam) {
+      setSearchQuery(qParam);
     }
   }, [searchParams]);
 
-  // Load catalog & categories
+  // Fetch all categories and products once
   useEffect(() => {
     let isMounted = true;
     setIsLoading(true);
 
-    Promise.all([getPublicProducts(), getPublicCategories()])
-      .then(([prods, cats]) => {
+    Promise.all([getPublicCategories(), getPublicProducts()])
+      .then(([cats, prods]) => {
         if (!isMounted) return;
-        setProducts(Array.isArray(prods) ? prods : []);
         setCategories(Array.isArray(cats) ? cats : []);
+        setProducts(Array.isArray(prods) ? prods : []);
       })
       .catch((err) => {
-        console.error("Failed to load catalog:", err);
+        console.error("Failed to load catalog data:", err);
       })
       .finally(() => {
         if (isMounted) setIsLoading(false);
@@ -68,29 +69,32 @@ function ProductsContent() {
     };
   }, []);
 
-  // Toggle multi-category selection
-  const handleToggleCategory = (slug: string) => {
-    setSelectedCategorySlugs((prev) => {
-      const exists = prev.includes(slug);
-      const updated = exists
-        ? prev.filter((s) => s !== slug)
-        : [...prev, slug];
-
-      // Update URL search query
-      const params = new URLSearchParams();
-      if (updated.length > 0) {
-        params.set("category", updated.join(","));
-      }
-      if (searchQuery.trim()) {
-        params.set("q", searchQuery.trim());
-      }
-      const newUrl = params.toString() ? `/products?${params.toString()}` : "/products";
-      router.replace(newUrl, { scroll: false });
-
-      return updated;
+  // Sync selected filters to URL for shareability
+  const updateUrlParams = (slugs: string[], search: string) => {
+    const params = new URLSearchParams();
+    if (slugs.length > 0) {
+      params.set("category", slugs.join(","));
+    }
+    if (search.trim()) {
+      params.set("q", search.trim());
+    }
+    const queryString = params.toString();
+    router.replace(queryString ? `/products?${queryString}` : "/products", {
+      scroll: false,
     });
   };
 
+  // Toggle category checkbox
+  const handleToggleCategory = (slug: string) => {
+    const next = selectedCategorySlugs.includes(slug)
+      ? selectedCategorySlugs.filter((s) => s !== slug)
+      : [...selectedCategorySlugs, slug];
+
+    setSelectedCategorySlugs(next);
+    updateUrlParams(next, searchQuery);
+  };
+
+  // Reset all filters
   const handleResetFilters = () => {
     setSelectedCategorySlugs([]);
     setSearchQuery("");
@@ -121,17 +125,14 @@ function ProductsContent() {
       <Container size="default">
         {/* Page Header */}
         <div className="pb-8 border-b border-slate-200 mb-10">
-          <div className="flex items-center gap-2 mb-2">
-            <span className="h-1.5 w-1.5 rounded-full bg-blue-600"></span>
-            <span className="text-[11px] font-mono font-bold uppercase tracking-[0.2em] text-blue-800">
-              Fleet Catalog & Machinery Specifications
-            </span>
+          <div className="text-xs font-semibold text-blue-800 uppercase tracking-wider mb-2">
+            Machinery Catalog & Plant Specifications
           </div>
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-slate-900 leading-[1.1]">
-            Heavy Equipment Inventory
+            Industrial Machinery & Processing Systems
           </h1>
           <p className="text-sm sm:text-base text-slate-600 mt-2 max-w-3xl leading-relaxed font-normal">
-            Filter our certified industrial earthmoving machinery, water bottling plants, cold storage equipment, and construction rigs. Direct manufacturer specifications with immediate quote procurement.
+            Filter our verified manufacturing equipment across community water treatment, dairy processing plants, commercial cold storage, solar pumping systems, and stainless steel fabrication lines.
           </p>
         </div>
 
@@ -142,13 +143,13 @@ function ProductsContent() {
             <div className="p-6 rounded-2xl bg-white border border-slate-200 shadow-premium-card space-y-6">
               {/* Sidebar Header */}
               <div className="flex items-center justify-between pb-3 border-b border-slate-200">
-                <span className="text-xs font-bold font-mono text-slate-900 uppercase tracking-wider">
+                <span className="text-xs font-bold text-slate-900 uppercase tracking-wider">
                   Filter Catalog
                 </span>
                 {(selectedCategorySlugs.length > 0 || searchQuery) && (
                   <button
                     onClick={handleResetFilters}
-                    className="text-[11px] text-blue-700 hover:text-blue-900 font-semibold cursor-pointer"
+                    className="text-xs text-blue-700 hover:text-blue-900 font-semibold cursor-pointer"
                   >
                     Reset All
                   </button>
@@ -163,7 +164,7 @@ function ProductsContent() {
                 <div className="relative">
                   <input
                     type="text"
-                    placeholder="e.g. Excavator, JP-500, Bottling..."
+                    placeholder="Search e.g. RO Plant, Pasteurizer, Freezer..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     className="w-full px-3 py-2 rounded-lg bg-slate-50 border border-slate-300 text-slate-900 placeholder-slate-400 text-xs focus:outline-hidden focus:border-blue-600 focus:ring-1 focus:ring-blue-600"
@@ -186,13 +187,13 @@ function ProductsContent() {
                     Categories
                   </label>
                   {selectedCategorySlugs.length > 0 && (
-                    <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 font-semibold border border-blue-200">
+                    <span className="text-xs px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 font-semibold border border-blue-200">
                       {selectedCategorySlugs.length} Active
                     </span>
                   )}
                 </div>
 
-                <div className="space-y-1.5 max-h-64 overflow-y-auto pr-1">
+                <div className="space-y-1.5 max-h-72 overflow-y-auto pr-1">
                   {categories.map((cat) => {
                     const isChecked = selectedCategorySlugs.includes(cat.slug);
                     return (
@@ -217,19 +218,19 @@ function ProductsContent() {
                 </div>
               </div>
 
-              {/* Duty Cycle Support Prompt */}
-              <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 text-[11px] text-slate-600 space-y-2">
+              {/* Custom Plant Support Prompt */}
+              <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-600 space-y-2">
                 <span className="font-bold text-slate-900 block">
-                  Custom Fleet Requirements?
+                  Custom Engineering Solutions?
                 </span>
-                <p>
-                  Need specialized attachments, factory tooling, or multi-rig mobilizing? Connect directly with our dispatch engineering desk.
+                <p className="leading-relaxed">
+                  Need customized plant capacity, specialized SS316 skids, or turnkey installation? Connect directly with our engineering desk.
                 </p>
                 <Link
                   href="/contact"
                   className="inline-block text-blue-700 font-semibold hover:underline"
                 >
-                  Contact Desk &rarr;
+                  Contact Engineering Desk &rarr;
                 </Link>
               </div>
             </div>
@@ -239,20 +240,20 @@ function ProductsContent() {
           <main className="lg:col-span-9 space-y-6">
             {/* Results Count & Active Pills Strip */}
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-slate-200">
-              <div className="text-xs font-mono text-slate-500">
+              <div className="text-xs text-slate-500">
                 Showing <span className="font-bold text-slate-900">{filteredProducts.length}</span>{" "}
                 machinery models
               </div>
 
               {selectedCategorySlugs.length > 0 && (
                 <div className="flex flex-wrap items-center gap-1.5">
-                  <span className="text-[11px] text-slate-500 mr-1">Filtered by:</span>
+                  <span className="text-xs text-slate-500 mr-1">Filtered by:</span>
                   {selectedCategorySlugs.map((slug) => {
                     const catName = categories.find((c) => c.slug === slug)?.name || slug;
                     return (
                       <span
                         key={slug}
-                        className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-mono bg-blue-50 text-blue-700 border border-blue-200 font-medium"
+                        className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs bg-blue-50 text-blue-700 border border-blue-200 font-medium"
                       >
                         {catName}
                         <button
@@ -269,8 +270,8 @@ function ProductsContent() {
             </div>
 
             {isLoading ? (
-              <div className="p-16 text-center text-xs text-slate-400 font-mono">
-                Loading equipment catalog...
+              <div className="p-16 text-center text-xs text-slate-400">
+                Loading machinery catalog...
               </div>
             ) : filteredProducts.length === 0 ? (
               /* Empty State */
@@ -297,13 +298,13 @@ function ProductsContent() {
                   <Card
                     key={prod.id}
                     variant="default"
-                    className="flex flex-col justify-between"
+                    className="flex flex-col justify-between group"
                   >
                     <div>
                       {/* Image Thumbnail */}
                       <Link
                         href={`/products/${prod.slug}`}
-                        className="block relative h-48 w-full overflow-hidden bg-slate-900 border-b border-slate-200 group"
+                        className="block relative h-48 w-full overflow-hidden bg-slate-900 border-b border-slate-200"
                       >
                         {prod.primary_image ? (
                           <img
@@ -312,12 +313,12 @@ function ProductsContent() {
                             className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-300"
                           />
                         ) : (
-                          <div className="h-full w-full flex items-center justify-center text-slate-400 font-mono text-xs">
+                          <div className="h-full w-full flex items-center justify-center text-slate-400 text-xs">
                             JP Specification
                           </div>
                         )}
                         {prod.is_featured && (
-                          <span className="absolute top-3 left-3 bg-blue-700 text-white text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider shadow-xs font-mono">
+                          <span className="absolute top-3 left-3 bg-blue-700 text-white text-[11px] font-semibold px-2.5 py-0.5 rounded-md shadow-xs">
                             Featured
                           </span>
                         )}
@@ -329,7 +330,7 @@ function ProductsContent() {
                           {prod.categories.map((c) => (
                             <span
                               key={c.id}
-                              className="text-[10px] font-mono px-2 py-0.5 rounded bg-blue-50 text-blue-700 border border-blue-200/80"
+                              className="text-[11px] font-medium px-2 py-0.5 rounded bg-blue-50 text-blue-700 border border-blue-200/80"
                             >
                               {c.name}
                             </span>
@@ -337,12 +338,12 @@ function ProductsContent() {
                         </div>
 
                         <Link href={`/products/${prod.slug}`}>
-                          <CardTitle className="hover:text-blue-700 transition-colors">
+                          <CardTitle className="group-hover:text-blue-700 transition-colors">
                             {prod.name}
                           </CardTitle>
                         </Link>
-                        <CardDescription className="line-clamp-2 mt-2">
-                          {prod.short_description || "Certified heavy engineering rig engineered for continuous duty operations."}
+                        <CardDescription className="line-clamp-2 mt-2 text-xs">
+                          {prod.short_description || "Industrial processing equipment engineered for continuous duty operations."}
                         </CardDescription>
                       </CardHeader>
                     </div>
@@ -353,7 +354,7 @@ function ProductsContent() {
                         href={`/products/${prod.slug}`}
                         variant="outline"
                         size="sm"
-                        className="flex-1 justify-center text-xs"
+                        className="flex-1 justify-center text-xs font-semibold"
                       >
                         View Details
                       </Button>
@@ -361,7 +362,7 @@ function ProductsContent() {
                         href={`/contact?product=${prod.id}&name=${encodeURIComponent(prod.name)}`}
                         variant="accent"
                         size="sm"
-                        className="flex-1 justify-center text-xs"
+                        className="flex-1 justify-center text-xs font-semibold"
                       >
                         Request Quote
                       </Button>
@@ -381,7 +382,7 @@ export default function ProductsPage() {
   return (
     <Suspense
       fallback={
-        <div className="p-16 text-center text-xs text-slate-400 font-mono">
+        <div className="p-16 text-center text-xs text-slate-400">
           Loading catalog...
         </div>
       }

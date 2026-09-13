@@ -10,8 +10,17 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: "JP Engineering & Construction",
-  description: "High quality engineering, construction solutions and services.",
+  title: "JP Engineering & Construction (P) Ltd.",
+  description:
+    "Leading manufacturer and supplier of community and industrial water treatment systems, dairy plant machinery, industrial refrigeration, solar irrigation, solar heat pumps, meat mincing & packaging, and steel fabrication.",
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/icon.png", type: "image/png" },
+    ],
+    shortcut: "/favicon.ico",
+    apple: "/apple-icon.png",
+  },
 };
 
 export default function RootLayout({
@@ -20,7 +29,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${poppins.variable} font-sans`}>
+    <html lang="en" className={`${poppins.variable} font-sans scroll-smooth`}>
       <body className="min-h-screen bg-background text-foreground font-sans antialiased">
         {children}
       </body>
