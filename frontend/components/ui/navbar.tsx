@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Container } from "./container";
 import { Button } from "./button";
+import { BrandLogo } from "./brand-logo";
 
 const navLinks = [
   { name: "Equipment Catalog", href: "/products" },
@@ -37,18 +38,8 @@ export function Navbar() {
       <Container size="default">
         <div className="flex h-18 items-center justify-between gap-6">
           {/* Brand Monogram & Title */}
-          <Link href="/" className="flex items-center gap-3 group shrink-0">
-            <div className="h-9 w-9 rounded-lg bg-stone-950 dark:bg-stone-900 border border-stone-800 flex items-center justify-center font-extrabold text-amber-500 text-sm tracking-wider shadow-inner group-hover:border-amber-600 transition-colors">
-              JP
-            </div>
-            <div>
-              <div className="text-sm font-extrabold tracking-tight text-stone-950 dark:text-white leading-none group-hover:text-amber-600 transition-colors">
-                JP ENGINEERING
-              </div>
-              <span className="text-[10px] font-semibold tracking-wider text-stone-500 uppercase">
-                Construction & Machinery
-              </span>
-            </div>
+          <Link href="/" className="shrink-0">
+            <BrandLogo size="md" />
           </Link>
 
           {/* Desktop Navigation Links */}

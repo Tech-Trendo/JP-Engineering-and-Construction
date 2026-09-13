@@ -1,6 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import { Container } from "./container";
+import { BrandLogo } from "./brand-logo";
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
@@ -53,14 +54,9 @@ export function Footer() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10">
             {/* Column 1: Brand & Identity */}
             <div className="lg:col-span-2 space-y-4">
-              <div className="flex items-center gap-3">
-                <div className="h-8 w-8 rounded-lg bg-stone-900 border border-stone-800 flex items-center justify-center font-extrabold text-amber-500 text-xs tracking-wider">
-                  JP
-                </div>
-                <span className="text-sm font-extrabold tracking-tight text-white">
-                  JP ENGINEERING & CONSTRUCTION
-                </span>
-              </div>
+              <Link href="/">
+                <BrandLogo size="md" />
+              </Link>
               <p className="text-xs text-stone-400 leading-relaxed max-w-sm">
                 Providing industrial earthmoving, heavy infrastructure machinery, and turnkey civil construction support across regional operations.
               </p>

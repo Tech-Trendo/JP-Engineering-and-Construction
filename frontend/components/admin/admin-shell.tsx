@@ -4,7 +4,8 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useAdminAuth } from "@/lib/admin-auth-context";
-import { adminFetch, AdminQuote } from "@/lib/admin-api";
+import { adminFetch, AdminQuote, unwrapAdminResults } from "@/lib/admin-api";
+import { LOGO_URL } from "@/lib/constants";
 
 interface NavItem {
   name: string;
@@ -92,10 +93,11 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     if (!accessToken || isLoginPage) return;
     let isMounted = true;
-    adminFetch<AdminQuote[]>("admin/quotes/?status=new", {}, accessToken)
+    adminFetch<unknown>("admin/quotes/?status=new", {}, accessToken)
       .then((data) => {
-        if (isMounted && Array.isArray(data)) {
-          setNewQuotesCount(data.length);
+        if (isMounted) {
+          const items = unwrapAdminResults<AdminQuote>(data);
+          setNewQuotesCount(items.length);
         }
       })
       .catch(() => {
@@ -115,8 +117,8 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
       {/* Mobile Top Bar */}
       <div className="md:hidden flex items-center justify-between px-4 py-3 bg-slate-900 border-b border-slate-800">
         <div className="flex items-center gap-2.5">
-          <div className="h-7 w-7 rounded-md bg-blue-600 flex items-center justify-center font-bold text-white text-xs">
-            JP
+          <div className="h-8 w-8 rounded-md bg-white p-0.5 border border-slate-700 flex items-center justify-center shrink-0">
+            <img src={LOGO_URL} alt="JP Engineering" className="h-full w-full object-contain" />
           </div>
           <span className="font-semibold text-sm tracking-wide text-white">JP Admin</span>
         </div>
@@ -144,8 +146,8 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
         <div>
           {/* Logo / Brand */}
           <div className="hidden md:flex items-center gap-3 px-2 py-1">
-            <div className="h-8 w-8 rounded-lg bg-blue-600 flex items-center justify-center font-bold text-white text-sm shadow-md">
-              JP
+            <div className="h-9 w-9 rounded-lg bg-white p-1 border border-slate-700 flex items-center justify-center shrink-0 shadow-sm">
+              <img src={LOGO_URL} alt="JP Engineering" className="h-full w-full object-contain" />
             </div>
             <div>
               <h2 className="text-sm font-bold tracking-tight text-white leading-none">
