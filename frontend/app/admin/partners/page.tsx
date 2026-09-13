@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { useAdminAuth } from "@/lib/admin-auth-context";
-import { adminFetch, AdminPartner } from "@/lib/admin-api";
+import { adminFetch, AdminPartner, unwrapAdminResults } from "@/lib/admin-api";
 
 interface PartnerFormData {
   id?: number;
@@ -38,8 +38,8 @@ export default function AdminPartnersPage() {
     if (!accessToken) return;
     try {
       setIsLoading(true);
-      const data = await adminFetch<AdminPartner[]>("admin/partners/", {}, accessToken);
-      setPartners(Array.isArray(data) ? data : []);
+      const data = await adminFetch<unknown>("admin/partners/", {}, accessToken);
+      setPartners(unwrapAdminResults<AdminPartner>(data));
     } catch (err: unknown) {
       console.error("Failed to load partners:", err);
       setErrorMessage(err instanceof Error ? err.message : "Failed to load partners.");

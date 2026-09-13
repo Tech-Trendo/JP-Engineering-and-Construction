@@ -7,6 +7,7 @@ import {
   adminFetch,
   AdminProduct,
   AdminCategory,
+  unwrapAdminResults,
 } from "@/lib/admin-api";
 
 interface LocalSpec {
@@ -78,11 +79,11 @@ function ProductsContent() {
     try {
       setIsLoading(true);
       const [prods, cats] = await Promise.all([
-        adminFetch<AdminProduct[]>("admin/products/", {}, accessToken),
-        adminFetch<AdminCategory[]>("admin/categories/", {}, accessToken),
+        adminFetch<unknown>("admin/products/", {}, accessToken),
+        adminFetch<unknown>("admin/categories/", {}, accessToken),
       ]);
-      setProducts(Array.isArray(prods) ? prods : []);
-      setCategories(Array.isArray(cats) ? cats : []);
+      setProducts(unwrapAdminResults<AdminProduct>(prods));
+      setCategories(unwrapAdminResults<AdminCategory>(cats));
     } catch (err: unknown) {
       console.error("Failed to load catalog data:", err);
     } finally {

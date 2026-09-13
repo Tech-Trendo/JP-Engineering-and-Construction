@@ -8,6 +8,7 @@ import {
   AdminProduct,
   AdminQuote,
   AdminCategory,
+  unwrapAdminResults,
 } from "@/lib/admin-api";
 
 export default function AdminDashboardPage() {
@@ -32,17 +33,18 @@ export default function AdminDashboardPage() {
       adminFetch<AdminQuote[]>("admin/quotes/", {}, accessToken),
       adminFetch<AdminCategory[]>("admin/categories/", {}, accessToken),
     ])
-      .then(([products, quotes, categories]) => {
+      .then(([productsRaw, quotesRaw, categoriesRaw]) => {
         if (!isMounted) return;
-        setProductCount(Array.isArray(products) ? products.length : 0);
-        setCategoryCount(Array.isArray(categories) ? categories.length : 0);
+        const productsList = unwrapAdminResults<AdminProduct>(productsRaw);
+        const quotesList = unwrapAdminResults<AdminQuote>(quotesRaw);
+        const categoriesList = unwrapAdminResults<AdminCategory>(categoriesRaw);
 
-        if (Array.isArray(quotes)) {
-          setTotalQuotesCount(quotes.length);
-          const newQuotes = quotes.filter((q) => q.status === "new");
-          setNewQuotesCount(newQuotes.length);
-          setRecentQuotes(quotes.slice(0, 5));
-        }
+        setProductCount(productsList.length);
+        setCategoryCount(categoriesList.length);
+        setTotalQuotesCount(quotesList.length);
+        const newQuotes = quotesList.filter((q) => q.status === "new");
+        setNewQuotesCount(newQuotes.length);
+        setRecentQuotes(quotesList.slice(0, 5));
       })
       .catch((err) => {
         if (isMounted) {

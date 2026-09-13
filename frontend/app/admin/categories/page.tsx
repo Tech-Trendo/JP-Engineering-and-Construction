@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { useAdminAuth } from "@/lib/admin-auth-context";
-import { adminFetch, AdminCategory } from "@/lib/admin-api";
+import { adminFetch, AdminCategory, unwrapAdminResults } from "@/lib/admin-api";
 
 interface CategoryFormData {
   id?: number;
@@ -40,8 +40,8 @@ export default function AdminCategoriesPage() {
     if (!accessToken) return;
     try {
       setIsLoading(true);
-      const data = await adminFetch<AdminCategory[]>("admin/categories/", {}, accessToken);
-      setCategories(Array.isArray(data) ? data : []);
+      const data = await adminFetch<unknown>("admin/categories/", {}, accessToken);
+      setCategories(unwrapAdminResults<AdminCategory>(data));
     } catch (err: unknown) {
       console.error("Failed to fetch categories:", err);
       setErrorMessage(err instanceof Error ? err.message : "Failed to load categories.");

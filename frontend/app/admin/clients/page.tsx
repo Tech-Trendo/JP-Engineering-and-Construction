@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { useAdminAuth } from "@/lib/admin-auth-context";
-import { adminFetch, AdminClient } from "@/lib/admin-api";
+import { adminFetch, AdminClient, unwrapAdminResults } from "@/lib/admin-api";
 
 interface ClientFormData {
   id?: number;
@@ -38,8 +38,8 @@ export default function AdminClientsPage() {
     if (!accessToken) return;
     try {
       setIsLoading(true);
-      const data = await adminFetch<AdminClient[]>("admin/clients/", {}, accessToken);
-      setClients(Array.isArray(data) ? data : []);
+      const data = await adminFetch<unknown>("admin/clients/", {}, accessToken);
+      setClients(unwrapAdminResults<AdminClient>(data));
     } catch (err: unknown) {
       console.error("Failed to load clients:", err);
       setErrorMessage(err instanceof Error ? err.message : "Failed to load clients.");

@@ -3,7 +3,7 @@
 import React, { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { useAdminAuth } from "@/lib/admin-auth-context";
-import { adminFetch, AdminQuote } from "@/lib/admin-api";
+import { adminFetch, AdminQuote, unwrapAdminResults } from "@/lib/admin-api";
 
 type QuoteStatusFilter = "all" | "new" | "contacted" | "closed";
 type DateSortOrder = "desc" | "asc";
@@ -28,8 +28,8 @@ function QuotesContent() {
         statusFilter === "all"
           ? "admin/quotes/"
           : `admin/quotes/?status=${statusFilter}`;
-      const data = await adminFetch<AdminQuote[]>(endpoint, {}, accessToken);
-      setQuotes(Array.isArray(data) ? data : []);
+      const data = await adminFetch<unknown>(endpoint, {}, accessToken);
+      setQuotes(unwrapAdminResults<AdminQuote>(data));
     } catch (err: unknown) {
       console.error("Failed to load quotes:", err);
     } finally {

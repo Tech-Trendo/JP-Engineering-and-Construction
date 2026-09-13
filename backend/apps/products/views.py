@@ -26,9 +26,13 @@ class PublicProductListView(generics.ListAPIView):
             .order_by('order', 'name')
         )
 
-        category_slug = self.request.query_params.get('category')
-        if category_slug:
-            queryset = queryset.filter(categories__slug=category_slug)
+        category_params = self.request.query_params.getlist('category')
+        if category_params:
+            slugs = []
+            for item in category_params:
+                slugs.extend([s.strip() for s in item.split(',') if s.strip()])
+            if slugs:
+                queryset = queryset.filter(categories__slug__in=slugs)
 
         search_query = self.request.query_params.get('q')
         if search_query:

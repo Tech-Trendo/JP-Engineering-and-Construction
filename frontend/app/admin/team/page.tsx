@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { useAdminAuth } from "@/lib/admin-auth-context";
-import { adminFetch, AdminTeamMember } from "@/lib/admin-api";
+import { adminFetch, AdminTeamMember, unwrapAdminResults } from "@/lib/admin-api";
 
 interface TeamFormData {
   id?: number;
@@ -38,8 +38,8 @@ export default function AdminTeamPage() {
     if (!accessToken) return;
     try {
       setIsLoading(true);
-      const data = await adminFetch<AdminTeamMember[]>("admin/team/", {}, accessToken);
-      setMembers(Array.isArray(data) ? data : []);
+      const data = await adminFetch<unknown>("admin/team/", {}, accessToken);
+      setMembers(unwrapAdminResults<AdminTeamMember>(data));
     } catch (err: unknown) {
       console.error("Failed to load team:", err);
       setErrorMessage(err instanceof Error ? err.message : "Failed to load team.");
