@@ -92,6 +92,15 @@ export interface AdminClient {
   updated_at: string;
 }
 
+export interface AdminSiteContent {
+  id?: number;
+  title: string;
+  short_intro: string;
+  full_intro: string;
+  created_at?: string;
+  updated_at?: string;
+}
+
 export async function adminFetch<T>(
   endpoint: string,
   options: RequestInit = {},
@@ -149,4 +158,18 @@ export function unwrapAdminResults<T>(data: unknown): T[] {
     return (data as { results: T[] }).results;
   }
   return [];
+}
+
+export async function getAdminSiteContent(token: string): Promise<AdminSiteContent> {
+  return adminFetch<AdminSiteContent>("admin/site-content/", { method: "GET" }, token);
+}
+
+export async function updateAdminSiteContent(
+  token: string,
+  data: Partial<AdminSiteContent>
+): Promise<AdminSiteContent> {
+  return adminFetch<AdminSiteContent>("admin/site-content/", {
+    method: "PATCH",
+    body: JSON.stringify(data),
+  }, token);
 }

@@ -21,6 +21,7 @@ from django.db import transaction
 from django.utils.text import slugify
 
 from apps.categories.models import Category
+from apps.core.models import SiteContent, DEFAULT_SHORT_INTRO, DEFAULT_FULL_INTRO
 from apps.products.models import Product, ProductImage, ProductSpecification
 from apps.quotes.models import QuoteRequest
 from apps.showcase.models import TeamMember, Partner, Client
@@ -94,6 +95,16 @@ class Command(BaseCommand):
         Client.objects.all().delete()
 
         self.stdout.write(self.style.SUCCESS("Existing records purged. Seeding fresh demo data..."))
+
+        # ==========================================================
+        # 0. SITE CONTENT (Corporate Introduction Copy)
+        # ==========================================================
+        site_content = SiteContent.get_solo()
+        site_content.title = "JP Engineering & Construction (P) Ltd."
+        site_content.short_intro = DEFAULT_SHORT_INTRO
+        site_content.full_intro = DEFAULT_FULL_INTRO
+        site_content.save()
+        self.stdout.write("  [+] Configured SiteContent (Short & Full Corporate Introduction)")
 
         # ==========================================================
         # 1. CATEGORIES (6 Realistic Categories)

@@ -8,11 +8,13 @@ import {
   getPublicPartners,
   getPublicClients,
   getPublicTeam,
+  getPublicSiteContent,
   PublicCategory,
   PublicProductListItem,
   PublicPartner,
   PublicClient,
   PublicTeamMember,
+  PublicSiteContent,
 } from "@/lib/public-api";
 import {
   Button,
@@ -25,13 +27,19 @@ import {
   Badge,
   Container,
 } from "@/components/ui";
+import { ProductSlider } from "@/components/home/product-slider";
+
+const DEFAULT_SHORT_INTRO =
+  "JP Engineering & Construction (P) Ltd. is a leading manufacturer and supplier of machinery for various industrial sectors since 10 years. Our product range includes machinery for community-based water treatment systems, industrial water plants, dairy plants, industrial refrigeration, solar energy and irrigation, solar energy and heat pump system and meat mincing and packaging. The company provides water treatment systems for schools, colleges, hospitals, public institutions, and corporate houses.";
 
 export default function HomePage() {
   const [categories, setCategories] = useState<PublicCategory[]>([]);
+  const [allProducts, setAllProducts] = useState<PublicProductListItem[]>([]);
   const [featuredProducts, setFeaturedProducts] = useState<PublicProductListItem[]>([]);
   const [partners, setPartners] = useState<PublicPartner[]>([]);
   const [clients, setClients] = useState<PublicClient[]>([]);
   const [team, setTeam] = useState<PublicTeamMember[]>([]);
+  const [siteContent, setSiteContent] = useState<PublicSiteContent | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -44,17 +52,22 @@ export default function HomePage() {
       getPublicPartners(),
       getPublicClients(),
       getPublicTeam(),
+      getPublicSiteContent().catch(() => null),
     ])
-      .then(([cats, prods, parts, clis, tm]) => {
+      .then(([cats, prods, parts, clis, tm, content]) => {
         if (!isMounted) return;
         setCategories(Array.isArray(cats) ? cats : []);
         if (Array.isArray(prods)) {
+          setAllProducts(prods);
           const featured = prods.filter((p) => p.is_featured);
           setFeaturedProducts(featured.length > 0 ? featured.slice(0, 6) : prods.slice(0, 6));
         }
         setPartners(Array.isArray(parts) ? parts : []);
         setClients(Array.isArray(clis) ? clis : []);
         setTeam(Array.isArray(tm) ? tm.slice(0, 4) : []);
+        if (content) {
+          setSiteContent(content);
+        }
       })
       .catch((err) => {
         console.error("Failed to load homepage data:", err);
@@ -67,6 +80,8 @@ export default function HomePage() {
       isMounted = false;
     };
   }, []);
+
+  const shortIntroText = siteContent?.short_intro || DEFAULT_SHORT_INTRO;
 
   return (
     <div className="space-y-24 py-6 sm:py-12">
@@ -137,10 +152,10 @@ export default function HomePage() {
                   </div>
                   <div>
                     <span className="font-mono text-xs text-slate-400 block uppercase">
-                      Procurement Terms
+                      Experience
                     </span>
                     <span className="font-semibold text-amber-400">
-                      Custom Duty Cycle Assessment
+                      10+ Years in Industry
                     </span>
                   </div>
                 </div>
@@ -197,25 +212,61 @@ export default function HomePage() {
         </Container>
       </section>
 
-      {/* 2. Intro / About Summary Statement (Alternating Surface: Slate-50) */}
+      {/* 2. Interactive Machinery Showcase Slider (Embla Carousel) */}
+      {allProducts.length > 0 && (
+        <section className="py-2">
+          <Container size="default">
+            <SectionHeading
+              layout="split"
+              eyebrow="Visual Fleet Showcase"
+              title="Equipment In Action"
+              description="Browse high-resolution imagery and certified operational parameters of our featured machinery units. Slides advance automatically every 4.5 seconds."
+              action={
+                <Button href="/products" variant="outline" size="sm">
+                  Full Fleet Catalog &rarr;
+                </Button>
+              }
+            />
+            <div className="mt-6">
+              <ProductSlider products={allProducts} />
+            </div>
+          </Container>
+        </section>
+      )}
+
+      {/* 3. Intro / About Summary Statement (Alternating Surface: Slate-50) */}
       <section className="border-y border-slate-200/80 bg-slate-50 py-16 sm:py-20">
         <Container size="default">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
             <div className="lg:col-span-4 space-y-2">
               <span className="text-[11px] font-mono text-blue-800 uppercase font-bold tracking-widest block">
-                Engineering Commitment
+                Corporate Introduction
               </span>
               <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-900">
-                Engineered for Reliability When Downtime Isn&apos;t an Option.
+                Reliable Engineering for Rigorous Industrial Demands.
               </h2>
             </div>
-            <div className="lg:col-span-8 space-y-4 text-sm text-slate-600 leading-relaxed">
-              <p>
-                At JP Engineering & Construction, we operate at the intersection of heavy machinery asset management, specialized mechanical engineering, and turnkey civil project execution. Our fleet and plants are maintained under strict preventative cycles to ensure relentless performance across excavation, water bottling, cold chain storage, and high-tonnage lifting operations.
+            <div className="lg:col-span-8 space-y-5 text-sm text-slate-600 leading-relaxed">
+              <p className="text-sm sm:text-base text-slate-700 leading-relaxed font-normal">
+                {shortIntroText}
               </p>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 pt-4 border-t border-slate-200">
+
+              {/* Prominent Read More Link to full /about/introduction page */}
+              <div className="pt-1">
+                <Button
+                  href="/about/introduction"
+                  variant="primary"
+                  size="sm"
+                  className="font-semibold text-xs inline-flex items-center gap-2"
+                >
+                  <span>Read Full Company Profile</span>
+                  <span>&rarr;</span>
+                </Button>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 pt-6 border-t border-slate-200">
                 <div>
-                  <div className="text-2xl font-black text-slate-900 font-mono">15+</div>
+                  <div className="text-2xl font-black text-slate-900 font-mono">10+</div>
                   <div className="text-xs text-slate-500 mt-0.5 font-medium">Years Industrial Experience</div>
                 </div>
                 <div>
@@ -232,7 +283,7 @@ export default function HomePage() {
         </Container>
       </section>
 
-      {/* 3. Featured Categories Grid (Surface: Crisp White) */}
+      {/* 4. Featured Categories Grid (Surface: Crisp White) */}
       <section className="py-4">
         <Container size="default">
           <SectionHeading
@@ -276,7 +327,7 @@ export default function HomePage() {
         </Container>
       </section>
 
-      {/* 4. Featured Products (Alternating Surface: Slate-50) */}
+      {/* 5. Featured Products (Alternating Surface: Slate-50) */}
       <section className="bg-slate-50 border-y border-slate-200/80 py-20">
         <Container size="default">
           <SectionHeading
@@ -329,12 +380,12 @@ export default function HomePage() {
                     </div>
                     <CardTitle>{prod.name}</CardTitle>
                     <CardDescription className="line-clamp-2 mt-2">
-                      {prod.short_description || "High-torque hydraulic equipment built for continuous duty cycles and material handling."}
+                      {prod.short_description || "High-torque equipment built for continuous duty cycles and material handling."}
                     </CardDescription>
                   </CardHeader>
                 </div>
 
-                {/* Card Footer: "View Details" (outline/navy) + "Request Quote" (warm accent) */}
+                {/* Card Footer: "View Details" (outline) + "Request Quote" (warm accent) */}
                 <CardFooter className="gap-2 pt-3">
                   <Button
                     href={`/products/${prod.slug}`}
@@ -359,7 +410,7 @@ export default function HomePage() {
         </Container>
       </section>
 
-      {/* 5. Services Summary (Surface: Crisp White, Asymmetric Editorial Blocks) */}
+      {/* 6. Services Summary (Surface: Crisp White, Asymmetric Editorial Blocks) */}
       <section className="py-4">
         <Container size="default">
           <SectionHeading
@@ -394,7 +445,7 @@ export default function HomePage() {
                 </li>
                 <li className="flex items-center gap-2">
                   <span className="h-1.5 w-1.5 rounded-full bg-blue-400"></span>
-                  <span>GPS telematics & fuel consumption telemetry</span>
+                  <span>GPS telematics & telemetry tracking</span>
                 </li>
               </ul>
             </div>
@@ -431,7 +482,7 @@ export default function HomePage() {
         </Container>
       </section>
 
-      {/* 6. Partner & Client Logo Strip (Alternating Surface: Slate-50) */}
+      {/* 7. Partner & Client Logo Strip (Alternating Surface: Slate-50) */}
       {(partners.length > 0 || clients.length > 0) && (
         <section className="py-16 bg-slate-50 border-y border-slate-200/80">
           <Container size="default">
@@ -470,7 +521,7 @@ export default function HomePage() {
         </section>
       )}
 
-      {/* 7. Team Preview (Surface: Crisp White) */}
+      {/* 8. Team Preview (Surface: Crisp White) */}
       {team.length > 0 && (
         <section className="py-4">
           <Container size="default">
@@ -520,7 +571,7 @@ export default function HomePage() {
         </section>
       )}
 
-      {/* 8. High-Impact Consultation CTA Banner (Duotone Midnight Navy) */}
+      {/* 9. High-Impact Consultation CTA Banner (Duotone Midnight Navy) */}
       <section>
         <Container size="default">
           <div className="rounded-3xl bg-gradient-to-br from-[#0a0f1d] via-[#0f172a] to-[#1e3a8a]/25 text-white p-8 sm:p-12 lg:p-16 border border-slate-800/80 relative overflow-hidden shadow-2xl">
@@ -532,7 +583,7 @@ export default function HomePage() {
                 Ready to deploy heavy infrastructure machinery?
               </h2>
               <p className="text-sm sm:text-base text-slate-300 leading-relaxed">
-                Speak directly with an equipment specialist. We assess ground conditions, tonnage requirements, and mobilization logistics to provide a firm, tailored proposal.
+                Speak directly with an equipment specialist. We assess ground conditions, capacity requirements, and mobilization logistics to provide a firm, tailored proposal.
               </p>
               <div className="flex flex-wrap items-center gap-3 pt-2">
                 <Button href="/contact" variant="accent" size="lg">

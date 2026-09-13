@@ -17,6 +17,7 @@ urlpatterns = [
             path('categories/', include('apps.categories.urls')),
             path('products/', include('apps.products.urls')),
             path('quotes/', include('apps.quotes.urls')),
+            path('site-content/', include('apps.core.public_urls')),
             path('', include('apps.showcase.urls')),
         ])),
         path('admin/', include('apps.core.admin_urls')),

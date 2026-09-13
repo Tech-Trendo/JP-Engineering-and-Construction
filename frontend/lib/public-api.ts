@@ -81,6 +81,14 @@ export interface PublicClient {
   order: number;
 }
 
+export interface PublicSiteContent {
+  id?: number;
+  title: string;
+  short_intro: string;
+  full_intro: string;
+  updated_at?: string;
+}
+
 export interface QuoteSubmitData {
   name: string;
   email: string;
@@ -165,4 +173,8 @@ export async function submitQuote(
     method: "POST",
     body: JSON.stringify(data),
   });
+}
+
+export async function getPublicSiteContent(): Promise<PublicSiteContent> {
+  return apiClient<PublicSiteContent>("public/site-content/");
 }
