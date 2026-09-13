@@ -1,9 +1,13 @@
-from rest_framework import generics, status
+from rest_framework import generics, mixins, status, viewsets
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.throttling import AnonRateThrottle
+from apps.core.permissions import IsStaffUser
 from .models import QuoteRequest
-from .serializers import PublicQuoteRequestCreateSerializer
+from .serializers import (
+    PublicQuoteRequestCreateSerializer,
+    AdminQuoteSerializer,
+)
 
 
 class QuoteAnonThrottle(AnonRateThrottle):
@@ -30,3 +34,23 @@ class PublicQuoteCreateView(generics.CreateAPIView):
             },
             status=status.HTTP_201_CREATED
         )
+
+
+class AdminQuoteViewSet(
+    mixins.ListModelMixin,
+    mixins.RetrieveModelMixin,
+    mixins.UpdateModelMixin,
+    viewsets.GenericViewSet
+):
+    """
+    Staff-only ViewSet for listing, filtering by status, retrieving, and updating quote statuses.
+    """
+    permission_classes = [IsStaffUser]
+    serializer_class = AdminQuoteSerializer
+
+    def get_queryset(self):
+        queryset = QuoteRequest.objects.all().select_related('product').order_by('-created_at')
+        status_param = self.request.query_params.get('status')
+        if status_param:
+            queryset = queryset.filter(status=status_param)
+        return queryset

@@ -19,6 +19,7 @@ urlpatterns = [
             path('quotes/', include('apps.quotes.urls')),
             path('', include('apps.showcase.urls')),
         ])),
+        path('admin/', include('apps.core.admin_urls')),
     ])),
 ]
 

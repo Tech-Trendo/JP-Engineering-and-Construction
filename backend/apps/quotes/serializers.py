@@ -37,10 +37,48 @@ class PublicQuoteRequestCreateSerializer(serializers.ModelSerializer):
         }
 
     def validate(self, attrs):
-        # Support either name or full_name
         name = attrs.get('name') or attrs.get('full_name')
         if not name:
             raise serializers.ValidationError({'name': 'Name is required.'})
         attrs['full_name'] = name
         attrs.pop('name', None)
         return attrs
+
+
+class AdminQuoteSerializer(serializers.ModelSerializer):
+    """
+    Staff-only quote serializer allowing review and status update only.
+    """
+    product_name = serializers.CharField(
+        source='product.name',
+        read_only=True,
+        default=None
+    )
+
+    class Meta:
+        model = QuoteRequest
+        fields = [
+            'id',
+            'full_name',
+            'email',
+            'phone',
+            'company',
+            'product',
+            'product_name',
+            'message',
+            'status',
+            'created_at',
+            'updated_at',
+        ]
+        read_only_fields = [
+            'id',
+            'full_name',
+            'email',
+            'phone',
+            'company',
+            'product',
+            'product_name',
+            'message',
+            'created_at',
+            'updated_at',
+        ]

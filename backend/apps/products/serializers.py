@@ -1,3 +1,6 @@
+import json
+from django.db import transaction
+from django.http import QueryDict
 from rest_framework import serializers
 from apps.categories.models import Category
 from .models import Product, ProductImage, ProductSpecification
@@ -51,7 +54,6 @@ class ProductListSerializer(serializers.ModelSerializer):
 
     def get_primary_image(self, obj):
         request = self.context.get('request')
-        # Check for image with is_primary=True, otherwise first image
         images = list(obj.images.all())
         if not images:
             return None
@@ -101,3 +103,195 @@ class ProductDetailSerializer(serializers.ModelSerializer):
             .order_by('order', 'name')[:4]
         )
         return ProductListSerializer(related, many=True, context=self.context).data
+
+
+# ==========================================================
+# Staff-only Admin Product Serializers (with Nested Create/Update)
+# ==========================================================
+
+class AdminProductSpecificationItemSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField(required=False)
+
+    class Meta:
+        model = ProductSpecification
+        fields = ['id', 'label', 'value', 'order']
+
+
+class AdminProductImageItemSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField(required=False)
+    image = serializers.ImageField(required=False, allow_null=True)
+
+    class Meta:
+        model = ProductImage
+        fields = ['id', 'image', 'alt_text', 'order', 'is_primary']
+
+
+class AdminProductSerializer(serializers.ModelSerializer):
+    """
+    Staff-only full CRUD serializer supporting nested create and update
+    of specifications and images in a single payload.
+    """
+    category_ids = serializers.PrimaryKeyRelatedField(
+        queryset=Category.objects.all(),
+        many=True,
+        source='categories',
+        required=False,
+        write_only=True
+    )
+    categories = ProductCategorySnippetSerializer(many=True, read_only=True)
+    specifications = AdminProductSpecificationItemSerializer(many=True, required=False)
+    images = AdminProductImageItemSerializer(many=True, required=False)
+
+    class Meta:
+        model = Product
+        fields = [
+            'id',
+            'name',
+            'slug',
+            'short_description',
+            'full_description',
+            'category_ids',
+            'categories',
+            'images',
+            'specifications',
+            'is_active',
+            'is_featured',
+            'order',
+            'created_at',
+            'updated_at',
+        ]
+        read_only_fields = ['created_at', 'updated_at']
+        extra_kwargs = {
+            'slug': {'required': False},
+            'short_description': {'required': False, 'allow_blank': True},
+        }
+
+    def to_internal_value(self, data):
+        # Convert QueryDict or dict into a standard Python dictionary so nested structures stay intact
+        if isinstance(data, QueryDict):
+            copied = {}
+            for k in data.keys():
+                v = data.getlist(k)
+                copied[k] = v if len(v) > 1 else v[0]
+        elif hasattr(data, 'copy'):
+            copied = data.copy()
+        else:
+            copied = dict(data)
+
+        # 1. Parse category_ids if stringified JSON
+        if 'category_ids' in copied and isinstance(copied['category_ids'], str):
+            try:
+                copied['category_ids'] = json.loads(copied['category_ids'])
+            except Exception:
+                pass
+
+        # 2. Parse specifications if stringified JSON
+        if 'specifications' in copied and isinstance(copied['specifications'], str):
+            try:
+                copied['specifications'] = json.loads(copied['specifications'])
+            except Exception:
+                pass
+
+        # 3. Parse images if stringified JSON or multipart fields like images[0]image
+        image_indices = set()
+        for key in list(copied.keys()):
+            if key.startswith('images[') and ']' in key:
+                idx_str = key[len('images['):key.find(']')]
+                if idx_str.isdigit():
+                    image_indices.add(int(idx_str))
+
+        if image_indices:
+            images_list = []
+            for idx in sorted(image_indices):
+                img_dict = {}
+                if f'images[{idx}]image' in copied:
+                    img_dict['image'] = copied[f'images[{idx}]image']
+                if f'images[{idx}]alt_text' in copied:
+                    img_dict['alt_text'] = copied[f'images[{idx}]alt_text']
+                if f'images[{idx}]order' in copied:
+                    img_dict['order'] = copied[f'images[{idx}]order']
+                if f'images[{idx}]is_primary' in copied:
+                    is_p = copied[f'images[{idx}]is_primary']
+                    img_dict['is_primary'] = str(is_p).lower() in ['true', '1']
+                images_list.append(img_dict)
+            copied['images'] = images_list
+        elif 'images' in copied and isinstance(copied['images'], str):
+            try:
+                copied['images'] = json.loads(copied['images'])
+            except Exception:
+                pass
+
+        return super().to_internal_value(copied)
+
+    @transaction.atomic
+    def create(self, validated_data):
+        specifications_data = validated_data.pop('specifications', [])
+        images_data = validated_data.pop('images', [])
+        categories = validated_data.pop('categories', [])
+
+        product = Product.objects.create(**validated_data)
+
+        if categories:
+            product.categories.set(categories)
+
+        for spec in specifications_data:
+            spec.pop('id', None)
+            ProductSpecification.objects.create(product=product, **spec)
+
+        for img in images_data:
+            img.pop('id', None)
+            ProductImage.objects.create(product=product, **img)
+
+        # Process any multipart uploaded_images files
+        request = self.context.get('request')
+        if request and hasattr(request, 'FILES'):
+            uploaded_files = request.FILES.getlist('uploaded_images')
+            for idx, file_obj in enumerate(uploaded_files):
+                ProductImage.objects.create(
+                    product=product,
+                    image=file_obj,
+                    alt_text=file_obj.name,
+                    order=len(images_data) + idx,
+                    is_primary=(idx == 0 and not images_data)
+                )
+
+        return product
+
+    @transaction.atomic
+    def update(self, instance, validated_data):
+        specifications_data = validated_data.pop('specifications', None)
+        images_data = validated_data.pop('images', None)
+        categories = validated_data.pop('categories', None)
+
+        if categories is not None:
+            instance.categories.set(categories)
+
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+        instance.save()
+
+        if specifications_data is not None:
+            instance.specifications.all().delete()
+            for spec in specifications_data:
+                spec.pop('id', None)
+                ProductSpecification.objects.create(product=instance, **spec)
+
+        if images_data is not None:
+            instance.images.all().delete()
+            for img in images_data:
+                img.pop('id', None)
+                if img.get('image'):
+                    ProductImage.objects.create(product=instance, **img)
+
+        request = self.context.get('request')
+        if request and hasattr(request, 'FILES'):
+            uploaded_files = request.FILES.getlist('uploaded_images')
+            for idx, file_obj in enumerate(uploaded_files):
+                ProductImage.objects.create(
+                    product=instance,
+                    image=file_obj,
+                    alt_text=file_obj.name,
+                    order=idx
+                )
+
+        return instance
