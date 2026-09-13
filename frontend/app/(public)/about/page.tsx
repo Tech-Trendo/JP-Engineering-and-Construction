@@ -55,7 +55,7 @@ export default function AboutPage() {
               Company Profile & Leadership
             </div>
 
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-slate-900 leading-[1.08]">
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-slate-900 leading-[1.08]">
               Precision engineering grounded in{" "}
               <span className="underline decoration-blue-500/50 decoration-4 underline-offset-8">
                 structural integrity
@@ -115,7 +115,7 @@ export default function AboutPage() {
         </Container>
       </section>
 
-      {/* 2. Team Grid (Admin Managed TeamMember) - Alternating Surface Slate-50 */}
+      {/* 2. Team Grid (Admin Managed TeamMember with Pravatar Real Headshots) */}
       <section className="py-16 bg-slate-50 border-y border-slate-200/80">
         <Container size="default">
           <SectionHeading
@@ -139,12 +139,12 @@ export default function AboutPage() {
                   key={member.id}
                   className="rounded-2xl overflow-hidden bg-white border border-slate-200 p-5 space-y-4 shadow-premium-card hover:shadow-premium-hover hover:-translate-y-0.5 transition-all duration-200"
                 >
-                  <div className="h-56 w-full rounded-xl overflow-hidden bg-slate-900 border border-slate-200">
+                  <div className="h-60 sm:h-64 w-full rounded-xl overflow-hidden bg-slate-900 border border-slate-200">
                     {member.photo ? (
                       <img
                         src={member.photo}
                         alt={member.name}
-                        className="h-full w-full object-cover"
+                        className="h-full w-full object-cover object-top"
                       />
                     ) : (
                       <div className="h-full w-full flex items-center justify-center font-bold text-slate-400 text-3xl">
@@ -167,7 +167,7 @@ export default function AboutPage() {
         </Container>
       </section>
 
-      {/* 3. Partners Grid (Admin Managed Partners) - Surface White */}
+      {/* 3. Partners Grid (Admin Managed Partners with Crisp Logos) */}
       <section className="py-4">
         <Container size="default">
           <SectionHeading
@@ -185,17 +185,17 @@ export default function AboutPage() {
               Partner alliances will be published shortly.
             </div>
           ) : (
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5 mt-4">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 sm:gap-5 mt-4">
               {partners.map((partner) => (
                 <div
                   key={partner.id}
-                  className="p-5 rounded-xl bg-white border border-slate-200/90 flex flex-col items-center justify-center text-center group h-28 shadow-xs hover:border-blue-500/40 hover:shadow-sm transition-all duration-200"
+                  className="p-4 rounded-xl bg-white border border-slate-200/90 flex flex-col items-center justify-center text-center group h-28 shadow-xs hover:border-blue-500/40 hover:shadow-sm transition-all duration-200 overflow-hidden"
                 >
                   {partner.logo ? (
                     <img
                       src={partner.logo}
                       alt={partner.name}
-                      className="max-h-12 w-auto object-contain filter grayscale group-hover:grayscale-0 transition-all opacity-75 group-hover:opacity-100"
+                      className="max-h-11 max-w-[130px] w-auto object-contain filter grayscale group-hover:grayscale-0 transition-all opacity-85 group-hover:opacity-100"
                     />
                   ) : (
                     <span className="text-xs font-semibold text-slate-700 group-hover:text-blue-700 transition-colors">
@@ -219,7 +219,7 @@ export default function AboutPage() {
         </Container>
       </section>
 
-      {/* 4. Clients Grid (Admin Managed Clients) - Alternating Surface Slate-50 */}
+      {/* 4. Clients Grid (Admin Managed Clients with Real Logos) */}
       <section className="py-16 bg-slate-50 border-y border-slate-200/80">
         <Container size="default">
           <SectionHeading
@@ -237,17 +237,17 @@ export default function AboutPage() {
               Client references will be displayed shortly.
             </div>
           ) : (
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5 mt-4">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 sm:gap-5 mt-4">
               {clients.map((client) => (
                 <div
                   key={client.id}
-                  className="p-5 rounded-xl bg-white border border-slate-200/90 flex flex-col items-center justify-center text-center group h-28 shadow-xs hover:border-blue-500/40 hover:shadow-sm transition-all duration-200"
+                  className="p-4 rounded-xl bg-white border border-slate-200/90 flex flex-col items-center justify-center text-center group h-28 shadow-xs hover:border-blue-500/40 hover:shadow-sm transition-all duration-200 overflow-hidden"
                 >
                   {client.logo ? (
                     <img
                       src={client.logo}
                       alt={client.name}
-                      className="max-h-12 w-auto object-contain filter grayscale group-hover:grayscale-0 transition-all opacity-75 group-hover:opacity-100"
+                      className="max-h-11 max-w-[130px] w-auto object-contain filter grayscale group-hover:grayscale-0 transition-all opacity-85 group-hover:opacity-100"
                     />
                   ) : (
                     <span className="text-xs font-semibold text-slate-700 group-hover:text-blue-700 transition-colors">
@@ -271,15 +271,15 @@ export default function AboutPage() {
         </Container>
       </section>
 
-      {/* 5. Consultation Bottom CTA - Duotone Midnight Navy with CAD Blueprint Grid */}
+      {/* 5. Consultation Bottom CTA - Solid Midnight Navy with CAD Blueprint Grid */}
       <section>
         <Container size="default">
-          <div className="rounded-3xl bg-gradient-to-br from-[#0a0f1d] via-[#0f172a] to-[#1e3a8a]/30 text-white p-8 sm:p-12 lg:p-16 border border-slate-800 flex flex-col lg:flex-row lg:items-center justify-between gap-8 shadow-2xl bg-blueprint-grid">
+          <div className="rounded-3xl bg-[#0a0f1d] bg-blueprint-grid text-white p-8 sm:p-12 lg:p-16 border border-slate-800 flex flex-col lg:flex-row lg:items-center justify-between gap-8 shadow-2xl">
             <div className="max-w-xl space-y-3">
               <span className="text-xs font-semibold text-blue-400 uppercase tracking-wider block">
                 Technical Engagement
               </span>
-              <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
+              <h2 className="text-3xl sm:text-4xl font-black text-white tracking-tight">
                 Discuss Your Machinery Requirements
               </h2>
               <p className="text-sm text-slate-300 leading-relaxed">

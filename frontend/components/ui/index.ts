@@ -5,3 +5,4 @@ export * from "./badge";
 export * from "./container";
 export * from "./navbar";
 export * from "./footer";
+export * from "./stat-counter";

@@ -592,77 +592,89 @@ class Command(BaseCommand):
             self.stdout.write(f"  [+] Created Product: {prod.name} ({len(pdata['specs'])} specs)")
 
         # ==========================================================
-        # 3. TEAM MEMBERS (Authentic Engineering Leadership)
+        # 3. TEAM MEMBERS (Authentic Engineering Leadership with Pravatar Headshots)
         # ==========================================================
         team_data = [
-            ("Er. Ramesh Adhikari", "Managing Director & Principal Mechanical Engineer", 1),
-            ("Sunita Sharma", "VP of Industrial Operations & Project Logistics", 2),
-            ("Er. Bikash Thapa", "Lead Automation & SCADA Control Systems Engineer", 3),
-            ("Anjali Shrestha", "Head of Quality Assurance & ISO Compliance", 4),
-            ("Er. Dipendra Poudel", "Senior Thermal & Industrial Refrigeration Specialist", 5),
-            ("Manisha Giri", "Procurement & Supply Chain Lead", 6),
-            ("Er. Pradeep KC", "Stainless Steel Fabrication Superintendent", 7),
+            ("Er. Ramesh Adhikari", "Managing Director & Principal Mechanical Engineer", 1, "https://i.pravatar.cc/400?img=11"),
+            ("Sunita Sharma", "VP of Industrial Operations & Project Logistics", 2, "https://i.pravatar.cc/400?img=32"),
+            ("Er. Bikash Thapa", "Lead Automation & SCADA Control Systems Engineer", 3, "https://i.pravatar.cc/400?img=68"),
+            ("Anjali Shrestha", "Head of Quality Assurance & ISO Compliance", 4, "https://i.pravatar.cc/400?img=49"),
+            ("Er. Dipendra Poudel", "Senior Thermal & Industrial Refrigeration Specialist", 5, "https://i.pravatar.cc/400?img=59"),
+            ("Manisha Giri", "Procurement & Supply Chain Lead", 6, "https://i.pravatar.cc/400?img=45"),
+            ("Er. Pradeep KC", "Stainless Steel Fabrication Superintendent", 7, "https://i.pravatar.cc/400?img=12"),
         ]
 
-        for name, designation, order_num in team_data:
+        def fetch_image_bytes(url, fallback_text, w=400, h=400, bg=(241, 245, 249), fg=(30, 64, 175)):
+            try:
+                req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
+                with urllib.request.urlopen(req, timeout=5) as response:
+                    if response.status == 200:
+                        b = response.read()
+                        if len(b) > 800:
+                            return b
+            except Exception:
+                pass
+            return create_fallback_image(w, h, fallback_text, bg_color=bg, border_color=fg)
+
+        for name, designation, order_num, photo_url in team_data:
             member = TeamMember.objects.create(
                 name=name,
                 designation=designation,
                 order=order_num,
                 is_active=True,
             )
-            photo_bytes = create_fallback_image(400, 480, name, bg_color=(15, 23, 42), border_color=(30, 64, 175))
+            photo_bytes = fetch_image_bytes(photo_url, name, 400, 480, bg=(15, 23, 42), fg=(30, 64, 175))
             member.photo.save(f"team_{member.id}.jpg", ContentFile(photo_bytes), save=True)
             self.stdout.write(f"  [+] Created Team Member: {name}")
 
         # ==========================================================
-        # 4. PARTNERS (OEM Component & Technology Suppliers)
+        # 4. PARTNERS (OEM Component & Technology Suppliers with Crisp Logos)
         # ==========================================================
         partners_data = [
-            ("Danfoss Industrial Refrigeration", "https://www.danfoss.com"),
-            ("Alfa Laval Process Technology", "https://www.alfalaval.com"),
-            ("Siemens Industrial Automation", "https://www.siemens.com"),
-            ("Grundfos Pumping Systems", "https://www.grundfos.com"),
-            ("ABB Motors & Drives", "https://new.abb.com"),
-            ("Krones Beverage Processing", "https://www.krones.com"),
-            ("Schneider Electric Solutions", "https://www.se.com"),
-            ("Atlas Copco Compressed Air", "https://www.atlascopco.com"),
+            ("Danfoss Industrial Refrigeration", "https://www.danfoss.com", "https://placehold.co/280x120/ffffff/1e40af.png?text=Danfoss"),
+            ("Alfa Laval Process Technology", "https://www.alfalaval.com", "https://placehold.co/280x120/ffffff/0284c7.png?text=Alfa+Laval"),
+            ("Siemens Industrial Automation", "https://www.siemens.com", "https://placehold.co/280x120/ffffff/0f766e.png?text=Siemens"),
+            ("Grundfos Pumping Systems", "https://www.grundfos.com", "https://placehold.co/280x120/ffffff/1d4ed8.png?text=Grundfos"),
+            ("ABB Motors & Drives", "https://new.abb.com", "https://placehold.co/280x120/ffffff/dc2626.png?text=ABB"),
+            ("Krones Beverage Processing", "https://www.krones.com", "https://placehold.co/280x120/ffffff/2563eb.png?text=KRONES"),
+            ("Schneider Electric Solutions", "https://www.se.com", "https://placehold.co/280x120/ffffff/16a34a.png?text=Schneider"),
+            ("Atlas Copco Compressed Air", "https://www.atlascopco.com", "https://placehold.co/280x120/ffffff/0284c7.png?text=Atlas+Copco"),
         ]
 
-        for idx, (pname, purl) in enumerate(partners_data):
+        for idx, (pname, purl, logo_url) in enumerate(partners_data):
             partner = Partner.objects.create(
                 name=pname,
                 website_url=purl,
                 order=idx + 1,
                 is_active=True,
             )
-            logo_bytes = create_fallback_image(240, 120, pname.split()[0], bg_color=(255, 255, 255), border_color=(226, 232, 240))
-            partner.logo.save(f"partner_{partner.id}.jpg", ContentFile(logo_bytes), save=True)
+            logo_bytes = fetch_image_bytes(logo_url, pname.split()[0], 280, 120, bg=(255, 255, 255), fg=(30, 64, 175))
+            partner.logo.save(f"partner_{partner.id}.png", ContentFile(logo_bytes), save=True)
             self.stdout.write(f"  [+] Created Partner: {pname}")
 
         # ==========================================================
-        # 5. CLIENT REFERENCES
+        # 5. CLIENT REFERENCES (Institutional Client Logos)
         # ==========================================================
         clients_data = [
-            ("Himalayan Spring Beverages Ltd", "https://example.com"),
-            ("National Dairy Development Grid", "https://example.com"),
-            ("Apex Cold Chain & Logistics", "https://example.com"),
-            ("Everest Agro Processing Mills", "https://example.com"),
-            ("Valley Health Systems & Hospital", "https://example.com"),
-            ("Gandaki Food Products Industries", "https://example.com"),
-            ("Bagmati Community Water Authority", "https://example.com"),
-            ("Nepal Stainless Process Industries", "https://example.com"),
+            ("Himalayan Spring Beverages Ltd", "https://example.com", "https://placehold.co/280x120/ffffff/0f172a.png?text=Himalayan+Spring"),
+            ("National Dairy Development Grid", "https://example.com", "https://placehold.co/280x120/ffffff/1e40af.png?text=National+Dairy"),
+            ("Apex Cold Chain & Logistics", "https://example.com", "https://placehold.co/280x120/ffffff/0369a1.png?text=Apex+Cold+Chain"),
+            ("Everest Agro Processing Mills", "https://example.com", "https://placehold.co/280x120/ffffff/15803d.png?text=Everest+Agro"),
+            ("Valley Health Systems & Hospital", "https://example.com", "https://placehold.co/280x120/ffffff/b91c1c.png?text=Valley+Health"),
+            ("Gandaki Food Products Industries", "https://example.com", "https://placehold.co/280x120/ffffff/c2410c.png?text=Gandaki+Foods"),
+            ("Bagmati Community Water Authority", "https://example.com", "https://placehold.co/280x120/ffffff/1d4ed8.png?text=Bagmati+Water"),
+            ("Nepal Stainless Process Industries", "https://example.com", "https://placehold.co/280x120/ffffff/334155.png?text=Nepal+Stainless"),
         ]
 
-        for idx, (cname, curl) in enumerate(clients_data):
+        for idx, (cname, curl, logo_url) in enumerate(clients_data):
             client = Client.objects.create(
                 name=cname,
                 website_url=curl,
                 order=idx + 1,
                 is_active=True,
             )
-            logo_bytes = create_fallback_image(240, 120, cname.split()[0], bg_color=(255, 255, 255), border_color=(226, 232, 240))
-            client.logo.save(f"client_{client.id}.jpg", ContentFile(logo_bytes), save=True)
+            logo_bytes = fetch_image_bytes(logo_url, cname.split()[0], 280, 120, bg=(255, 255, 255), fg=(15, 23, 42))
+            client.logo.save(f"client_{client.id}.png", ContentFile(logo_bytes), save=True)
             self.stdout.write(f"  [+] Created Client: {cname}")
 
         # ==========================================================

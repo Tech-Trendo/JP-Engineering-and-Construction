@@ -9,6 +9,8 @@ export interface SectionHeadingProps {
   action?: React.ReactNode;
   layout?: "split" | "left" | "center";
   className?: string;
+  descriptionClassName?: string;
+  rightColumnClassName?: string;
 }
 
 export function SectionHeading({
@@ -20,6 +22,8 @@ export function SectionHeading({
   action,
   layout = "split",
   className = "",
+  descriptionClassName = "",
+  rightColumnClassName = "",
 }: SectionHeadingProps) {
   const renderEyebrow = () => {
     if (!eyebrow) return null;
@@ -38,18 +42,18 @@ export function SectionHeading({
       <div
         className={`flex flex-col lg:flex-row lg:items-end justify-between gap-6 pb-8 border-b border-slate-200 dark:border-slate-800 ${className}`}
       >
-        <div className="max-w-2xl">
+        <div className="max-w-xl shrink-0">
           {badge && <div className="mb-3">{badge}</div>}
           {renderEyebrow()}
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-slate-900 dark:text-white leading-[1.12]">
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl xl:text-[40px] font-black tracking-tight text-slate-900 dark:text-white leading-[1.1]">
             {title}
           </h2>
         </div>
 
         {(description || action) && (
-          <div className="max-w-md lg:text-right space-y-4">
+          <div className={`lg:text-right space-y-3 max-w-xl xl:max-w-2xl 2xl:max-w-3xl shrink ${rightColumnClassName}`}>
             {description && (
-              <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed font-normal">
+              <p className={`text-xs sm:text-sm text-slate-600 dark:text-slate-400 leading-relaxed font-normal ${descriptionClassName}`}>
                 {description}
               </p>
             )}

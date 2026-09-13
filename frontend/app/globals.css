@@ -23,7 +23,14 @@
   /* Warm Quote Accent (Safety Amber / Copper - strictly for Quote CTAs) */
   --accent: #d97706;
   --accent-hover: #b45309;
-  --accent-tint: #fef3c7;
+  /* Semantic Text Contrast Tokens */
+  --text-on-dark-heading: #ffffff;
+  --text-on-dark-body: #cbd5e1;
+  --text-on-dark-muted: #94a3b8;
+  
+  --text-on-light-heading: #0f172a;
+  --text-on-light-body: #475569;
+  --text-on-light-muted: #64748b;
 }
 
 @theme inline {
@@ -58,22 +65,39 @@ body {
   box-shadow: 0 4px 24px -4px rgba(15, 23, 42, 0.08);
 }
 
-/* Engineering CAD Blueprint Grid Textures */
+/* Semantic Contrast Utilities */
+.text-dark-heading { color: #ffffff; }
+.text-dark-body { color: #cbd5e1; }
+.text-dark-muted { color: #94a3b8; }
+
+.text-light-heading { color: #0f172a; }
+.text-light-body { color: #475569; }
+.text-light-muted { color: #64748b; }
+
+.surface-dark {
+  background-color: #0a0f1d;
+  color: #ffffff;
+}
+
+/* Engineering CAD Blueprint Grid Textures (Explicit solid background color) */
 .bg-blueprint-grid {
+  background-color: #0a0f1d;
   background-image: 
-    linear-gradient(to right, rgba(59, 130, 246, 0.08) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(59, 130, 246, 0.08) 1px, transparent 1px);
+    linear-gradient(to right, rgba(59, 130, 246, 0.12) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(59, 130, 246, 0.12) 1px, transparent 1px);
   background-size: 32px 32px;
 }
 
 .bg-blueprint-grid-subtle {
+  background-color: #0a0f1d;
   background-image: 
-    linear-gradient(to right, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+    linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
   background-size: 24px 24px;
 }
 
 .bg-blueprint-grid-light {
+  background-color: #ffffff;
   background-image: 
     linear-gradient(to right, rgba(30, 64, 175, 0.04) 1px, transparent 1px),
     linear-gradient(to bottom, rgba(30, 64, 175, 0.04) 1px, transparent 1px);
