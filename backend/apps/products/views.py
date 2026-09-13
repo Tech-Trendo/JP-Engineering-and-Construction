@@ -1,3 +1,51 @@
-from django.shortcuts import render
+from django.db.models import Q
+from rest_framework import generics
+from rest_framework.permissions import AllowAny
+from .models import Product
+from .serializers import ProductListSerializer, ProductDetailSerializer
 
-# Create your views here.
+
+class PublicProductListView(generics.ListAPIView):
+    """
+    Public read-only endpoint listing active products with filtering by category slug,
+    search by query term, and pagination.
+    """
+    permission_classes = [AllowAny]
+    serializer_class = ProductListSerializer
+
+    def get_queryset(self):
+        queryset = (
+            Product.objects.filter(is_active=True)
+            .prefetch_related('categories', 'images')
+            .order_by('order', 'name')
+        )
+
+        category_slug = self.request.query_params.get('category')
+        if category_slug:
+            queryset = queryset.filter(categories__slug=category_slug)
+
+        search_query = self.request.query_params.get('q')
+        if search_query:
+            queryset = queryset.filter(
+                Q(name__icontains=search_query)
+                | Q(short_description__icontains=search_query)
+                | Q(full_description__icontains=search_query)
+            )
+
+        return queryset.distinct()
+
+
+class PublicProductDetailView(generics.RetrieveAPIView):
+    """
+    Public read-only endpoint retrieving a single product by its unique slug,
+    including full description, all images, ordered specifications, categories, and related products.
+    """
+    permission_classes = [AllowAny]
+    serializer_class = ProductDetailSerializer
+    lookup_field = 'slug'
+
+    def get_queryset(self):
+        return (
+            Product.objects.filter(is_active=True)
+            .prefetch_related('categories', 'images', 'specifications')
+        )

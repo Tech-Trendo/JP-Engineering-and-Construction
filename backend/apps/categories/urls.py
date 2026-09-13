@@ -1,7 +1,8 @@
 from django.urls import path
+from .views import PublicCategoryListView
 
 app_name = 'categories'
 
 urlpatterns = [
-    # Category endpoints to be added
+    path('', PublicCategoryListView.as_view(), name='category_list'),
 ]

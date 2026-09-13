@@ -1,7 +1,8 @@
 from django.urls import path
+from .views import PublicQuoteCreateView
 
 app_name = 'quotes'
 
 urlpatterns = [
-    # Quote request endpoints to be added
+    path('', PublicQuoteCreateView.as_view(), name='quote_create'),
 ]

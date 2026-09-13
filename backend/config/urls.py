@@ -13,10 +13,12 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/v1/', include([
         path('auth/', include('apps.accounts.urls')),
-        path('categories/', include('apps.categories.urls')),
-        path('products/', include('apps.products.urls')),
-        path('quotes/', include('apps.quotes.urls')),
-        path('showcase/', include('apps.showcase.urls')),
+        path('public/', include([
+            path('categories/', include('apps.categories.urls')),
+            path('products/', include('apps.products.urls')),
+            path('quotes/', include('apps.quotes.urls')),
+            path('', include('apps.showcase.urls')),
+        ])),
     ])),
 ]
 
