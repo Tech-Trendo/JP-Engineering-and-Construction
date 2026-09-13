@@ -109,12 +109,12 @@ export function Footer() {
               </h4>
               <ul className="space-y-2 text-xs text-stone-400">
                 <li>
-                  <Link href="/showcase" className="hover:text-amber-400 transition">
+                  <Link href="/products?category=heavy-machinery" className="hover:text-amber-400 transition">
                     Civil Infrastructure
                   </Link>
                 </li>
                 <li>
-                  <Link href="/showcase" className="hover:text-amber-400 transition">
+                  <Link href="/products?category=heavy-machinery" className="hover:text-amber-400 transition">
                     Contract Rigging & Cranes
                   </Link>
                 </li>

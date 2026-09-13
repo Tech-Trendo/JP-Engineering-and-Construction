@@ -5,7 +5,10 @@ export async function apiClient<T>(
   endpoint: string,
   options: RequestInit = {}
 ): Promise<T> {
-  const cleanEndpoint = endpoint.startsWith('/') ? endpoint.slice(1) : endpoint;
+  let cleanEndpoint = endpoint.startsWith('/') ? endpoint.slice(1) : endpoint;
+  if (cleanEndpoint.startsWith('api/v1/')) {
+    cleanEndpoint = cleanEndpoint.slice('api/v1/'.length);
+  }
   const url = `${API_BASE_URL}/${cleanEndpoint}`;
 
   const headers = new Headers(options.headers);

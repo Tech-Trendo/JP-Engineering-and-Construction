@@ -347,7 +347,7 @@ function ProductsContent() {
                       </CardHeader>
                     </div>
 
-                    {/* Strict "View Details" + "Request Quote" (NO PRICES) */}
+                    {/* "View Details" + "Request Quote" */}
                     <CardFooter className="gap-2">
                       <Button
                         href={`/products/${prod.slug}`}

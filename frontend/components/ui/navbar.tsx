@@ -8,9 +8,8 @@ import { Button } from "./button";
 
 const navLinks = [
   { name: "Equipment Catalog", href: "/products" },
-  { name: "Categories", href: "/categories" },
-  { name: "Engineering Projects", href: "/showcase" },
-  { name: "About Us", href: "/about" },
+  { name: "About & Team", href: "/about" },
+  { name: "Procurement Quote", href: "/quotes" },
   { name: "Contact", href: "/contact" },
 ];
 

@@ -208,7 +208,7 @@ export default function ProductDetailPage() {
                   Direct Duty Cycle Proposal
                 </span>
                 <p className="text-xs text-stone-500 mt-1">
-                  Pricing and deployment terms are tailored to ground conditions, multi-rig dispatch, and project timelines.
+                  Deployment schedules and mobilization terms are tailored to ground conditions, multi-rig dispatch, and project timelines.
                 </p>
               </div>
 
@@ -238,7 +238,7 @@ export default function ProductDetailPage() {
               </div>
               <div className="flex items-center gap-2">
                 <span className="text-emerald-500 font-bold">✓</span>
-                <span>Zero hidden fees — transparent engineering assessment</span>
+                <span>Strict contractual clarity — transparent engineering assessment</span>
               </div>
             </div>
           </div>

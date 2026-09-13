@@ -271,7 +271,7 @@ export default function HomePage() {
         </Container>
       </section>
 
-      {/* 4. Featured Products (No Prices, Strict CTAs) */}
+      {/* 4. Featured Products */}
       <section className="bg-stone-100/60 dark:bg-stone-900/40 border-y border-stone-200/80 dark:border-stone-800/80 py-20">
         <Container size="default">
           <SectionHeading
@@ -329,7 +329,7 @@ export default function HomePage() {
                   </CardHeader>
                 </div>
 
-                {/* Card Footer: Strict "View Details" + "Request Quote" (NO PRICES) */}
+                {/* Card Footer: "View Details" + "Request Quote" */}
                 <CardFooter className="gap-2">
                   <Button
                     href={`/products/${prod.slug}`}
@@ -381,7 +381,7 @@ export default function HomePage() {
               <ul className="space-y-2 text-xs font-mono text-stone-300 border-t border-stone-800 pt-4">
                 <li>• Pre-deployment hydrostatic pressure checks</li>
                 <li>• Custom bucket attachments & hydraulic breakers</li>
-                <li>• GPS telematics & fuel-rate monitoring</li>
+                <li>• GPS telematics & fuel consumption telemetry</li>
               </ul>
             </div>
 
