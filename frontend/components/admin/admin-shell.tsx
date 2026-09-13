@@ -113,9 +113,9 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <div className="min-h-screen flex flex-col md:flex-row bg-slate-950 text-slate-100 font-sans antialiased">
+    <div className="min-h-screen flex flex-col md:flex-row bg-[#080d1a] text-slate-100 font-sans antialiased">
       {/* Mobile Top Bar */}
-      <div className="md:hidden flex items-center justify-between px-4 py-3 bg-slate-900 border-b border-slate-800">
+      <div className="md:hidden flex items-center justify-between px-4 py-3 bg-[#0a0f1d] border-b border-slate-800">
         <div className="flex items-center gap-2.5">
           <div className="h-8 w-8 rounded-md bg-white p-0.5 border border-slate-700 flex items-center justify-center shrink-0">
             <img src={LOGO_URL} alt="JP Engineering" className="h-full w-full object-contain" />
@@ -141,7 +141,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
       <aside
         className={`${
           mobileMenuOpen ? "block" : "hidden"
-        } md:flex flex-col justify-between w-full md:w-64 bg-slate-900 border-r border-slate-800 p-5 shrink-0 z-20`}
+        } md:flex flex-col justify-between w-full md:w-64 bg-[#0a0f1d] border-r border-slate-800 p-5 shrink-0 z-20`}
       >
         <div>
           {/* Logo / Brand */}
@@ -172,8 +172,8 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
                   onClick={() => setMobileMenuOpen(false)}
                   className={`flex items-center justify-between px-3 py-2 rounded-lg text-xs font-medium transition-colors ${
                     isActive
-                      ? "bg-blue-600 text-white shadow-sm"
-                      : "text-slate-300 hover:bg-slate-800 hover:text-white"
+                      ? "bg-blue-700 text-white shadow-sm font-semibold"
+                      : "text-slate-300 hover:bg-slate-800/80 hover:text-white"
                   }`}
                 >
                   <div className="flex items-center gap-2.5">
@@ -206,7 +206,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
           </div>
           <button
             onClick={() => logout()}
-            className="w-full flex items-center justify-center gap-2 px-3 py-2 rounded-lg text-xs font-medium text-red-400 hover:text-red-300 hover:bg-red-950/40 border border-transparent hover:border-red-900/40 transition-colors"
+            className="w-full flex items-center justify-center gap-2 px-3 py-2 rounded-lg text-xs font-medium text-red-400 hover:text-red-300 hover:bg-red-950/40 border border-transparent hover:border-red-900/40 transition-colors cursor-pointer"
           >
             <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
@@ -217,7 +217,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
       </aside>
 
       {/* Main Content Area */}
-      <main className="flex-1 min-w-0 bg-slate-950 p-4 sm:p-6 lg:p-8 overflow-y-auto">
+      <main className="flex-1 min-w-0 bg-[#080d1a] p-4 sm:p-6 lg:p-8 overflow-y-auto">
         {children}
       </main>
     </div>

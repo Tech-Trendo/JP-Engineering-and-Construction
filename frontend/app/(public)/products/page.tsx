@@ -117,21 +117,21 @@ function ProductsContent() {
   }, [products, searchQuery, selectedCategorySlugs]);
 
   return (
-    <div className="py-12 sm:py-16">
+    <div className="py-10 sm:py-16">
       <Container size="default">
         {/* Page Header */}
-        <div className="pb-8 border-b border-stone-200 dark:border-stone-800 mb-10">
+        <div className="pb-8 border-b border-slate-200 mb-10">
           <div className="flex items-center gap-2 mb-2">
-            <span className="h-1.5 w-1.5 rounded-full bg-amber-600"></span>
-            <span className="text-[11px] font-mono font-bold uppercase tracking-[0.2em] text-stone-500">
-              Fleet Catalog & Specifications
+            <span className="h-1.5 w-1.5 rounded-full bg-blue-600"></span>
+            <span className="text-[11px] font-mono font-bold uppercase tracking-[0.2em] text-blue-800">
+              Fleet Catalog & Machinery Specifications
             </span>
           </div>
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-stone-950 dark:text-white leading-[1.1]">
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-slate-900 leading-[1.1]">
             Heavy Equipment Inventory
           </h1>
-          <p className="text-sm sm:text-base text-stone-600 dark:text-stone-400 mt-2 max-w-3xl leading-relaxed font-normal">
-            Filter our certified industrial earthmoving machinery, rough-terrain cranes, and construction rigs. Direct manufacturer specifications with immediate quote procurement.
+          <p className="text-sm sm:text-base text-slate-600 mt-2 max-w-3xl leading-relaxed font-normal">
+            Filter our certified industrial earthmoving machinery, water bottling plants, cold storage equipment, and construction rigs. Direct manufacturer specifications with immediate quote procurement.
           </p>
         </div>
 
@@ -139,16 +139,16 @@ function ProductsContent() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
           {/* 1. Sticky Category Filter Sidebar */}
           <aside className="lg:col-span-3 lg:sticky lg:top-24 space-y-6">
-            <div className="p-6 rounded-2xl bg-white dark:bg-stone-900/80 border border-stone-200 dark:border-stone-800 shadow-xs space-y-6">
+            <div className="p-6 rounded-2xl bg-white border border-slate-200 shadow-premium-card space-y-6">
               {/* Sidebar Header */}
-              <div className="flex items-center justify-between pb-3 border-b border-stone-200 dark:border-stone-800">
-                <span className="text-xs font-bold font-mono text-stone-900 dark:text-white uppercase tracking-wider">
+              <div className="flex items-center justify-between pb-3 border-b border-slate-200">
+                <span className="text-xs font-bold font-mono text-slate-900 uppercase tracking-wider">
                   Filter Catalog
                 </span>
                 {(selectedCategorySlugs.length > 0 || searchQuery) && (
                   <button
                     onClick={handleResetFilters}
-                    className="text-[11px] text-amber-600 dark:text-amber-400 hover:underline font-medium"
+                    className="text-[11px] text-blue-700 hover:text-blue-900 font-semibold cursor-pointer"
                   >
                     Reset All
                   </button>
@@ -157,21 +157,21 @@ function ProductsContent() {
 
               {/* Keyword Search */}
               <div>
-                <label className="block text-xs font-semibold text-stone-700 dark:text-stone-300 mb-2">
+                <label className="block text-xs font-semibold text-slate-700 mb-2">
                   Search Equipment
                 </label>
                 <div className="relative">
                   <input
                     type="text"
-                    placeholder="e.g. Excavator, JP-500..."
+                    placeholder="e.g. Excavator, JP-500, Bottling..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="w-full px-3 py-2 rounded-lg bg-stone-50 dark:bg-stone-950 border border-stone-300 dark:border-stone-800 text-stone-900 dark:text-white placeholder-stone-400 text-xs focus:outline-hidden focus:border-amber-600"
+                    className="w-full px-3 py-2 rounded-lg bg-slate-50 border border-slate-300 text-slate-900 placeholder-slate-400 text-xs focus:outline-hidden focus:border-blue-600 focus:ring-1 focus:ring-blue-600"
                   />
                   {searchQuery && (
                     <button
                       onClick={() => setSearchQuery("")}
-                      className="absolute right-2.5 top-2 text-stone-400 hover:text-stone-600 text-xs"
+                      className="absolute right-2.5 top-2 text-slate-400 hover:text-slate-600 text-xs cursor-pointer"
                     >
                       ✕
                     </button>
@@ -182,17 +182,17 @@ function ProductsContent() {
               {/* Multi-Category Filter (Checkboxes) */}
               <div>
                 <div className="flex items-center justify-between mb-3">
-                  <label className="text-xs font-semibold text-stone-700 dark:text-stone-300">
+                  <label className="text-xs font-semibold text-slate-700">
                     Categories
                   </label>
                   {selectedCategorySlugs.length > 0 && (
-                    <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-600 font-semibold">
+                    <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 font-semibold border border-blue-200">
                       {selectedCategorySlugs.length} Active
                     </span>
                   )}
                 </div>
 
-                <div className="space-y-2 max-h-64 overflow-y-auto pr-1">
+                <div className="space-y-1.5 max-h-64 overflow-y-auto pr-1">
                   {categories.map((cat) => {
                     const isChecked = selectedCategorySlugs.includes(cat.slug);
                     return (
@@ -200,15 +200,15 @@ function ProductsContent() {
                         key={cat.id}
                         className={`flex items-center gap-3 p-2 rounded-lg border text-xs cursor-pointer select-none transition ${
                           isChecked
-                            ? "bg-amber-500/10 border-amber-500/30 text-stone-950 dark:text-white font-semibold"
-                            : "bg-transparent border-transparent hover:bg-stone-100 dark:hover:bg-stone-800 text-stone-600 dark:text-stone-400"
+                            ? "bg-blue-50 border-blue-200 text-blue-900 font-semibold"
+                            : "bg-transparent border-transparent hover:bg-slate-50 text-slate-600"
                         }`}
                       >
                         <input
                           type="checkbox"
                           checked={isChecked}
                           onChange={() => handleToggleCategory(cat.slug)}
-                          className="h-4 w-4 rounded-xs border-stone-400 text-amber-600 focus:ring-0 cursor-pointer"
+                          className="h-4 w-4 rounded-xs border-slate-300 text-blue-600 focus:ring-blue-600 cursor-pointer"
                         />
                         <span className="truncate">{cat.name}</span>
                       </label>
@@ -218,16 +218,16 @@ function ProductsContent() {
               </div>
 
               {/* Duty Cycle Support Prompt */}
-              <div className="p-4 rounded-xl bg-stone-100 dark:bg-stone-950 border border-stone-200 dark:border-stone-800 text-[11px] text-stone-500 dark:text-stone-400 space-y-2">
-                <span className="font-bold text-stone-900 dark:text-stone-200 block">
+              <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 text-[11px] text-slate-600 space-y-2">
+                <span className="font-bold text-slate-900 block">
                   Custom Fleet Requirements?
                 </span>
                 <p>
-                  Need specialized attachments or multi-rig mobilizing? Connect directly with our dispatch engineering desk.
+                  Need specialized attachments, factory tooling, or multi-rig mobilizing? Connect directly with our dispatch engineering desk.
                 </p>
                 <Link
                   href="/contact"
-                  className="inline-block text-amber-600 font-semibold hover:underline"
+                  className="inline-block text-blue-700 font-semibold hover:underline"
                 >
                   Contact Desk &rarr;
                 </Link>
@@ -238,26 +238,26 @@ function ProductsContent() {
           {/* 2. Products Grid */}
           <main className="lg:col-span-9 space-y-6">
             {/* Results Count & Active Pills Strip */}
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-stone-200 dark:border-stone-800">
-              <div className="text-xs font-mono text-stone-500">
-                Showing <span className="font-bold text-stone-950 dark:text-white">{filteredProducts.length}</span>{" "}
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-slate-200">
+              <div className="text-xs font-mono text-slate-500">
+                Showing <span className="font-bold text-slate-900">{filteredProducts.length}</span>{" "}
                 machinery models
               </div>
 
               {selectedCategorySlugs.length > 0 && (
                 <div className="flex flex-wrap items-center gap-1.5">
-                  <span className="text-[11px] text-stone-400 mr-1">Filtered by:</span>
+                  <span className="text-[11px] text-slate-500 mr-1">Filtered by:</span>
                   {selectedCategorySlugs.map((slug) => {
                     const catName = categories.find((c) => c.slug === slug)?.name || slug;
                     return (
                       <span
                         key={slug}
-                        className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-mono bg-stone-200 dark:bg-stone-800 text-stone-800 dark:text-stone-200"
+                        className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-mono bg-blue-50 text-blue-700 border border-blue-200 font-medium"
                       >
                         {catName}
                         <button
                           onClick={() => handleToggleCategory(slug)}
-                          className="hover:text-red-500 font-bold ml-1"
+                          className="hover:text-red-600 font-bold ml-1 cursor-pointer"
                         >
                           ×
                         </button>
@@ -269,21 +269,21 @@ function ProductsContent() {
             </div>
 
             {isLoading ? (
-              <div className="p-16 text-center text-xs text-stone-400 font-mono">
+              <div className="p-16 text-center text-xs text-slate-400 font-mono">
                 Loading equipment catalog...
               </div>
             ) : filteredProducts.length === 0 ? (
               /* Empty State */
-              <div className="p-16 rounded-2xl bg-white dark:bg-stone-900/60 border border-stone-200 dark:border-stone-800 text-center space-y-4">
-                <div className="w-12 h-12 rounded-full bg-stone-100 dark:bg-stone-800 flex items-center justify-center mx-auto text-stone-400">
+              <div className="p-16 rounded-2xl bg-white border border-slate-200 text-center space-y-4 shadow-premium-card">
+                <div className="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center mx-auto text-slate-400">
                   <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
                   </svg>
                 </div>
-                <h3 className="text-base font-bold text-stone-950 dark:text-white">
+                <h3 className="text-base font-bold text-slate-900">
                   No Machinery Matches Active Filters
                 </h3>
-                <p className="text-xs text-stone-500 dark:text-stone-400 max-w-sm mx-auto">
+                <p className="text-xs text-slate-500 max-w-sm mx-auto">
                   Try adjusting your search keyword or clearing selected category filters.
                 </p>
                 <Button variant="outline" size="sm" onClick={handleResetFilters}>
@@ -297,13 +297,13 @@ function ProductsContent() {
                   <Card
                     key={prod.id}
                     variant="default"
-                    className="flex flex-col justify-between hover:border-stone-400 dark:hover:border-stone-600 transition-colors"
+                    className="flex flex-col justify-between"
                   >
                     <div>
                       {/* Image Thumbnail */}
                       <Link
                         href={`/products/${prod.slug}`}
-                        className="block relative h-48 w-full overflow-hidden bg-stone-900 border-b border-stone-200 dark:border-stone-800 group"
+                        className="block relative h-48 w-full overflow-hidden bg-slate-900 border-b border-slate-200 group"
                       >
                         {prod.primary_image ? (
                           <img
@@ -312,12 +312,12 @@ function ProductsContent() {
                             className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-300"
                           />
                         ) : (
-                          <div className="h-full w-full flex items-center justify-center text-stone-500 font-mono text-xs">
+                          <div className="h-full w-full flex items-center justify-center text-slate-400 font-mono text-xs">
                             JP Specification
                           </div>
                         )}
                         {prod.is_featured && (
-                          <span className="absolute top-3 left-3 bg-amber-600 text-white text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider shadow-xs">
+                          <span className="absolute top-3 left-3 bg-blue-700 text-white text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider shadow-xs font-mono">
                             Featured
                           </span>
                         )}
@@ -329,7 +329,7 @@ function ProductsContent() {
                           {prod.categories.map((c) => (
                             <span
                               key={c.id}
-                              className="text-[10px] font-mono px-2 py-0.5 rounded bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 border border-stone-200 dark:border-stone-700"
+                              className="text-[10px] font-mono px-2 py-0.5 rounded bg-blue-50 text-blue-700 border border-blue-200/80"
                             >
                               {c.name}
                             </span>
@@ -337,7 +337,7 @@ function ProductsContent() {
                         </div>
 
                         <Link href={`/products/${prod.slug}`}>
-                          <CardTitle className="hover:text-amber-600 dark:hover:text-amber-400 transition-colors">
+                          <CardTitle className="hover:text-blue-700 transition-colors">
                             {prod.name}
                           </CardTitle>
                         </Link>
@@ -348,7 +348,7 @@ function ProductsContent() {
                     </div>
 
                     {/* "View Details" + "Request Quote" */}
-                    <CardFooter className="gap-2">
+                    <CardFooter className="gap-2 pt-3">
                       <Button
                         href={`/products/${prod.slug}`}
                         variant="outline"
@@ -381,7 +381,7 @@ export default function ProductsPage() {
   return (
     <Suspense
       fallback={
-        <div className="p-16 text-center text-xs text-stone-400 font-mono">
+        <div className="p-16 text-center text-xs text-slate-400 font-mono">
           Loading catalog...
         </div>
       }

@@ -47,65 +47,65 @@ export default function AboutPage() {
   }, []);
 
   return (
-    <div className="py-12 sm:py-16 space-y-24">
+    <div className="py-10 sm:py-16 space-y-20">
       {/* 1. Hero & Company Introduction */}
       <section>
         <Container size="default">
           <div className="max-w-3xl space-y-6">
             <div className="flex items-center gap-2">
-              <span className="h-1.5 w-1.5 rounded-full bg-amber-600"></span>
-              <span className="text-[11px] font-mono font-bold uppercase tracking-[0.2em] text-stone-500">
+              <span className="h-1.5 w-1.5 rounded-full bg-blue-600"></span>
+              <span className="text-[11px] font-mono font-bold uppercase tracking-[0.2em] text-blue-800">
                 Company Profile & Leadership
               </span>
             </div>
 
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-stone-950 dark:text-white leading-[1.08]">
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-slate-900 leading-[1.08]">
               Precision engineering grounded in{" "}
-              <span className="underline decoration-amber-500/60 decoration-4 underline-offset-8">
+              <span className="underline decoration-blue-500/50 decoration-4 underline-offset-8">
                 structural integrity
               </span>
               .
             </h1>
 
-            <p className="text-base sm:text-lg text-stone-600 dark:text-stone-300 leading-relaxed font-normal">
+            <p className="text-base sm:text-lg text-slate-600 leading-relaxed font-normal">
               JP Engineering & Construction was established with a clear mandate: provide heavy construction enterprises with certified mechanical assets, rigorous preventative duty-cycle management, and turnkey infrastructure execution.
             </p>
           </div>
 
           {/* Three Architectural Capability Pillars (Asymmetric) */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-12">
-            <div className="p-6 rounded-2xl bg-white dark:bg-stone-900/60 border border-stone-200 dark:border-stone-800 space-y-3">
-              <span className="text-amber-600 font-mono text-xs font-bold uppercase tracking-widest block">
+            <div className="p-6 rounded-2xl bg-white border border-slate-200 space-y-3 shadow-premium-card hover:shadow-premium-hover hover:-translate-y-0.5 transition-all duration-200">
+              <span className="text-blue-800 font-mono text-xs font-bold uppercase tracking-widest block">
                 01. Certified Equipment
               </span>
-              <h3 className="text-base font-bold text-stone-950 dark:text-white">
+              <h3 className="text-base font-bold text-slate-900">
                 Pre-calibrated Fleet Assets
               </h3>
-              <p className="text-xs text-stone-500 dark:text-stone-400 leading-relaxed">
+              <p className="text-xs text-slate-500 leading-relaxed">
                 Every unit in our catalog undergoes rigorous hydrostatic pressure and hydraulic seal testing before release to any jobsite.
               </p>
             </div>
 
-            <div className="p-6 rounded-2xl bg-white dark:bg-stone-900/60 border border-stone-200 dark:border-stone-800 space-y-3">
-              <span className="text-amber-600 font-mono text-xs font-bold uppercase tracking-widest block">
+            <div className="p-6 rounded-2xl bg-white border border-slate-200 space-y-3 shadow-premium-card hover:shadow-premium-hover hover:-translate-y-0.5 transition-all duration-200">
+              <span className="text-blue-800 font-mono text-xs font-bold uppercase tracking-widest block">
                 02. Engineering Governance
               </span>
-              <h3 className="text-base font-bold text-stone-950 dark:text-white">
+              <h3 className="text-base font-bold text-slate-900">
                 ISO 9001:2015 Standards
               </h3>
-              <p className="text-xs text-stone-500 dark:text-stone-400 leading-relaxed">
+              <p className="text-xs text-slate-500 leading-relaxed">
                 Adhering to strict occupational safety codes, ground stability modeling, and lifting capacity margins on all civil contracts.
               </p>
             </div>
 
-            <div className="p-6 rounded-2xl bg-white dark:bg-stone-900/60 border border-stone-200 dark:border-stone-800 space-y-3">
-              <span className="text-amber-600 font-mono text-xs font-bold uppercase tracking-widest block">
+            <div className="p-6 rounded-2xl bg-white border border-slate-200 space-y-3 shadow-premium-card hover:shadow-premium-hover hover:-translate-y-0.5 transition-all duration-200">
+              <span className="text-blue-800 font-mono text-xs font-bold uppercase tracking-widest block">
                 03. Dedicated Mechanics
               </span>
-              <h3 className="text-base font-bold text-stone-950 dark:text-white">
+              <h3 className="text-base font-bold text-slate-900">
                 Field Dispatch & Rigging
               </h3>
-              <p className="text-xs text-stone-500 dark:text-stone-400 leading-relaxed">
+              <p className="text-xs text-slate-500 leading-relaxed">
                 Stationed mobile workshop vans equipped with OEM replacement components and on-site hydraulic technicians.
               </p>
             </div>
@@ -113,8 +113,8 @@ export default function AboutPage() {
         </Container>
       </section>
 
-      {/* 2. Team Grid (Admin Managed TeamMember) */}
-      <section className="py-16 bg-stone-100/60 dark:bg-stone-900/40 border-y border-stone-200/80 dark:border-stone-800/80">
+      {/* 2. Team Grid (Admin Managed TeamMember) - Alternating Surface Slate-50 */}
+      <section className="py-16 bg-slate-50 border-y border-slate-200/80">
         <Container size="default">
           <SectionHeading
             layout="split"
@@ -124,11 +124,11 @@ export default function AboutPage() {
           />
 
           {isLoading ? (
-            <div className="p-12 text-center text-xs font-mono text-stone-400">
+            <div className="p-12 text-center text-xs font-mono text-slate-400">
               Loading team directory...
             </div>
           ) : team.length === 0 ? (
-            <div className="p-8 text-center text-xs text-stone-500">
+            <div className="p-8 text-center text-xs text-slate-500">
               Team members will be listed shortly.
             </div>
           ) : (
@@ -136,9 +136,9 @@ export default function AboutPage() {
               {team.map((member) => (
                 <div
                   key={member.id}
-                  className="rounded-2xl overflow-hidden bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 p-5 space-y-4 shadow-xs"
+                  className="rounded-2xl overflow-hidden bg-white border border-slate-200 p-5 space-y-4 shadow-premium-card hover:shadow-premium-hover hover:-translate-y-0.5 transition-all duration-200"
                 >
-                  <div className="h-56 w-full rounded-xl overflow-hidden bg-stone-950 border border-stone-200 dark:border-stone-800">
+                  <div className="h-56 w-full rounded-xl overflow-hidden bg-slate-900 border border-slate-200">
                     {member.photo ? (
                       <img
                         src={member.photo}
@@ -146,16 +146,16 @@ export default function AboutPage() {
                         className="h-full w-full object-cover"
                       />
                     ) : (
-                      <div className="h-full w-full flex items-center justify-center font-bold text-stone-500 text-3xl font-mono">
+                      <div className="h-full w-full flex items-center justify-center font-bold text-slate-400 text-3xl font-mono">
                         {member.name.charAt(0)}
                       </div>
                     )}
                   </div>
                   <div>
-                    <h4 className="text-base font-bold text-stone-950 dark:text-white">
+                    <h4 className="text-base font-bold text-slate-900">
                       {member.name}
                     </h4>
-                    <p className="text-xs text-amber-600 dark:text-amber-400 font-mono font-medium mt-1">
+                    <p className="text-xs text-blue-700 font-mono font-medium mt-1">
                       {member.designation}
                     </p>
                   </div>
@@ -166,8 +166,8 @@ export default function AboutPage() {
         </Container>
       </section>
 
-      {/* 3. Partners Grid (Admin Managed Partners) */}
-      <section>
+      {/* 3. Partners Grid (Admin Managed Partners) - Surface White */}
+      <section className="py-4">
         <Container size="default">
           <SectionHeading
             layout="split"
@@ -177,11 +177,11 @@ export default function AboutPage() {
           />
 
           {isLoading ? (
-            <div className="p-12 text-center text-xs font-mono text-stone-400">
+            <div className="p-12 text-center text-xs font-mono text-slate-400">
               Loading partner directory...
             </div>
           ) : partners.length === 0 ? (
-            <div className="p-8 text-center text-xs text-stone-500">
+            <div className="p-8 text-center text-xs text-slate-500">
               Partner alliances will be published shortly.
             </div>
           ) : (
@@ -189,16 +189,16 @@ export default function AboutPage() {
               {partners.map((partner) => (
                 <div
                   key={partner.id}
-                  className="p-5 rounded-xl bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 flex flex-col items-center justify-center text-center group h-28 hover:border-amber-500/50 transition-colors"
+                  className="p-5 rounded-xl bg-white border border-slate-200/90 flex flex-col items-center justify-center text-center group h-28 shadow-xs hover:border-blue-500/40 hover:shadow-sm transition-all duration-200"
                 >
                   {partner.logo ? (
                     <img
                       src={partner.logo}
                       alt={partner.name}
-                      className="max-h-12 w-auto object-contain filter grayscale group-hover:grayscale-0 transition-all opacity-80 group-hover:opacity-100"
+                      className="max-h-12 w-auto object-contain filter grayscale group-hover:grayscale-0 transition-all opacity-75 group-hover:opacity-100"
                     />
                   ) : (
-                    <span className="text-xs font-bold font-mono text-stone-500 group-hover:text-amber-600 transition-colors">
+                    <span className="text-xs font-bold font-mono text-slate-500 group-hover:text-blue-700 transition-colors">
                       {partner.name}
                     </span>
                   )}
@@ -207,7 +207,7 @@ export default function AboutPage() {
                       href={partner.website_url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-[10px] text-stone-400 hover:text-amber-600 mt-2 truncate max-w-[120px]"
+                      className="text-[10px] text-slate-400 hover:text-blue-700 mt-2 truncate max-w-[120px]"
                     >
                       Visit Site &rarr;
                     </a>
@@ -219,8 +219,8 @@ export default function AboutPage() {
         </Container>
       </section>
 
-      {/* 4. Clients Grid (Admin Managed Clients) */}
-      <section className="py-16 bg-stone-100/60 dark:bg-stone-900/40 border-y border-stone-200/80 dark:border-stone-800/80">
+      {/* 4. Clients Grid (Admin Managed Clients) - Alternating Surface Slate-50 */}
+      <section className="py-16 bg-slate-50 border-y border-slate-200/80">
         <Container size="default">
           <SectionHeading
             layout="split"
@@ -230,11 +230,11 @@ export default function AboutPage() {
           />
 
           {isLoading ? (
-            <div className="p-12 text-center text-xs font-mono text-stone-400">
+            <div className="p-12 text-center text-xs font-mono text-slate-400">
               Loading client references...
             </div>
           ) : clients.length === 0 ? (
-            <div className="p-8 text-center text-xs text-stone-500">
+            <div className="p-8 text-center text-xs text-slate-500">
               Client references will be displayed shortly.
             </div>
           ) : (
@@ -242,16 +242,16 @@ export default function AboutPage() {
               {clients.map((client) => (
                 <div
                   key={client.id}
-                  className="p-5 rounded-xl bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 flex flex-col items-center justify-center text-center group h-28 hover:border-amber-500/50 transition-colors"
+                  className="p-5 rounded-xl bg-white border border-slate-200/90 flex flex-col items-center justify-center text-center group h-28 shadow-xs hover:border-blue-500/40 hover:shadow-sm transition-all duration-200"
                 >
                   {client.logo ? (
                     <img
                       src={client.logo}
                       alt={client.name}
-                      className="max-h-12 w-auto object-contain filter grayscale group-hover:grayscale-0 transition-all opacity-80 group-hover:opacity-100"
+                      className="max-h-12 w-auto object-contain filter grayscale group-hover:grayscale-0 transition-all opacity-75 group-hover:opacity-100"
                     />
                   ) : (
-                    <span className="text-xs font-bold font-mono text-stone-500 group-hover:text-amber-600 transition-colors">
+                    <span className="text-xs font-bold font-mono text-slate-500 group-hover:text-blue-700 transition-colors">
                       {client.name}
                     </span>
                   )}
@@ -260,7 +260,7 @@ export default function AboutPage() {
                       href={client.website_url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-[10px] text-stone-400 hover:text-amber-600 mt-2 truncate max-w-[120px]"
+                      className="text-[10px] text-slate-400 hover:text-blue-700 mt-2 truncate max-w-[120px]"
                     >
                       Project Profile &rarr;
                     </a>
@@ -272,18 +272,18 @@ export default function AboutPage() {
         </Container>
       </section>
 
-      {/* 5. Consultation Bottom CTA */}
+      {/* 5. Consultation Bottom CTA - Duotone Midnight Navy */}
       <section>
         <Container size="default">
-          <div className="rounded-3xl bg-stone-950 text-white p-8 sm:p-12 lg:p-16 border border-stone-800 flex flex-col lg:flex-row lg:items-center justify-between gap-8 shadow-2xl">
+          <div className="rounded-3xl bg-gradient-to-br from-[#0a0f1d] via-[#0f172a] to-[#1e3a8a]/25 text-white p-8 sm:p-12 lg:p-16 border border-slate-800 flex flex-col lg:flex-row lg:items-center justify-between gap-8 shadow-2xl">
             <div className="max-w-xl space-y-3">
-              <span className="text-xs font-mono font-bold text-amber-500 uppercase tracking-widest block">
+              <span className="text-xs font-mono font-bold text-blue-400 uppercase tracking-widest block">
                 Technical Engagement
               </span>
               <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
                 Discuss Your Machinery Requirements
               </h2>
-              <p className="text-sm text-stone-300 leading-relaxed">
+              <p className="text-sm text-slate-300 leading-relaxed">
                 Connect with our engineering staff to inspect available fleet items or review custom attachments.
               </p>
             </div>

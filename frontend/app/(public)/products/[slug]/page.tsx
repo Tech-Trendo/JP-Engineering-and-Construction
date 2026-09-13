@@ -66,7 +66,7 @@ export default function ProductDetailPage() {
     return (
       <div className="py-24 text-center">
         <Container size="default">
-          <div className="text-xs font-mono text-stone-400">
+          <div className="text-xs font-mono text-slate-400">
             Loading equipment specifications...
           </div>
         </Container>
@@ -78,11 +78,11 @@ export default function ProductDetailPage() {
     return (
       <div className="py-24 text-center space-y-4">
         <Container size="default">
-          <div className="p-12 rounded-2xl bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 max-w-md mx-auto space-y-3">
-            <h2 className="text-lg font-bold text-stone-900 dark:text-white">
+          <div className="p-12 rounded-2xl bg-white border border-slate-200 shadow-premium-card max-w-md mx-auto space-y-3">
+            <h2 className="text-lg font-bold text-slate-900">
               Machinery Model Not Found
             </h2>
-            <p className="text-xs text-stone-500 leading-relaxed">
+            <p className="text-xs text-slate-500 leading-relaxed">
               The requested equipment item does not exist or may have been retired from active catalog circulation.
             </p>
             <div className="pt-2">
@@ -102,19 +102,19 @@ export default function ProductDetailPage() {
       : product.images?.[0];
 
   return (
-    <div className="py-12 sm:py-16 space-y-20">
+    <div className="py-10 sm:py-16 space-y-16">
       <Container size="default">
         {/* Breadcrumb Navigation */}
-        <nav className="flex items-center gap-2 text-xs font-mono text-stone-400 pb-6 border-b border-stone-200 dark:border-stone-800 mb-8">
-          <Link href="/" className="hover:text-stone-900 dark:hover:text-white transition">
+        <nav className="flex items-center gap-2 text-xs font-mono text-slate-500 pb-6 border-b border-slate-200 mb-8">
+          <Link href="/" className="hover:text-blue-700 transition">
             Home
           </Link>
           <span>/</span>
-          <Link href="/products" className="hover:text-stone-900 dark:hover:text-white transition">
+          <Link href="/products" className="hover:text-blue-700 transition">
             Fleet Catalog
           </Link>
           <span>/</span>
-          <span className="text-stone-900 dark:text-white font-semibold truncate max-w-xs">
+          <span className="text-slate-900 font-semibold truncate max-w-xs">
             {product.name}
           </span>
         </nav>
@@ -124,7 +124,7 @@ export default function ProductDetailPage() {
           {/* 1. Multi-Image Gallery */}
           <div className="lg:col-span-7 space-y-4">
             {/* Main High-Res Viewport */}
-            <div className="relative h-80 sm:h-96 md:h-[440px] w-full rounded-2xl overflow-hidden bg-stone-950 border border-stone-200 dark:border-stone-800 shadow-sm">
+            <div className="relative h-80 sm:h-96 md:h-[440px] w-full rounded-2xl overflow-hidden bg-[#0a0f1d] border border-slate-800 shadow-premium-card">
               {activeImage ? (
                 <img
                   src={activeImage.image}
@@ -132,12 +132,12 @@ export default function ProductDetailPage() {
                   className="h-full w-full object-cover"
                 />
               ) : (
-                <div className="h-full w-full flex items-center justify-center font-mono text-xs text-stone-500">
+                <div className="h-full w-full flex items-center justify-center font-mono text-xs text-slate-400">
                   No Image Available
                 </div>
               )}
               {product.is_featured && (
-                <span className="absolute top-4 left-4 bg-amber-600 text-white text-[10px] font-bold px-2.5 py-1 rounded shadow-xs uppercase tracking-wider font-mono">
+                <span className="absolute top-4 left-4 bg-blue-700 text-white text-[10px] font-bold px-2.5 py-1 rounded shadow-xs uppercase tracking-wider font-mono">
                   Featured Fleet Asset
                 </span>
               )}
@@ -153,8 +153,8 @@ export default function ProductDetailPage() {
                     onClick={() => setSelectedImageIndex(idx)}
                     className={`relative h-20 w-24 rounded-lg overflow-hidden border-2 shrink-0 transition cursor-pointer ${
                       selectedImageIndex === idx
-                        ? "border-amber-500 ring-2 ring-amber-500/20"
-                        : "border-stone-200 dark:border-stone-800 opacity-70 hover:opacity-100"
+                        ? "border-blue-600 ring-2 ring-blue-500/30"
+                        : "border-slate-200 opacity-70 hover:opacity-100"
                     }`}
                   >
                     <img
@@ -176,38 +176,38 @@ export default function ProductDetailPage() {
                 {product.categories.map((c) => (
                   <span
                     key={c.id}
-                    className="inline-flex text-[11px] font-mono px-2.5 py-1 rounded-md bg-stone-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300 border border-stone-200 dark:border-stone-700"
+                    className="inline-flex text-[11px] font-mono px-2.5 py-1 rounded-md bg-blue-50 text-blue-700 border border-blue-200/80"
                   >
                     {c.name}
                   </span>
                 ))}
               </div>
 
-              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-stone-950 dark:text-white leading-tight">
+              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-slate-900 leading-tight">
                 {product.name}
               </h1>
 
-              <p className="font-mono text-xs text-stone-400 mt-1">
+              <p className="font-mono text-xs text-slate-400 mt-1">
                 Ref Code: {product.slug.toUpperCase()}
               </p>
             </div>
 
             {/* Short Description */}
-            <p className="text-sm text-stone-600 dark:text-stone-300 leading-relaxed font-normal">
+            <p className="text-sm text-slate-600 leading-relaxed font-normal">
               {product.short_description ||
                 "Certified heavy industrial machinery calibrated for continuous duty cycles across regional infrastructure projects."}
             </p>
 
             {/* Prominent Action Triggers (Pre-fills Product on Quote Form!) */}
-            <div className="p-6 rounded-2xl bg-stone-100/70 dark:bg-stone-900/60 border border-stone-200 dark:border-stone-800 space-y-4">
+            <div className="p-6 rounded-2xl bg-slate-50 border border-slate-200 space-y-4 shadow-sm">
               <div>
-                <span className="text-xs font-mono font-bold uppercase tracking-wider text-amber-600 dark:text-amber-400 block">
+                <span className="text-xs font-mono font-bold uppercase tracking-wider text-blue-800 block">
                   Procurement & Mobilization
                 </span>
-                <span className="text-sm font-bold text-stone-900 dark:text-white">
+                <span className="text-sm font-bold text-slate-900">
                   Direct Duty Cycle Proposal
                 </span>
-                <p className="text-xs text-stone-500 mt-1">
+                <p className="text-xs text-slate-500 mt-1">
                   Deployment schedules and mobilization terms are tailored to ground conditions, multi-rig dispatch, and project timelines.
                 </p>
               </div>
@@ -221,23 +221,23 @@ export default function ProductDetailPage() {
                 Request a Quote for this Machine &rarr;
               </Button>
 
-              <div className="text-[11px] font-mono text-stone-500 text-center">
+              <div className="text-[11px] font-mono text-slate-500 text-center">
                 ✓ Full preventative maintenance record provided upon dispatch
               </div>
             </div>
 
             {/* Operational Metrics Checklist */}
-            <div className="space-y-2 text-xs font-mono text-stone-600 dark:text-stone-400 border-t border-stone-200 dark:border-stone-800 pt-4">
+            <div className="space-y-2 text-xs font-mono text-slate-600 border-t border-slate-200 pt-4">
               <div className="flex items-center gap-2">
-                <span className="text-emerald-500 font-bold">✓</span>
+                <span className="text-emerald-600 font-bold">✓</span>
                 <span>Pre-mobilization pressure & hydraulic load testing</span>
               </div>
               <div className="flex items-center gap-2">
-                <span className="text-emerald-500 font-bold">✓</span>
+                <span className="text-emerald-600 font-bold">✓</span>
                 <span>On-site field mechanics & technical operator support</span>
               </div>
               <div className="flex items-center gap-2">
-                <span className="text-emerald-500 font-bold">✓</span>
+                <span className="text-emerald-600 font-bold">✓</span>
                 <span>Strict contractual clarity — transparent engineering assessment</span>
               </div>
             </div>
@@ -245,34 +245,34 @@ export default function ProductDetailPage() {
         </div>
 
         {/* Bottom Section: Dynamic Specifications Table & Full Description */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 pt-12 border-t border-stone-200 dark:border-stone-800 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 pt-12 border-t border-slate-200 items-start">
           {/* Dynamic Specifications Table */}
           <div className="lg:col-span-7 space-y-4">
             <div>
-              <span className="text-xs font-mono font-bold uppercase tracking-widest text-amber-600 dark:text-amber-400 block mb-1">
+              <span className="text-xs font-mono font-bold uppercase tracking-widest text-blue-800 block mb-1">
                 Technical Data Sheet
               </span>
-              <h3 className="text-xl font-bold tracking-tight text-stone-950 dark:text-white">
+              <h3 className="text-xl font-bold tracking-tight text-slate-900">
                 Machine Specifications
               </h3>
             </div>
 
             {product.specifications && product.specifications.length > 0 ? (
-              <div className="rounded-xl overflow-hidden border border-stone-200 dark:border-stone-800 bg-white dark:bg-stone-950 text-xs">
+              <div className="rounded-2xl overflow-hidden border border-slate-200 bg-white text-xs shadow-premium-card">
                 <table className="w-full text-left font-mono">
-                  <thead className="bg-stone-100 dark:bg-stone-900 border-b border-stone-200 dark:border-stone-800 text-[11px] uppercase tracking-wider text-stone-500">
+                  <thead className="bg-slate-50 border-b border-slate-200 text-[11px] uppercase tracking-wider text-slate-600">
                     <tr>
                       <th className="px-5 py-3 font-semibold w-1/2">Parameter / Metric</th>
                       <th className="px-5 py-3 font-semibold w-1/2">Specification Value</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-stone-200 dark:divide-stone-800/80">
+                  <tbody className="divide-y divide-slate-200">
                     {product.specifications.map((spec) => (
-                      <tr key={spec.id} className="hover:bg-stone-50 dark:hover:bg-stone-900/40">
-                        <td className="px-5 py-3 text-stone-600 dark:text-stone-400 font-medium">
+                      <tr key={spec.id} className="hover:bg-slate-50/70 transition-colors">
+                        <td className="px-5 py-3 text-slate-600 font-medium">
                           {spec.label}
                         </td>
-                        <td className="px-5 py-3 text-stone-950 dark:text-white font-bold">
+                        <td className="px-5 py-3 text-slate-900 font-bold">
                           {spec.value}
                         </td>
                       </tr>
@@ -281,7 +281,7 @@ export default function ProductDetailPage() {
                 </table>
               </div>
             ) : (
-              <div className="p-6 rounded-xl border border-stone-200 dark:border-stone-800 text-xs text-stone-400 italic font-mono">
+              <div className="p-6 rounded-2xl border border-slate-200 text-xs text-slate-400 italic font-mono bg-white shadow-premium-card">
                 Standard duty parameters apply. Request detailed engineering dossier for exact dimensions.
               </div>
             )}
@@ -290,15 +290,15 @@ export default function ProductDetailPage() {
           {/* Full Narrative Description */}
           <div className="lg:col-span-5 space-y-4">
             <div>
-              <span className="text-xs font-mono font-bold uppercase tracking-widest text-stone-400 block mb-1">
+              <span className="text-xs font-mono font-bold uppercase tracking-widest text-slate-500 block mb-1">
                 Engineering Dossier
               </span>
-              <h3 className="text-xl font-bold tracking-tight text-stone-950 dark:text-white">
+              <h3 className="text-xl font-bold tracking-tight text-slate-900">
                 Operational Overview
               </h3>
             </div>
 
-            <div className="text-sm text-stone-600 dark:text-stone-300 leading-relaxed space-y-3 whitespace-pre-wrap">
+            <div className="text-sm text-slate-600 leading-relaxed space-y-3 whitespace-pre-wrap">
               {product.full_description ||
                 "This rig combines reinforced high-tensile steel boom construction with advanced variable-displacement hydraulic pumps to provide maximum breakout efficiency in dense soils, rock, and civil foundation trenches."}
             </div>
@@ -317,12 +317,12 @@ export default function ProductDetailPage() {
 
         {/* Related Products Section */}
         {product.related_products && product.related_products.length > 0 && (
-          <div className="pt-16 border-t border-stone-200 dark:border-stone-800 space-y-8">
+          <div className="pt-16 border-t border-slate-200 space-y-8">
             <div>
-              <span className="text-xs font-mono font-bold uppercase tracking-widest text-amber-600 dark:text-amber-400 block mb-1">
+              <span className="text-xs font-mono font-bold uppercase tracking-widest text-blue-800 block mb-1">
                 Complementary Fleet
               </span>
-              <h3 className="text-2xl font-bold tracking-tight text-stone-950 dark:text-white">
+              <h3 className="text-2xl font-bold tracking-tight text-slate-900">
                 Related Equipment in Category
               </h3>
             </div>
@@ -331,7 +331,7 @@ export default function ProductDetailPage() {
               {product.related_products.map((rel) => (
                 <Card key={rel.id} variant="default" className="flex flex-col justify-between">
                   <div>
-                    <div className="relative h-40 w-full overflow-hidden bg-stone-900 border-b border-stone-200 dark:border-stone-800">
+                    <div className="relative h-40 w-full overflow-hidden bg-slate-900 border-b border-slate-200">
                       {rel.primary_image ? (
                         <img
                           src={rel.primary_image}
@@ -339,7 +339,7 @@ export default function ProductDetailPage() {
                           className="h-full w-full object-cover"
                         />
                       ) : (
-                        <div className="h-full w-full flex items-center justify-center font-mono text-[10px] text-stone-500">
+                        <div className="h-full w-full flex items-center justify-center font-mono text-[10px] text-slate-400">
                           JP Fleet
                         </div>
                       )}

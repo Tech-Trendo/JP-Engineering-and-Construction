@@ -2,13 +2,28 @@
 @config "../tailwind.config.ts";
 
 :root {
-  --background: #fafaf9;
-  --foreground: #18181b;
-  --graphite-950: #111215;
-  --graphite-900: #18191e;
-  --graphite-800: #24262d;
+  --background: #ffffff;
+  --foreground: #0f172a;
+  
+  /* Primary Brand (Refined Deep Indigo-Blue) */
+  --primary: #1e40af;
+  --primary-hover: #1d4ed8;
+  --primary-tint: #eff6ff;
+  
+  /* Dark Neutrals (Midnight Navy Scale) */
+  --navy-950: #0a0f1d;
+  --navy-900: #0f172a;
+  --navy-800: #1e293b;
+  --navy-700: #334155;
+  
+  /* Alternating Surface & Hairline Borders */
+  --surface-alt: #f8fafc;
+  --border-subtle: #e2e8f0;
+  
+  /* Warm Quote Accent (Safety Amber / Copper - strictly for Quote CTAs) */
   --accent: #d97706;
   --accent-hover: #b45309;
+  --accent-tint: #fef3c7;
 }
 
 @theme inline {
@@ -17,21 +32,28 @@
   --font-sans: var(--font-poppins), ui-sans-serif, system-ui, sans-serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #111215;
-    --foreground: #f4f4f5;
-  }
-}
-
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-poppins), ui-sans-serif, system-ui, sans-serif;
   letter-spacing: -0.01em;
+  -webkit-font-smoothing: antialiased;
 }
 
 ::selection {
-  background-color: rgba(217, 119, 6, 0.25);
-  color: inherit;
+  background-color: rgba(30, 64, 175, 0.2);
+  color: #1e40af;
+}
+
+/* Custom Soft Elevation Utilities */
+.shadow-premium-card {
+  box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.05), 0 2px 6px -1px rgba(15, 23, 42, 0.02);
+}
+
+.shadow-premium-card-hover {
+  box-shadow: 0 16px 32px -4px rgba(15, 23, 42, 0.09), 0 4px 12px -2px rgba(15, 23, 42, 0.04);
+}
+
+.shadow-premium-nav {
+  box-shadow: 0 4px 24px -4px rgba(15, 23, 42, 0.08);
 }

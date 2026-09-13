@@ -12,17 +12,17 @@ function QuotesContent() {
   const initialProductName = searchParams.get("name") || null;
 
   return (
-    <div className="py-12 sm:py-16">
+    <div className="py-10 sm:py-16">
       <Container size="default">
         <div className="max-w-2xl mx-auto space-y-8">
-          <div className="text-center space-y-2 pb-6 border-b border-stone-200 dark:border-stone-800">
-            <span className="text-[11px] font-mono text-amber-600 dark:text-amber-400 uppercase font-bold tracking-widest block">
+          <div className="text-center space-y-2 pb-6 border-b border-slate-200">
+            <span className="text-[11px] font-mono text-blue-800 uppercase font-bold tracking-widest block">
               Direct Technical Procurement
             </span>
-            <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-stone-950 dark:text-white">
+            <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900">
               Request Machinery Quote
             </h1>
-            <p className="text-xs sm:text-sm text-stone-500 dark:text-stone-400">
+            <p className="text-xs sm:text-sm text-slate-500">
               Submit project parameters, duty cycles, and target equipment. Direct consultation with licensed field engineers.
             </p>
           </div>
@@ -41,7 +41,7 @@ export default function QuotesPage() {
   return (
     <Suspense
       fallback={
-        <div className="py-24 text-center text-xs font-mono text-stone-400">
+        <div className="py-24 text-center text-xs font-mono text-slate-400">
           Loading quote procurement portal...
         </div>
       }

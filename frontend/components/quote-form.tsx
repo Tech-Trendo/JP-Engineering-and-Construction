@@ -135,8 +135,8 @@ export function QuoteForm({
 
   if (successMessage) {
     return (
-      <div className={`p-8 rounded-2xl bg-stone-900 border border-stone-800 text-white text-center space-y-4 shadow-xl ${className}`}>
-        <div className="w-12 h-12 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 mx-auto flex items-center justify-center">
+      <div className={`p-8 rounded-2xl bg-[#0a0f1d] border border-slate-800 text-white text-center space-y-4 shadow-xl ${className}`}>
+        <div className="w-12 h-12 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 mx-auto flex items-center justify-center">
           <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
           </svg>
@@ -144,7 +144,7 @@ export function QuoteForm({
         <h3 className="text-xl font-bold tracking-tight text-white">
           Quote Inquiry Submitted
         </h3>
-        <p className="text-sm text-stone-300 max-w-md mx-auto leading-relaxed">
+        <p className="text-sm text-slate-300 max-w-md mx-auto leading-relaxed">
           {successMessage}
         </p>
         <div className="pt-2">
@@ -163,31 +163,31 @@ export function QuoteForm({
   return (
     <form
       onSubmit={handleSubmit}
-      className={`p-6 sm:p-8 rounded-2xl bg-white dark:bg-stone-950 border border-stone-200 dark:border-stone-800 shadow-sm space-y-5 text-xs ${className}`}
+      className={`p-6 sm:p-8 rounded-2xl bg-white border border-slate-200 shadow-premium-card space-y-5 text-xs ${className}`}
     >
       <div>
-        <h3 className="text-lg font-bold tracking-tight text-stone-950 dark:text-white">
+        <h3 className="text-lg font-bold tracking-tight text-slate-900">
           Request a Technical Quote
         </h3>
-        <p className="text-xs text-stone-500 dark:text-stone-400 mt-0.5">
+        <p className="text-xs text-slate-500 mt-0.5">
           Specify your equipment requirements, site timeline, and duty cycle. Direct response within 24 hours.
         </p>
       </div>
 
       {errorMessage && (
-        <div className="p-3 rounded-lg bg-red-950/60 border border-red-800/60 text-red-300 text-xs">
+        <div className="p-3 rounded-lg bg-red-50 border border-red-200 text-red-700 text-xs">
           {errorMessage}
         </div>
       )}
 
       {/* Pre-Selected Target Product Badge */}
       {selectedProductName && (
-        <div className="p-3 rounded-lg bg-stone-100 dark:bg-stone-900 border border-stone-200 dark:border-stone-800 flex items-center justify-between">
+        <div className="p-3.5 rounded-xl bg-blue-50 border border-blue-200/80 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <span className="text-[11px] font-mono text-stone-400 uppercase">
+            <span className="text-[11px] font-mono text-blue-700 font-semibold uppercase">
               Target Rig:
             </span>
-            <span className="font-semibold text-stone-900 dark:text-white">
+            <span className="font-semibold text-slate-900">
               {selectedProductName}
             </span>
           </div>
@@ -197,7 +197,7 @@ export function QuoteForm({
               setSelectedProductId(null);
               setSelectedProductName(null);
             }}
-            className="text-[11px] text-stone-400 hover:text-stone-600 dark:hover:text-stone-200 underline"
+            className="text-[11px] text-blue-700 hover:text-blue-900 font-medium underline cursor-pointer"
           >
             Change
           </button>
@@ -206,7 +206,7 @@ export function QuoteForm({
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
-          <label className="block text-stone-700 dark:text-stone-300 font-semibold mb-1">
+          <label className="block text-slate-700 font-semibold mb-1">
             Full Name <span className="text-amber-600">*</span>
           </label>
           <input
@@ -215,12 +215,12 @@ export function QuoteForm({
             placeholder="e.g. John Doe"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className="w-full px-3.5 py-2.5 rounded-lg bg-stone-50 dark:bg-stone-900 border border-stone-300 dark:border-stone-800 text-stone-900 dark:text-white placeholder-stone-400 focus:outline-hidden focus:border-amber-600 focus:ring-1 focus:ring-amber-600 text-xs"
+            className="w-full px-3.5 py-2.5 rounded-lg bg-slate-50 border border-slate-300 text-slate-900 placeholder-slate-400 focus:outline-hidden focus:border-blue-600 focus:ring-1 focus:ring-blue-600 text-xs"
           />
         </div>
 
         <div>
-          <label className="block text-stone-700 dark:text-stone-300 font-semibold mb-1">
+          <label className="block text-slate-700 font-semibold mb-1">
             Corporate Email <span className="text-amber-600">*</span>
           </label>
           <input
@@ -229,14 +229,14 @@ export function QuoteForm({
             placeholder="e.g. john@constructco.com"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full px-3.5 py-2.5 rounded-lg bg-stone-50 dark:bg-stone-900 border border-stone-300 dark:border-stone-800 text-stone-900 dark:text-white placeholder-stone-400 focus:outline-hidden focus:border-amber-600 focus:ring-1 focus:ring-amber-600 text-xs"
+            className="w-full px-3.5 py-2.5 rounded-lg bg-slate-50 border border-slate-300 text-slate-900 placeholder-slate-400 focus:outline-hidden focus:border-blue-600 focus:ring-1 focus:ring-blue-600 text-xs"
           />
         </div>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
-          <label className="block text-stone-700 dark:text-stone-300 font-semibold mb-1">
+          <label className="block text-slate-700 font-semibold mb-1">
             Phone Number <span className="text-amber-600">*</span>
           </label>
           <input
@@ -245,20 +245,20 @@ export function QuoteForm({
             placeholder="e.g. +1 (555) 019-2834"
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
-            className="w-full px-3.5 py-2.5 rounded-lg bg-stone-50 dark:bg-stone-900 border border-stone-300 dark:border-stone-800 text-stone-900 dark:text-white placeholder-stone-400 focus:outline-hidden focus:border-amber-600 focus:ring-1 focus:ring-amber-600 text-xs"
+            className="w-full px-3.5 py-2.5 rounded-lg bg-slate-50 border border-slate-300 text-slate-900 placeholder-slate-400 focus:outline-hidden focus:border-blue-600 focus:ring-1 focus:ring-blue-600 text-xs"
           />
         </div>
 
         <div>
-          <label className="block text-stone-700 dark:text-stone-300 font-semibold mb-1">
-            Company / Organization <span className="text-stone-400 font-normal">(optional)</span>
+          <label className="block text-slate-700 font-semibold mb-1">
+            Company / Organization <span className="text-slate-400 font-normal">(optional)</span>
           </label>
           <input
             type="text"
             placeholder="e.g. Apex Civil Infrastructure Ltd"
             value={company}
             onChange={(e) => setCompany(e.target.value)}
-            className="w-full px-3.5 py-2.5 rounded-lg bg-stone-50 dark:bg-stone-900 border border-stone-300 dark:border-stone-800 text-stone-900 dark:text-white placeholder-stone-400 focus:outline-hidden focus:border-amber-600 focus:ring-1 focus:ring-amber-600 text-xs"
+            className="w-full px-3.5 py-2.5 rounded-lg bg-slate-50 border border-slate-300 text-slate-900 placeholder-slate-400 focus:outline-hidden focus:border-blue-600 focus:ring-1 focus:ring-blue-600 text-xs"
           />
         </div>
       </div>
@@ -266,8 +266,8 @@ export function QuoteForm({
       {/* Equipment Selector (if not already locked by prefill) */}
       {!selectedProductName && (
         <div>
-          <label className="block text-stone-700 dark:text-stone-300 font-semibold mb-1">
-            Target Machinery / Equipment <span className="text-stone-400 font-normal">(optional)</span>
+          <label className="block text-slate-700 font-semibold mb-1">
+            Target Machinery / Equipment <span className="text-slate-400 font-normal">(optional)</span>
           </label>
           <select
             value={selectedProductId || ""}
@@ -277,7 +277,7 @@ export function QuoteForm({
               const found = products.find((p) => p.id === val);
               setSelectedProductName(found ? found.name : null);
             }}
-            className="w-full px-3.5 py-2.5 rounded-lg bg-stone-50 dark:bg-stone-900 border border-stone-300 dark:border-stone-800 text-stone-900 dark:text-white focus:outline-hidden focus:border-amber-600 focus:ring-1 focus:ring-amber-600 text-xs"
+            className="w-full px-3.5 py-2.5 rounded-lg bg-slate-50 border border-slate-300 text-slate-900 focus:outline-hidden focus:border-blue-600 focus:ring-1 focus:ring-blue-600 text-xs"
           >
             <option value="">General Machinery Inquiry (No specific model)</option>
             {products.map((p) => (
@@ -290,7 +290,7 @@ export function QuoteForm({
       )}
 
       <div>
-        <label className="block text-stone-700 dark:text-stone-300 font-semibold mb-1">
+        <label className="block text-slate-700 font-semibold mb-1">
           Project Scope / Message <span className="text-amber-600">*</span>
         </label>
         <textarea
@@ -299,7 +299,7 @@ export function QuoteForm({
           placeholder="Describe your operational requirements, site location, required attachments, or duty cycle expectations..."
           value={message}
           onChange={(e) => setMessage(e.target.value)}
-          className="w-full px-3.5 py-2.5 rounded-lg bg-stone-50 dark:bg-stone-900 border border-stone-300 dark:border-stone-800 text-stone-900 dark:text-white placeholder-stone-400 focus:outline-hidden focus:border-amber-600 focus:ring-1 focus:ring-amber-600 text-xs leading-relaxed"
+          className="w-full px-3.5 py-2.5 rounded-lg bg-slate-50 border border-slate-300 text-slate-900 placeholder-slate-400 focus:outline-hidden focus:border-blue-600 focus:ring-1 focus:ring-blue-600 text-xs leading-relaxed"
         />
       </div>
 
@@ -315,7 +315,7 @@ export function QuoteForm({
         </Button>
       </div>
 
-      <p className="text-[11px] text-stone-500 text-center">
+      <p className="text-[11px] text-slate-500 text-center font-medium">
         Zero obligation. Technical duty cycle assessment provided by licensed engineers.
       </p>
     </form>

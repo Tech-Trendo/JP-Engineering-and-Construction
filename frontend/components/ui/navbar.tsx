@@ -31,8 +31,8 @@ export function Navbar() {
     <header
       className={`sticky top-0 z-40 transition-all duration-200 ${
         isScrolled
-          ? "bg-white/95 dark:bg-stone-950/95 backdrop-blur-md border-b border-stone-200/90 dark:border-stone-800/90 shadow-xs"
-          : "bg-white/80 dark:bg-stone-950/80 backdrop-blur-xs border-b border-stone-200/50 dark:border-stone-800/50"
+          ? "bg-white/95 dark:bg-[#0a0f1d]/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 shadow-[0_4px_24px_-4px_rgba(15,23,42,0.08)]"
+          : "bg-white/85 dark:bg-[#0a0f1d]/85 backdrop-blur-xs border-b border-slate-200/60 dark:border-slate-800/60"
       }`}
     >
       <Container size="default">
@@ -54,10 +54,10 @@ export function Navbar() {
                 <Link
                   key={link.name}
                   href={link.href}
-                  className={`px-3 py-2 text-xs font-semibold tracking-tight rounded-md transition-colors ${
+                  className={`px-3 py-2 text-xs font-semibold tracking-tight rounded-lg transition-all ${
                     isActive
-                      ? "text-stone-950 dark:text-white bg-stone-100 dark:bg-stone-900"
-                      : "text-stone-600 dark:text-stone-400 hover:text-stone-950 dark:hover:text-white hover:bg-stone-50 dark:hover:bg-stone-900/50"
+                      ? "text-[#1e40af] dark:text-[#93c5fd] bg-[#eff6ff] dark:bg-[#1e40af]/20 shadow-2xs font-bold"
+                      : "text-slate-600 dark:text-slate-300 hover:text-[#1e40af] dark:hover:text-white hover:bg-slate-100/70 dark:hover:bg-slate-800/50"
                   }`}
                 >
                   {link.name}
@@ -66,7 +66,7 @@ export function Navbar() {
             })}
           </nav>
 
-          {/* Desktop Action Trigger */}
+          {/* Desktop Action Trigger (Quote CTA) */}
           <div className="hidden sm:flex items-center gap-3">
             <Button
               href="/quotes"
@@ -96,7 +96,7 @@ export function Navbar() {
           <div className="flex md:hidden">
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-2 rounded-lg text-stone-700 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-900 focus:outline-hidden"
+              className="p-2 rounded-lg text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 focus:outline-hidden"
               aria-label="Toggle Navigation Menu"
             >
               <svg
@@ -128,20 +128,20 @@ export function Navbar() {
 
       {/* Mobile Drawer */}
       {mobileMenuOpen && (
-        <div className="md:hidden border-b border-stone-200 dark:border-stone-800 bg-white dark:bg-stone-950 px-4 py-5 space-y-3 shadow-lg">
+        <div className="md:hidden border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-[#0a0f1d] px-4 py-5 space-y-3 shadow-xl">
           <nav className="flex flex-col space-y-1">
             {navLinks.map((link) => (
               <Link
                 key={link.name}
                 href={link.href}
                 onClick={() => setMobileMenuOpen(false)}
-                className="px-3 py-2 text-sm font-semibold rounded-md text-stone-700 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-900 hover:text-stone-950 dark:hover:text-white"
+                className="px-3 py-2 text-sm font-semibold rounded-lg text-slate-700 dark:text-slate-200 hover:bg-[#eff6ff] hover:text-[#1e40af] dark:hover:bg-slate-800"
               >
                 {link.name}
               </Link>
             ))}
           </nav>
-          <div className="pt-3 border-t border-stone-200 dark:border-stone-800">
+          <div className="pt-3 border-t border-slate-200 dark:border-slate-800">
             <Button
               href="/quotes"
               variant="accent"

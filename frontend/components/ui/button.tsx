@@ -37,21 +37,21 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     };
 
     const variantStyles = {
-      // Primary: Restrained dark graphite / charcoal
+      // Primary: Deep authoritative Indigo-Blue
       primary:
-        "bg-stone-900 text-stone-50 hover:bg-stone-800 dark:bg-stone-100 dark:text-stone-900 dark:hover:bg-stone-200 shadow-xs active:translate-y-px",
-      // Accent: Industrial Safety Amber (strictly for CTAs & highlights)
+        "bg-[#1e40af] text-white hover:bg-[#1d4ed8] shadow-sm font-semibold active:translate-y-px",
+      // Accent: Warm Amber / Copper (strictly for Quote CTAs & highlights)
       accent:
-        "bg-amber-600 text-white hover:bg-amber-500 active:bg-amber-700 shadow-xs font-semibold active:translate-y-px",
-      // Outline: Hairline architectural precision border
+        "bg-[#d97706] text-white hover:bg-[#b45309] shadow-sm font-semibold active:translate-y-px",
+      // Outline: Architectural precision border
       outline:
-        "border border-stone-300 dark:border-stone-700 bg-transparent text-stone-900 dark:text-stone-100 hover:bg-stone-100 dark:hover:bg-stone-800/80 active:translate-y-px",
-      // Secondary: Warm concrete / subtle stone tone
+        "border border-slate-300 dark:border-slate-700 bg-white/80 dark:bg-transparent text-slate-900 dark:text-slate-100 hover:bg-slate-100 hover:text-[#1e40af] dark:hover:bg-slate-800/80 active:translate-y-px",
+      // Secondary: Soft cool slate tone
       secondary:
-        "bg-stone-200/80 dark:bg-stone-800 text-stone-900 dark:text-stone-100 hover:bg-stone-300/80 dark:hover:bg-stone-700 active:translate-y-px",
+        "bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-slate-100 hover:bg-slate-200 dark:hover:bg-slate-700 active:translate-y-px",
       // Ghost: Understated minimal
       ghost:
-        "text-stone-700 dark:text-stone-300 hover:text-stone-950 dark:hover:text-white hover:bg-stone-100 dark:hover:bg-stone-800/60",
+        "text-slate-700 dark:text-slate-300 hover:text-[#1e40af] dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800/60",
     };
 
     const combinedClassName = `${baseStyles} ${sizeStyles[size]} ${variantStyles[variant]} ${className}`;

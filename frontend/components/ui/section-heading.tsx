@@ -28,8 +28,8 @@ export function SectionHeading({
           {badge && <div className="mb-3">{badge}</div>}
           {eyebrow && (
             <div className="flex items-center gap-2 mb-2">
-              <span className="h-1.5 w-1.5 rounded-full bg-amber-600"></span>
-              <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-500 dark:text-stone-400">
+              <span className="h-1.5 w-1.5 rounded-full bg-[#1e40af]"></span>
+              <span className="text-[11px] font-mono font-bold uppercase tracking-[0.18em] text-[#1e40af] dark:text-[#93c5fd]">
                 {eyebrow}
               </span>
             </div>
@@ -59,17 +59,17 @@ export function SectionHeading({
         {badge && <div className="inline-block mb-1">{badge}</div>}
         {eyebrow && (
           <div className="flex items-center justify-center gap-2 mb-2">
-            <span className="h-1.5 w-1.5 rounded-full bg-amber-600"></span>
-            <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-500 dark:text-stone-400">
+            <span className="h-1.5 w-1.5 rounded-full bg-[#1e40af]"></span>
+            <span className="text-[11px] font-mono font-bold uppercase tracking-[0.18em] text-[#1e40af] dark:text-[#93c5fd]">
               {eyebrow}
             </span>
           </div>
         )}
-        <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-stone-950 dark:text-white leading-[1.15]">
+        <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-slate-950 dark:text-white leading-[1.15]">
           {title}
         </h2>
         {description && (
-          <p className="text-sm sm:text-base text-stone-600 dark:text-stone-400 leading-relaxed font-normal">
+          <p className="text-sm sm:text-base text-slate-600 dark:text-slate-400 leading-relaxed font-normal">
             {description}
           </p>
         )}
@@ -84,13 +84,13 @@ export function SectionHeading({
       {badge && <div>{badge}</div>}
       {eyebrow && (
         <div className="flex items-center gap-2 mb-1">
-          <span className="h-1.5 w-1.5 rounded-full bg-amber-600"></span>
-          <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-500 dark:text-stone-400">
+          <span className="h-1.5 w-1.5 rounded-full bg-[#1e40af]"></span>
+          <span className="text-[11px] font-mono font-bold uppercase tracking-[0.18em] text-[#1e40af] dark:text-[#93c5fd]">
             {eyebrow}
           </span>
         </div>
       )}
-      <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-stone-950 dark:text-white leading-[1.12]">
+      <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-slate-950 dark:text-white leading-[1.12]">
         {title}
       </h2>
       {description && (

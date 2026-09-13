@@ -11,23 +11,23 @@ export function Card({
   ...props
 }: CardProps) {
   const variantStyles = {
-    // Default: Architectural clean surface with hairline border
+    // Default: Architectural clean surface with multi-layer subtle shadow & border
     default:
-      "bg-white dark:bg-stone-900/60 border border-stone-200/90 dark:border-stone-800 text-stone-900 dark:text-stone-100",
-    // Editorial: Deep monolithic graphite for featured/showcase blocks
+      "bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-slate-100 shadow-[0_4px_20px_-2px_rgba(15,23,42,0.05)] rounded-2xl",
+    // Editorial: Deep midnight navy for featured/showcase blocks
     editorial:
-      "bg-stone-900 dark:bg-stone-950 border border-stone-800 text-stone-100 shadow-md",
-    // Interactive: Precision hover border transition for catalog items
+      "bg-[#0a0f1d] border border-slate-800 text-slate-100 shadow-[0_8px_30px_-4px_rgba(10,15,29,0.3)] rounded-2xl",
+    // Interactive: Precision hover elevation transition for catalog/team cards
     interactive:
-      "bg-white dark:bg-stone-900/60 border border-stone-200 dark:border-stone-800 text-stone-900 dark:text-stone-100 hover:border-stone-400 dark:hover:border-stone-600 transition-all duration-200 group cursor-pointer",
+      "bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-slate-100 shadow-[0_4px_20px_-2px_rgba(15,23,42,0.05)] hover:shadow-[0_16px_32px_-4px_rgba(15,23,42,0.1)] hover:border-slate-300 dark:hover:border-slate-700 hover:-translate-y-1 transition-all duration-200 rounded-2xl group cursor-pointer",
     // Ghost: Minimal technical border for specs and engineering data points
     ghost:
-      "bg-transparent border border-stone-200/80 dark:border-stone-800/80 text-stone-900 dark:text-stone-100",
+      "bg-transparent border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-slate-100 rounded-2xl",
   };
 
   return (
     <div
-      className={`rounded-xl overflow-hidden ${variantStyles[variant]} ${className}`}
+      className={`overflow-hidden ${variantStyles[variant]} ${className}`}
       {...props}
     >
       {children}

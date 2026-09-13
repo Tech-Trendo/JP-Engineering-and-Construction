@@ -1,7 +1,7 @@
 import React from "react";
 
 export interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
-  variant?: "accent" | "neutral" | "outline" | "success";
+  variant?: "primary" | "accent" | "neutral" | "outline" | "success";
   size?: "sm" | "md";
   dot?: boolean;
 }
@@ -23,20 +23,23 @@ export function Badge({
   };
 
   const variantStyles = {
+    primary:
+      "bg-[#eff6ff] text-[#1e40af] dark:bg-[#1e40af]/20 dark:text-[#93c5fd] border border-[#bfdbfe] dark:border-[#1e40af]/40",
     accent:
-      "bg-amber-500/10 text-amber-700 dark:text-amber-400 border border-amber-500/30",
+      "bg-[#fef3c7] text-[#92400e] dark:bg-amber-950/40 dark:text-amber-300 border border-[#fde68a] dark:border-amber-800",
     neutral:
-      "bg-stone-100 dark:bg-stone-800/80 text-stone-800 dark:text-stone-300 border border-stone-200 dark:border-stone-700",
+      "bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-300 border border-slate-200 dark:border-slate-700",
     outline:
-      "border border-stone-300 dark:border-stone-700 text-stone-800 dark:text-stone-200 bg-transparent",
+      "border border-slate-300 dark:border-slate-700 text-slate-800 dark:text-slate-200 bg-transparent",
     success:
-      "bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border border-emerald-500/30",
+      "bg-emerald-50 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800",
   };
 
   const dotColors = {
-    accent: "bg-amber-500",
-    neutral: "bg-stone-500",
-    outline: "bg-stone-400",
+    primary: "bg-[#1e40af]",
+    accent: "bg-[#d97706]",
+    neutral: "bg-slate-500",
+    outline: "bg-slate-400",
     success: "bg-emerald-500",
   };
 

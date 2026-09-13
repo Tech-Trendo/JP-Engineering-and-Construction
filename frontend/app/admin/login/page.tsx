@@ -36,16 +36,16 @@ export default function AdminLoginPage() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4 py-12 dark:bg-gray-950 sm:px-6 lg:px-8">
-      <div className="w-full max-w-md space-y-8 rounded-2xl border border-gray-200 bg-white p-8 shadow-xl dark:border-gray-800 dark:bg-gray-900">
+    <div className="flex min-h-screen items-center justify-center bg-[#070d19] px-4 py-12 sm:px-6 lg:px-8">
+      <div className="w-full max-w-md space-y-8 rounded-2xl border border-slate-800 bg-[#0a0f1d] p-8 shadow-2xl text-white">
         <div>
-          <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-xl bg-white p-1.5 border border-gray-200 dark:border-gray-800 shadow-md">
+          <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-xl bg-white p-1.5 border border-slate-700 shadow-md">
             <img src={LOGO_URL} alt="JP Engineering" className="h-full w-full object-contain" />
           </div>
-          <h2 className="mt-6 text-center text-3xl font-extrabold tracking-tight text-gray-900 dark:text-white">
+          <h2 className="mt-6 text-center text-3xl font-extrabold tracking-tight text-white">
             Admin Portal
           </h2>
-          <p className="mt-2 text-center text-sm text-gray-600 dark:text-gray-400">
+          <p className="mt-2 text-center text-sm text-slate-400">
             Sign in with authorized staff credentials
           </p>
         </div>
@@ -53,7 +53,7 @@ export default function AdminLoginPage() {
         {error && (
           <div
             role="alert"
-            className="rounded-lg border border-red-200 bg-red-50 p-4 text-sm text-red-700 dark:border-red-900/50 dark:bg-red-950/50 dark:text-red-400"
+            className="rounded-lg border border-red-800/80 bg-red-950/40 p-4 text-xs text-red-300"
           >
             <p className="font-semibold">Authentication Error</p>
             <p className="mt-1">{error}</p>
@@ -65,7 +65,7 @@ export default function AdminLoginPage() {
             <div>
               <label
                 htmlFor="username"
-                className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                className="block text-xs font-semibold text-slate-300"
               >
                 Username
               </label>
@@ -78,14 +78,14 @@ export default function AdminLoginPage() {
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 placeholder="Enter staff username"
-                className="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2.5 shadow-sm transition placeholder-gray-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:border-gray-700 dark:bg-gray-800 dark:text-white dark:placeholder-gray-500"
+                className="mt-1 block w-full rounded-lg border border-slate-700 bg-slate-900 px-3.5 py-2.5 shadow-sm text-white placeholder-slate-500 focus:border-blue-600 focus:outline-hidden focus:ring-1 focus:ring-blue-600 text-xs"
               />
             </div>
 
             <div>
               <label
                 htmlFor="password"
-                className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                className="block text-xs font-semibold text-slate-300"
               >
                 Password
               </label>
@@ -98,7 +98,7 @@ export default function AdminLoginPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
-                className="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2.5 shadow-sm transition placeholder-gray-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:border-gray-700 dark:bg-gray-800 dark:text-white dark:placeholder-gray-500"
+                className="mt-1 block w-full rounded-lg border border-slate-700 bg-slate-900 px-3.5 py-2.5 shadow-sm text-white placeholder-slate-500 focus:border-blue-600 focus:outline-hidden focus:ring-1 focus:ring-blue-600 text-xs"
               />
             </div>
           </div>
@@ -107,7 +107,7 @@ export default function AdminLoginPage() {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="group relative flex w-full justify-center rounded-lg bg-blue-600 px-4 py-3 text-sm font-medium text-white shadow-md transition hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60"
+              className="group relative flex w-full justify-center rounded-lg bg-blue-700 px-4 py-3 text-xs font-semibold uppercase tracking-wider text-white shadow-md transition hover:bg-blue-600 focus:outline-hidden focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60 cursor-pointer"
             >
               {isSubmitting ? (
                 <span className="flex items-center gap-2">
