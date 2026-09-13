@@ -204,8 +204,17 @@ class AdminProductSerializer(serializers.ModelSerializer):
             images_list = []
             for idx in sorted(image_indices):
                 img_dict = {}
+                if f'images[{idx}]id' in copied and copied[f'images[{idx}]id']:
+                    try:
+                        img_dict['id'] = int(copied[f'images[{idx}]id'])
+                    except (ValueError, TypeError):
+                        pass
                 if f'images[{idx}]image' in copied:
-                    img_dict['image'] = copied[f'images[{idx}]image']
+                    val = copied[f'images[{idx}]image']
+                    if not isinstance(val, str):
+                        img_dict['image'] = val
+                    else:
+                        img_dict['image'] = None
                 if f'images[{idx}]alt_text' in copied:
                     img_dict['alt_text'] = copied[f'images[{idx}]alt_text']
                 if f'images[{idx}]order' in copied:
@@ -217,7 +226,12 @@ class AdminProductSerializer(serializers.ModelSerializer):
             copied['images'] = images_list
         elif 'images' in copied and isinstance(copied['images'], str):
             try:
-                copied['images'] = json.loads(copied['images'])
+                raw_images = json.loads(copied['images'])
+                if isinstance(raw_images, list):
+                    for item in raw_images:
+                        if isinstance(item, dict) and isinstance(item.get('image'), str):
+                            item['image'] = None
+                copied['images'] = raw_images
             except Exception:
                 pass
 
@@ -240,7 +254,8 @@ class AdminProductSerializer(serializers.ModelSerializer):
 
         for img in images_data:
             img.pop('id', None)
-            ProductImage.objects.create(product=product, **img)
+            if img.get('image'):
+                ProductImage.objects.create(product=product, **img)
 
         # Process any multipart uploaded_images files
         request = self.context.get('request')
@@ -252,7 +267,7 @@ class AdminProductSerializer(serializers.ModelSerializer):
                     image=file_obj,
                     alt_text=file_obj.name,
                     order=len(images_data) + idx,
-                    is_primary=(idx == 0 and not images_data)
+                    is_primary=(idx == 0 and not any(i.get('is_primary') for i in images_data))
                 )
 
         return product
@@ -277,9 +292,24 @@ class AdminProductSerializer(serializers.ModelSerializer):
                 ProductSpecification.objects.create(product=instance, **spec)
 
         if images_data is not None:
-            instance.images.all().delete()
+            kept_ids = [img['id'] for img in images_data if 'id' in img and img['id']]
+            # Remove images that were removed by the admin
+            instance.images.exclude(id__in=kept_ids).delete()
             for img in images_data:
-                img.pop('id', None)
+                img_id = img.pop('id', None)
+                if img_id:
+                    existing_img = instance.images.filter(id=img_id).first()
+                    if existing_img:
+                        if img.get('image'):
+                            existing_img.image = img['image']
+                        if 'alt_text' in img:
+                            existing_img.alt_text = img['alt_text']
+                        if 'order' in img:
+                            existing_img.order = img['order']
+                        if 'is_primary' in img:
+                            existing_img.is_primary = img['is_primary']
+                        existing_img.save()
+                        continue
                 if img.get('image'):
                     ProductImage.objects.create(product=instance, **img)
 
