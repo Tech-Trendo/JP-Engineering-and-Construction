@@ -13,6 +13,11 @@ class Product(TimeStampedModel):
         related_name='products',
         blank=True
     )
+    industries = models.ManyToManyField(
+        'categories.Industry',
+        related_name='products',
+        blank=True
+    )
     is_active = models.BooleanField(default=True)
     is_featured = models.BooleanField(default=False)
     order = models.PositiveIntegerField(default=0)

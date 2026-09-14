@@ -1,8 +1,8 @@
-import { apiClient } from "./api";
+import { apiClient, ApiError } from "./api";
 
 /**
  * Normalizes any backend media URL to a relative path (`/media/...`)
- * so it routes through Next.js proxy rewrites without cross-origin or CORS blocks.
+ * so it routes through Next.js proxy rewrites without CORS blocks.
  */
 export function getMediaUrl(url: string | null | undefined): string {
   if (!url) return "";
@@ -103,8 +103,92 @@ export interface PublicSiteContent {
   updated_at?: string;
 }
 
-export interface QuoteSubmitData {
+export interface PublicSiteSettings {
+  id?: number;
+  company_name: string;
+  company_short_name: string;
+  tagline: string;
+  company_description: string;
+  founding_year: string;
+  company_type: string;
+  registration_number: string;
+  pan_vat_number: string;
+  employee_count: string;
+  primary_phone: string;
+  secondary_phone: string;
+  primary_email: string;
+  secondary_email: string;
+  address: string;
+  business_hours: string;
+  map_location_text: string;
+  facebook_url: string;
+  twitter_url: string;
+  linkedin_url: string;
+  youtube_url: string;
+  hero_badge: string;
+  hero_heading: string;
+  hero_subtext: string;
+  hero_image: string | null;
+  hero_image_url: string | null;
+  logo?: string | null;
+  logo_url?: string | null;
+  hero_cta_primary_label: string;
+  hero_cta_primary_link: string;
+  hero_cta_secondary_label: string;
+  hero_cta_secondary_link: string;
+  stat_years_experience: string;
+  stat_projects_completed: string;
+  stat_happy_clients: string;
+  stat_business_sectors: string;
+  cta_heading: string;
+  cta_subtext: string;
+  cta_button_label: string;
+  cta_button_link: string;
+  updated_at?: string;
+}
+
+export interface PublicHeroSlide {
+  id: number;
+  title: string;
+  badge: string;
+  heading: string;
+  subtext: string;
+  image: string;
+  image_url: string | null;
+  primary_cta_label: string;
+  primary_cta_link: string;
+  secondary_cta_label: string;
+  secondary_cta_link: string;
+  order: number;
+  is_active: boolean;
+}
+
+export interface PublicIndustry {
+  id: number;
   name: string;
+  slug: string;
+  description: string;
+  icon_or_image: string | null;
+  icon_or_image_url: string | null;
+  categories_count: number;
+  products_count: number;
+  order: number;
+}
+
+export interface PublicIndustryDetail {
+  id: number;
+  name: string;
+  slug: string;
+  description: string;
+  icon_or_image: string | null;
+  icon_or_image_url: string | null;
+  categories: PublicCategory[];
+  products: PublicProductListItem[];
+  order: number;
+}
+
+export interface QuoteSubmitData {
+  full_name: string;
   email: string;
   phone: string;
   company?: string;
@@ -113,8 +197,13 @@ export interface QuoteSubmitData {
 }
 
 export interface QuoteSubmitResponse {
-  success: boolean;
+  id: number;
+  full_name: string;
+  email: string;
+  phone: string;
   message: string;
+  status: string;
+  created_at: string;
 }
 
 function unwrapResults<T>(data: unknown): T[] {
@@ -130,6 +219,14 @@ function unwrapResults<T>(data: unknown): T[] {
   return [];
 }
 
+export async function getPublicSiteSettings(): Promise<PublicSiteSettings> {
+  return apiClient<PublicSiteSettings>("public/site-settings/");
+}
+
+export async function getPublicSiteContent(): Promise<PublicSiteContent> {
+  return apiClient<PublicSiteContent>("public/site-content/");
+}
+
 export async function getPublicCategories(): Promise<PublicCategory[]> {
   const data = await apiClient<unknown>("public/categories/");
   return unwrapResults<PublicCategory>(data);
@@ -138,6 +235,7 @@ export async function getPublicCategories(): Promise<PublicCategory[]> {
 export async function getPublicProducts(params?: {
   category?: string | string[];
   q?: string;
+  is_featured?: boolean;
 }): Promise<PublicProductListItem[]> {
   const searchParams = new URLSearchParams();
 
@@ -153,6 +251,10 @@ export async function getPublicProducts(params?: {
     searchParams.append("q", params.q);
   }
 
+  if (params?.is_featured !== undefined) {
+    searchParams.append("is_featured", String(params.is_featured));
+  }
+
   const queryStr = searchParams.toString();
   const endpoint = queryStr ? `public/products/?${queryStr}` : "public/products/";
   const data = await apiClient<unknown>(endpoint);
@@ -161,8 +263,16 @@ export async function getPublicProducts(params?: {
 
 export async function getPublicProductDetail(
   slug: string
-): Promise<PublicProductDetail> {
-  return apiClient<PublicProductDetail>(`public/products/${slug}/`);
+): Promise<PublicProductDetail | null> {
+  try {
+    return await apiClient<PublicProductDetail>(`public/products/${slug}/`);
+  } catch (err: unknown) {
+    if (err instanceof ApiError && err.status === 404) {
+      return null;
+    }
+    console.error(`[public-api getPublicProductDetail failed for ${slug}]:`, err);
+    throw err;
+  }
 }
 
 export async function getPublicTeam(): Promise<PublicTeamMember[]> {
@@ -189,6 +299,28 @@ export async function submitQuote(
   });
 }
 
-export async function getPublicSiteContent(): Promise<PublicSiteContent> {
-  return apiClient<PublicSiteContent>("public/site-content/");
+export async function getPublicHeroSlides(): Promise<PublicHeroSlide[]> {
+  const data = await apiClient<unknown>("public/site-settings/hero-slides/");
+  return unwrapResults<PublicHeroSlide>(data);
 }
+
+export async function getPublicIndustries(): Promise<PublicIndustry[]> {
+  const data = await apiClient<unknown>("public/industries/");
+  return unwrapResults<PublicIndustry>(data);
+}
+
+export async function getPublicIndustryDetail(
+  slug: string
+): Promise<PublicIndustryDetail | null> {
+  try {
+    return await apiClient<PublicIndustryDetail>(`public/industries/${slug}/`);
+  } catch (err: unknown) {
+    if (err instanceof ApiError && err.status === 404) {
+      return null;
+    }
+    console.error(`[public-api getPublicIndustryDetail failed for ${slug}]:`, err);
+    throw err;
+  }
+}
+
+

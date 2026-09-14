@@ -14,7 +14,9 @@ export async function POST(request: NextRequest) {
     const backendUrl =
       process.env.INTERNAL_BACKEND_API_URL ||
       process.env.NEXT_PUBLIC_API_URL ||
-      "http://127.0.0.1:8000/api/v1";
+      (process.env.NODE_ENV === "production"
+        ? "https://app.jpengineering.com.np/api/v1"
+        : "http://127.0.0.1:8000/api/v1");
 
     const backendRes = await fetch(`${backendUrl}/auth/refresh/`, {
       method: "POST",
@@ -27,7 +29,6 @@ export async function POST(request: NextRequest) {
     const data = await backendRes.json();
 
     if (!backendRes.ok) {
-      // If refresh token is expired or blacklisted, clear the cookie
       const response = NextResponse.json(data, { status: backendRes.status });
       response.cookies.delete("admin_refresh_token");
       return response;

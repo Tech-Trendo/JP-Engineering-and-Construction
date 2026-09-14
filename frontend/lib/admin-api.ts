@@ -1,5 +1,8 @@
 const API_BASE_URL =
-  process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api/v1";
+  process.env.NEXT_PUBLIC_API_URL ||
+  (process.env.NODE_ENV === "production"
+    ? "https://app.jpengineering.com.np/api/v1"
+    : "http://localhost:8000/api/v1");
 
 export { getMediaUrl } from "./public-api";
 
@@ -21,6 +24,7 @@ export interface AdminProductImage {
   alt_text: string;
   order: number;
   is_primary: boolean;
+  previewUrl?: string;
 }
 
 export interface AdminProductSpecification {
@@ -94,6 +98,84 @@ export interface AdminClient {
   updated_at: string;
 }
 
+export interface AdminHeroSlide {
+  id: number;
+  title: string;
+  badge: string;
+  heading: string;
+  subtext: string;
+  image: string | File | null;
+  image_url?: string | null;
+  primary_cta_label: string;
+  primary_cta_link: string;
+  secondary_cta_label: string;
+  secondary_cta_link: string;
+  order: number;
+  is_active: boolean;
+  created_at?: string;
+  updated_at?: string;
+}
+
+export interface AdminIndustry {
+  id: number;
+  name: string;
+  slug: string;
+  description: string;
+  icon_or_image: string | File | null;
+  icon_or_image_url?: string | null;
+  categories: number[];
+  categories_details?: { id: number; name: string; slug: string }[];
+  products_count?: number;
+  is_active: boolean;
+  order: number;
+  created_at?: string;
+  updated_at?: string;
+}
+
+export interface AdminSiteSettings {
+  id?: number;
+  company_name: string;
+  company_short_name: string;
+  logo: string | null;
+  logo_url?: string | null;
+  tagline: string;
+  company_description: string;
+  founding_year: string;
+  company_type: string;
+  registration_number: string;
+  pan_vat_number: string;
+  employee_count: string;
+  primary_phone: string;
+  secondary_phone: string;
+  primary_email: string;
+  secondary_email: string;
+  address: string;
+  business_hours: string;
+  map_location_text: string;
+  facebook_url: string;
+  twitter_url: string;
+  linkedin_url: string;
+  youtube_url: string;
+  hero_badge: string;
+  hero_heading: string;
+  hero_subtext: string;
+  hero_image: string | null;
+  hero_image_url?: string | null;
+  hero_cta_primary_label: string;
+  hero_cta_primary_link: string;
+  hero_cta_secondary_label: string;
+  hero_cta_secondary_link: string;
+  stat_years_experience: string;
+  stat_projects_completed: string;
+  stat_happy_clients: string;
+  stat_business_sectors: string;
+  cta_heading: string;
+  cta_subtext: string;
+  cta_button_label: string;
+  cta_button_link: string;
+  updated_at?: string;
+}
+
 export interface AdminSiteContent {
   id?: number;
   title: string;
@@ -126,6 +208,7 @@ export async function adminFetch<T>(
   const response = await fetch(url, {
     ...options,
     headers,
+    cache: "no-store",
   });
 
   if (!response.ok) {
@@ -156,22 +239,31 @@ export async function adminFetch<T>(
 
 export function unwrapAdminResults<T>(data: unknown): T[] {
   if (Array.isArray(data)) return data as T[];
-  if (data && typeof data === "object" && "results" in data && Array.isArray((data as { results: unknown[] }).results)) {
+  if (
+    data &&
+    typeof data === "object" &&
+    "results" in data &&
+    Array.isArray((data as { results: unknown[] }).results)
+  ) {
     return (data as { results: T[] }).results;
   }
   return [];
 }
 
-export async function getAdminSiteContent(token: string): Promise<AdminSiteContent> {
-  return adminFetch<AdminSiteContent>("admin/site-content/", { method: "GET" }, token);
+export async function getAdminSiteSettings(token: string): Promise<AdminSiteSettings> {
+  return adminFetch<AdminSiteSettings>("admin/site-settings/", { method: "GET" }, token);
 }
 
-export async function updateAdminSiteContent(
+export async function updateAdminSiteSettings(
   token: string,
-  data: Partial<AdminSiteContent>
-): Promise<AdminSiteContent> {
-  return adminFetch<AdminSiteContent>("admin/site-content/", {
-    method: "PATCH",
-    body: JSON.stringify(data),
-  }, token);
+  data: Partial<AdminSiteSettings>
+): Promise<AdminSiteSettings> {
+  return adminFetch<AdminSiteSettings>(
+    "admin/site-settings/",
+    {
+      method: "PATCH",
+      body: JSON.stringify(data),
+    },
+    token
+  );
 }

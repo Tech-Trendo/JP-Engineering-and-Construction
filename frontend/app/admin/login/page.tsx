@@ -3,7 +3,6 @@
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAdminAuth } from "@/lib/admin-auth-context";
-import { LOGO_URL } from "@/lib/constants";
 
 export default function AdminLoginPage() {
   const [username, setUsername] = useState("");
@@ -39,11 +38,11 @@ export default function AdminLoginPage() {
     <div className="flex min-h-screen items-center justify-center bg-[#070d19] px-4 py-12 sm:px-6 lg:px-8">
       <div className="w-full max-w-md space-y-8 rounded-2xl border border-slate-800 bg-[#0a0f1d] p-8 shadow-2xl text-white">
         <div>
-          <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-xl bg-white p-1.5 border border-slate-700 shadow-md">
-            <img src={LOGO_URL} alt="JP Engineering" className="h-full w-full object-contain" />
+          <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-xl bg-[#1b3a6e] border border-slate-700 shadow-md">
+            <span className="text-white font-black text-xl">JP</span>
           </div>
           <h2 className="mt-6 text-center text-3xl font-extrabold tracking-tight text-white">
-            Admin Portal
+            Admin CMS Portal
           </h2>
           <p className="mt-2 text-center text-sm text-slate-400">
             Sign in with authorized staff credentials

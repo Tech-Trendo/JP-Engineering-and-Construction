@@ -1,9 +1,16 @@
 from datetime import timedelta
 from pathlib import Path
-from decouple import config, Csv
+from decouple import Config, RepositoryEnv, Csv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+# Explicitly load .env from BASE_DIR so it is ALWAYS loaded in cPanel Passenger
+env_file = BASE_DIR / '.env'
+if env_file.is_file():
+    config = Config(RepositoryEnv(str(env_file)))
+else:
+    from decouple import config
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = config('SECRET_KEY', default='django-insecure-jp-engineering-construction-dev-secret-key')
@@ -11,7 +18,11 @@ SECRET_KEY = config('SECRET_KEY', default='django-insecure-jp-engineering-constr
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', default=True, cast=bool)
 
-ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='127.0.0.1,localhost,testserver', cast=Csv())
+ALLOWED_HOSTS = config(
+    'ALLOWED_HOSTS',
+    default='*,app.jpengineering.com.np,.jpengineering.com.np,localhost,127.0.0.1',
+    cast=Csv()
+)
 
 # Application definition
 
@@ -36,6 +47,7 @@ INSTALLED_APPS = [
     'apps.products',
     'apps.quotes',
     'apps.showcase',
+    'apps.site_settings',
 ]
 
 MIDDLEWARE = [
@@ -69,8 +81,8 @@ TEMPLATES = [
 WSGI_APPLICATION = 'config.wsgi.application'
 
 # Database
-# PostgreSQL as the primary database, read from environment via decouple
-DB_ENGINE = config('DB_ENGINE', default='django.db.backends.postgresql')
+# Default to SQLite (db.sqlite3) so it works out-of-the-box in cPanel and local dev
+DB_ENGINE = config('DB_ENGINE', default='django.db.backends.sqlite3')
 
 if 'sqlite3' in DB_ENGINE:
     DATABASES = {
@@ -153,7 +165,19 @@ SIMPLE_JWT = {
 CORS_ALLOW_ALL_ORIGINS = DEBUG
 CORS_ALLOWED_ORIGINS = config(
     'CORS_ALLOWED_ORIGINS',
-    default='http://localhost:3000,http://127.0.0.1:3000',
+    default='https://jpengineering.com.np,https://www.jpengineering.com.np,https://app.jpengineering.com.np,http://localhost:3000,http://127.0.0.1:3000',
     cast=Csv()
 )
+CORS_ALLOWED_ORIGIN_REGEXES = [
+    r"^https:\/\/.*\.vercel\.app$",
+]
 CORS_ALLOW_CREDENTIALS = True
+
+# CSRF Trusted Origins (Required in Django 4+ for cross-origin POST requests)
+CSRF_TRUSTED_ORIGINS = config(
+    'CSRF_TRUSTED_ORIGINS',
+    default='https://app.jpengineering.com.np,https://jpengineering.com.np,https://www.jpengineering.com.np,https://*.vercel.app,http://localhost:3000,http://127.0.0.1:3000,http://localhost:8000,http://127.0.0.1:8000',
+    cast=Csv()
+)
+
+

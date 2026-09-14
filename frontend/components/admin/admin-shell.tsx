@@ -1,92 +1,136 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useAdminAuth } from "@/lib/admin-auth-context";
-import { adminFetch, AdminQuote, unwrapAdminResults } from "@/lib/admin-api";
-import { LOGO_URL } from "@/lib/constants";
+import { adminFetch, unwrapAdminResults, AdminQuote } from "@/lib/admin-api";
+import { getPublicSiteSettings, getMediaUrl } from "@/lib/public-api";
 
 interface NavItem {
   name: string;
   href: string;
-  icon: (props: React.SVGProps<SVGSVGElement>) => React.ReactNode;
   badgeKey?: "quotes";
+  icon: (props: React.SVGProps<SVGSVGElement>) => React.ReactElement;
 }
 
-const navItems: NavItem[] = [
+interface NavGroup {
+  sectionTitle: string;
+  items: NavItem[];
+}
+
+const navGroups: NavGroup[] = [
   {
-    name: "Dashboard",
-    href: "/admin/dashboard",
-    icon: (props) => (
-      <svg {...props} fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-      </svg>
-    ),
+    sectionTitle: "Overview",
+    items: [
+      {
+        name: "CMS Dashboard",
+        href: "/admin/dashboard",
+        icon: (props) => (
+          <svg {...props} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+          </svg>
+        ),
+      },
+      {
+        name: "Customer Inquiries",
+        href: "/admin/quotes",
+        badgeKey: "quotes",
+        icon: (props) => (
+          <svg {...props} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+          </svg>
+        ),
+      },
+    ],
   },
   {
-    name: "Products",
-    href: "/admin/products",
-    icon: (props) => (
-      <svg {...props} fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
-      </svg>
-    ),
+    sectionTitle: "Website Content & Branding",
+    items: [
+      {
+        name: "Site Settings & Logo",
+        href: "/admin/site-settings",
+        icon: (props) => (
+          <svg {...props} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+          </svg>
+        ),
+      },
+      {
+        name: "Hero Slides & Banners",
+        href: "/admin/hero-slides",
+        icon: (props) => (
+          <svg {...props} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+          </svg>
+        ),
+      },
+      {
+        name: "Industries We Serve",
+        href: "/admin/industries",
+        icon: (props) => (
+          <svg {...props} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+          </svg>
+        ),
+      },
+    ],
   },
   {
-    name: "Categories",
-    href: "/admin/categories",
-    icon: (props) => (
-      <svg {...props} fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
-      </svg>
-    ),
+    sectionTitle: "Machinery Catalog",
+    items: [
+      {
+        name: "Products & Machines",
+        href: "/admin/products",
+        icon: (props) => (
+          <svg {...props} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+          </svg>
+        ),
+      },
+      {
+        name: "Product Categories",
+        href: "/admin/categories",
+        icon: (props) => (
+          <svg {...props} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
+          </svg>
+        ),
+      },
+    ],
   },
   {
-    name: "Quotes",
-    href: "/admin/quotes",
-    badgeKey: "quotes",
-    icon: (props) => (
-      <svg {...props} fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
-      </svg>
-    ),
-  },
-  {
-    name: "Team",
-    href: "/admin/team",
-    icon: (props) => (
-      <svg {...props} fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
-      </svg>
-    ),
-  },
-  {
-    name: "Partners",
-    href: "/admin/partners",
-    icon: (props) => (
-      <svg {...props} fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-      </svg>
-    ),
-  },
-  {
-    name: "Clients",
-    href: "/admin/clients",
-    icon: (props) => (
-      <svg {...props} fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-      </svg>
-    ),
-  },
-  {
-    name: "Site Content",
-    href: "/admin/content",
-    icon: (props) => (
-      <svg {...props} fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-      </svg>
-    ),
+    sectionTitle: "Company & Trust",
+    items: [
+      {
+        name: "Our Team",
+        href: "/admin/team",
+        icon: (props) => (
+          <svg {...props} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+          </svg>
+        ),
+      },
+      {
+        name: "Business Partners",
+        href: "/admin/partners",
+        icon: (props) => (
+          <svg {...props} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+          </svg>
+        ),
+      },
+      {
+        name: "Client Roster",
+        href: "/admin/clients",
+        icon: (props) => (
+          <svg {...props} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+          </svg>
+        ),
+      },
+    ],
   },
 ];
 
@@ -95,10 +139,27 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
   const { user, accessToken, logout } = useAdminAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [newQuotesCount, setNewQuotesCount] = useState<number>(0);
+  const [companyName, setCompanyName] = useState<string>("JP Engineering & Construction Pvt. Ltd.");
+  const [logoUrl, setLogoUrl] = useState<string>("/assets/logo.png");
 
   const isLoginPage = pathname === "/admin/login";
 
-  // Fetch count of new quotes for badge
+  useEffect(() => {
+    let isMounted = true;
+    getPublicSiteSettings()
+      .then((s) => {
+        if (isMounted) {
+          if (s.company_name) setCompanyName(s.company_name);
+          if (s.logo_url) setLogoUrl(getMediaUrl(s.logo_url) || "/assets/logo.png");
+        }
+      })
+      .catch(() => {});
+
+    return () => {
+      isMounted = false;
+    };
+  }, [pathname]);
+
   useEffect(() => {
     if (!accessToken || isLoginPage) return;
     let isMounted = true;
@@ -109,9 +170,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
           setNewQuotesCount(items.length);
         }
       })
-      .catch(() => {
-        // Silently ignore navigation badge fetch failures
-      });
+      .catch(() => {});
     return () => {
       isMounted = false;
     };
@@ -126,10 +185,15 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
       {/* Mobile Top Bar */}
       <div className="md:hidden flex items-center justify-between px-4 py-3 bg-[#0a0f1d] border-b border-slate-800">
         <div className="flex items-center gap-2.5">
-          <div className="h-8 w-8 rounded-md bg-white p-0.5 border border-slate-700 flex items-center justify-center shrink-0">
-            <img src={LOGO_URL} alt="JP Engineering" className="h-full w-full object-contain" />
+          <div className="h-8 w-8 rounded-md bg-white/10 flex items-center justify-center shrink-0 p-0.5 border border-white/20 overflow-hidden">
+            <img src={logoUrl} alt={companyName} className="w-full h-full object-contain" />
           </div>
-          <span className="font-semibold text-sm tracking-wide text-white">JP Admin</span>
+          <div>
+            <span className="font-semibold text-xs tracking-wide text-white block truncate max-w-[170px]">
+              {companyName}
+            </span>
+            <span className="text-[10px] text-blue-400 font-medium">Admin CMS</span>
+          </div>
         </div>
         <button
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -150,53 +214,83 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
       <aside
         className={`${
           mobileMenuOpen ? "block" : "hidden"
-        } md:flex flex-col justify-between w-full md:w-64 bg-[#0a0f1d] border-r border-slate-800 p-5 shrink-0 z-20`}
+        } md:flex flex-col justify-between w-full md:w-68 bg-[#0a0f1d] border-r border-slate-800 p-4 shrink-0 z-20 overflow-y-auto`}
       >
-        <div>
-          {/* Logo / Brand */}
-          <div className="hidden md:flex items-center gap-3 px-2 py-1">
-            <div className="h-9 w-9 rounded-lg bg-white p-1 border border-slate-700 flex items-center justify-center shrink-0 shadow-sm">
-              <img src={LOGO_URL} alt="JP Engineering" className="h-full w-full object-contain" />
+        <div className="space-y-4">
+          {/* Logo / Brand Header Card */}
+          <div className="hidden md:flex flex-col gap-2 p-3 rounded-xl bg-slate-900/90 border border-slate-800/80">
+            <div className="flex items-center gap-3">
+              <div className="h-10 w-10 rounded-lg bg-white/10 flex items-center justify-center shrink-0 p-1 border border-white/20 overflow-hidden shadow-inner">
+                <img src={logoUrl} alt={companyName} className="w-full h-full object-contain" />
+              </div>
+              <div className="min-w-0 flex-1">
+                <h2 className="text-xs font-bold tracking-tight text-white truncate" title={companyName}>
+                  {companyName}
+                </h2>
+                <div className="flex items-center gap-1.5 mt-0.5">
+                  <span className="h-2 w-2 rounded-full bg-emerald-400"></span>
+                  <span className="text-[11px] text-emerald-400 font-medium">CMS Active</span>
+                </div>
+              </div>
             </div>
-            <div>
-              <h2 className="text-sm font-bold tracking-tight text-white leading-none">
-                JP Engineering
-              </h2>
-              <span className="text-[11px] text-slate-400 font-medium">Administration</span>
-            </div>
+
+            {/* View Live Website Button */}
+            <Link
+              href="/"
+              target="_blank"
+              className="mt-1 w-full flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-lg bg-blue-600/20 hover:bg-blue-600/30 text-blue-300 text-[11px] font-semibold border border-blue-500/30 transition shadow-sm group"
+            >
+              <span>View Public Website</span>
+              <svg className="w-3.5 h-3.5 text-blue-400 group-hover:translate-x-0.5 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+              </svg>
+            </Link>
           </div>
 
-          {/* Navigation Links */}
-          <nav className="mt-6 space-y-1">
-            {navItems.map((item) => {
-              const isActive =
-                item.href === "/admin/dashboard"
-                  ? pathname === "/admin/dashboard"
-                  : pathname.startsWith(item.href);
+          {/* Grouped Navigation Links */}
+          <nav className="space-y-4">
+            {navGroups.map((group) => (
+              <div key={group.sectionTitle} className="space-y-1">
+                <p className="px-3 text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                  {group.sectionTitle}
+                </p>
+                <div className="space-y-0.5">
+                  {group.items.map((item) => {
+                    const isActive =
+                      item.href === "/admin/dashboard"
+                        ? pathname === "/admin/dashboard"
+                        : pathname.startsWith(item.href);
 
-              return (
-                <Link
-                  key={item.name}
-                  href={item.href}
-                  onClick={() => setMobileMenuOpen(false)}
-                  className={`flex items-center justify-between px-3 py-2 rounded-lg text-xs font-medium transition-colors ${
-                    isActive
-                      ? "bg-blue-700 text-white shadow-sm font-semibold"
-                      : "text-slate-300 hover:bg-slate-800/80 hover:text-white"
-                  }`}
-                >
-                  <div className="flex items-center gap-2.5">
-                    <item.icon className={`h-4 w-4 shrink-0 ${isActive ? "text-white" : "text-slate-400"}`} />
-                    <span>{item.name}</span>
-                  </div>
-                  {item.badgeKey === "quotes" && newQuotesCount > 0 && (
-                    <span className="ml-auto inline-flex items-center px-1.5 py-0.5 rounded-full text-[10px] font-semibold bg-amber-500/20 text-amber-300 border border-amber-500/30">
-                      {newQuotesCount}
-                    </span>
-                  )}
-                </Link>
-              );
-            })}
+                    return (
+                      <Link
+                        key={item.name}
+                        href={item.href}
+                        onClick={() => setMobileMenuOpen(false)}
+                        className={`flex items-center justify-between px-3 py-2 rounded-lg text-xs font-medium transition-all ${
+                          isActive
+                            ? "bg-blue-600 text-white shadow-md shadow-blue-900/30 font-semibold"
+                            : "text-slate-300 hover:bg-slate-800/80 hover:text-white"
+                        }`}
+                      >
+                        <div className="flex items-center gap-2.5">
+                          <item.icon
+                            className={`h-4 w-4 shrink-0 ${
+                              isActive ? "text-white" : "text-slate-400"
+                            }`}
+                          />
+                          <span>{item.name}</span>
+                        </div>
+                        {item.badgeKey === "quotes" && newQuotesCount > 0 && (
+                          <span className="ml-auto inline-flex items-center px-1.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-500 text-slate-950 shadow-sm">
+                            {newQuotesCount}
+                          </span>
+                        )}
+                      </Link>
+                    );
+                  })}
+                </div>
+              </div>
+            ))}
           </nav>
         </div>
 

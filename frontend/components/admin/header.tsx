@@ -1,21 +1,25 @@
 import React from "react";
 
-export interface AdminHeaderProps {
+interface AdminHeaderProps {
   title: string;
-  subtitle?: string;
+  description?: string;
+  actions?: React.ReactNode;
 }
 
-export function AdminHeader({ title, subtitle }: AdminHeaderProps) {
+export function AdminHeader({ title, description, actions }: AdminHeaderProps) {
   return (
-    <div className="border-b border-gray-200 dark:border-gray-800 pb-5 mb-6">
-      <h1 className="text-2xl font-bold leading-7 text-gray-900 dark:text-white sm:truncate sm:text-3xl">
-        {title}
-      </h1>
-      {subtitle && (
-        <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
-          {subtitle}
-        </p>
-      )}
+    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-6 mb-8 border-b border-slate-800">
+      <div>
+        <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-white">
+          {title}
+        </h1>
+        {description && (
+          <p className="mt-1 text-xs sm:text-sm text-slate-400 max-w-3xl">
+            {description}
+          </p>
+        )}
+      </div>
+      {actions && <div className="flex items-center gap-3 shrink-0">{actions}</div>}
     </div>
   );
 }

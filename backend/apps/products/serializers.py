@@ -2,13 +2,19 @@ import json
 from django.db import transaction
 from django.http import QueryDict
 from rest_framework import serializers
-from apps.categories.models import Category
+from apps.categories.models import Category, Industry
 from .models import Product, ProductImage, ProductSpecification
 
 
 class ProductCategorySnippetSerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
+        fields = ['id', 'name', 'slug']
+
+
+class ProductIndustrySnippetSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Industry
         fields = ['id', 'name', 'slug']
 
 
@@ -37,6 +43,7 @@ class ProductSpecificationSerializer(serializers.ModelSerializer):
 
 class ProductListSerializer(serializers.ModelSerializer):
     categories = ProductCategorySnippetSerializer(many=True, read_only=True)
+    industries = ProductIndustrySnippetSerializer(many=True, read_only=True)
     primary_image = serializers.SerializerMethodField()
 
     class Meta:
@@ -47,6 +54,7 @@ class ProductListSerializer(serializers.ModelSerializer):
             'slug',
             'short_description',
             'categories',
+            'industries',
             'primary_image',
             'is_featured',
             'order',
@@ -65,6 +73,7 @@ class ProductListSerializer(serializers.ModelSerializer):
 
 class ProductDetailSerializer(serializers.ModelSerializer):
     categories = ProductCategorySnippetSerializer(many=True, read_only=True)
+    industries = ProductIndustrySnippetSerializer(many=True, read_only=True)
     images = ProductImageSerializer(many=True, read_only=True)
     specifications = serializers.SerializerMethodField()
     related_products = serializers.SerializerMethodField()
@@ -78,6 +87,7 @@ class ProductDetailSerializer(serializers.ModelSerializer):
             'short_description',
             'full_description',
             'categories',
+            'industries',
             'images',
             'specifications',
             'related_products',
@@ -138,7 +148,15 @@ class AdminProductSerializer(serializers.ModelSerializer):
         required=False,
         write_only=True
     )
+    industry_ids = serializers.PrimaryKeyRelatedField(
+        queryset=Industry.objects.all(),
+        many=True,
+        source='industries',
+        required=False,
+        write_only=True
+    )
     categories = ProductCategorySnippetSerializer(many=True, read_only=True)
+    industries = ProductIndustrySnippetSerializer(many=True, read_only=True)
     specifications = AdminProductSpecificationItemSerializer(many=True, required=False)
     images = AdminProductImageItemSerializer(many=True, required=False)
 
@@ -151,7 +169,9 @@ class AdminProductSerializer(serializers.ModelSerializer):
             'short_description',
             'full_description',
             'category_ids',
+            'industry_ids',
             'categories',
+            'industries',
             'images',
             'specifications',
             'is_active',
@@ -242,11 +262,14 @@ class AdminProductSerializer(serializers.ModelSerializer):
         specifications_data = validated_data.pop('specifications', [])
         images_data = validated_data.pop('images', [])
         categories = validated_data.pop('categories', [])
+        industries = validated_data.pop('industries', [])
 
         product = Product.objects.create(**validated_data)
 
         if categories:
             product.categories.set(categories)
+        if industries:
+            product.industries.set(industries)
 
         for spec in specifications_data:
             spec.pop('id', None)
@@ -277,9 +300,12 @@ class AdminProductSerializer(serializers.ModelSerializer):
         specifications_data = validated_data.pop('specifications', None)
         images_data = validated_data.pop('images', None)
         categories = validated_data.pop('categories', None)
+        industries = validated_data.pop('industries', None)
 
         if categories is not None:
             instance.categories.set(categories)
+        if industries is not None:
+            instance.industries.set(industries)
 
         for attr, value in validated_data.items():
             setattr(instance, attr, value)

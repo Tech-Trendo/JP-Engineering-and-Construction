@@ -1,37 +1,88 @@
 import type { Metadata } from "next";
-import { Poppins } from "next/font/google";
+import { Work_Sans, Open_Sans } from "next/font/google";
 import "./globals.css";
+import ConditionalShell from "@/components/ConditionalShell";
+import {
+  getPublicSiteSettings,
+  getPublicCategories,
+  getPublicIndustries,
+  getPublicProducts,
+  PublicIndustry,
+  PublicProductListItem,
+} from "@/lib/public-api";
 
-const poppins = Poppins({
+const workSans = Work_Sans({
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
-  variable: "--font-poppins",
+  variable: "--font-display",
   display: "swap",
 });
 
-export const metadata: Metadata = {
-  title: "JP Engineering & Construction (P) Ltd.",
-  description:
-    "Leading manufacturer and supplier of community and industrial water treatment systems, dairy plant machinery, industrial refrigeration, solar irrigation, solar heat pumps, meat mincing & packaging, and steel fabrication.",
-  icons: {
-    icon: [
-      { url: "/favicon.ico", sizes: "any" },
-      { url: "/icon.png", type: "image/png" },
-    ],
-    shortcut: "/favicon.ico",
-    apple: "/apple-icon.png",
-  },
-};
+const openSans = Open_Sans({
+  subsets: ["latin"],
+  variable: "--font-sans",
+  display: "swap",
+});
 
-export default function RootLayout({
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
+export async function generateMetadata(): Promise<Metadata> {
+  try {
+    const settings = await getPublicSiteSettings();
+    return {
+      title: settings.company_name || "JP Engineering & Construction Pvt. Ltd.",
+      description: settings.company_description,
+      icons: {
+        icon: "/favicon.ico",
+      },
+    };
+  } catch {
+    return {
+      title: "JP Engineering & Construction Pvt. Ltd.",
+      description: "Industrial machinery manufacturer and turnkey engineering contractor.",
+      icons: {
+        icon: "/favicon.ico",
+      },
+    };
+  }
+}
+
+export default async function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
+  let siteSettings: Awaited<ReturnType<typeof getPublicSiteSettings>> | undefined = undefined;
+  let categories: Awaited<ReturnType<typeof getPublicCategories>> = [];
+  let industries: PublicIndustry[] = [];
+  let products: PublicProductListItem[] = [];
+
+  const [settingsRes, catsRes, indsRes, prodsRes] = await Promise.allSettled([
+    getPublicSiteSettings(),
+    getPublicCategories(),
+    getPublicIndustries(),
+    getPublicProducts(),
+  ]);
+
+  if (settingsRes.status === "fulfilled") {
+    siteSettings = settingsRes.value;
+  }
+  if (catsRes.status === "fulfilled") {
+    categories = catsRes.value;
+  }
+  if (indsRes.status === "fulfilled") {
+    industries = indsRes.value;
+  }
+  if (prodsRes.status === "fulfilled") {
+    products = prodsRes.value;
+  }
+
   return (
-    <html lang="en" className={`${poppins.variable} font-sans scroll-smooth`}>
-      <body className="min-h-screen bg-background text-foreground font-sans antialiased">
-        {children}
+    <html lang="en" className={`${workSans.variable} ${openSans.variable}`}>
+      <body className="flex flex-col min-h-screen text-gray-800 bg-white antialiased">
+        <ConditionalShell siteSettings={siteSettings} categories={categories} industries={industries} products={products}>
+          {children}
+        </ConditionalShell>
       </body>
     </html>
   );

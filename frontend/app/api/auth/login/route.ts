@@ -15,7 +15,9 @@ export async function POST(request: Request) {
     const backendUrl =
       process.env.INTERNAL_BACKEND_API_URL ||
       process.env.NEXT_PUBLIC_API_URL ||
-      "http://127.0.0.1:8000/api/v1";
+      (process.env.NODE_ENV === "production"
+        ? "https://app.jpengineering.com.np/api/v1"
+        : "http://127.0.0.1:8000/api/v1");
 
     const backendRes = await fetch(`${backendUrl}/auth/login/`, {
       method: "POST",
@@ -38,7 +40,7 @@ export async function POST(request: Request) {
       { status: 200 }
     );
 
-    // Refresh token is stored in an httpOnly cookie (not accessible to JS)
+    // Store refresh token in an httpOnly cookie
     response.cookies.set({
       name: "admin_refresh_token",
       value: refresh,

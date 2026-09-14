@@ -16,37 +16,79 @@ media/seeded_products/ to eliminate all stock photo mismatches (like the Hollywo
 
 import os
 import io
-from PIL import Image, ImageDraw
+import urllib.request
+from PIL import Image, ImageDraw, ImageFont
 from django.conf import settings
 from django.core.files.base import ContentFile
 from django.core.management.base import BaseCommand
 from django.db import transaction
 
-from apps.categories.models import Category
+from django.contrib.auth.models import User
+from apps.categories.models import Category, Industry
 from apps.core.models import SiteContent, DEFAULT_SHORT_INTRO, DEFAULT_FULL_INTRO
 from apps.products.models import Product, ProductImage, ProductSpecification
 from apps.quotes.models import QuoteRequest
 from apps.showcase.models import TeamMember, Partner, Client
+from apps.site_settings.models import SiteSettings, HeroSlide
 
 
 def create_fallback_image(width, height, text, bg_color=(15, 23, 42), border_color=(30, 64, 175)):
     """
     Creates an industrial-styled fallback placeholder image in-memory using Pillow.
-    Ensures zero external network dependencies if an image file is missing.
+    Ensures high-contrast legible text and zero external network dependencies.
     """
     img = Image.new('RGB', (width, height), color=bg_color)
     draw = ImageDraw.Draw(img)
 
     # Subtle blueprint border accent
     draw.rectangle([8, 8, width - 8, height - 8], outline=border_color, width=2)
-    draw.rectangle([12, 12, width - 12, height - 12], outline=(30, 41, 59), width=1)
+    draw.rectangle([12, 12, width - 12, height - 12], outline=(30, 41, 59) if sum(bg_color)/3 < 128 else (226, 232, 240), width=1)
+
+    # Calculate brightness of bg_color for high contrast text
+    brightness = (bg_color[0] * 299 + bg_color[1] * 587 + bg_color[2] * 114) / 1000
+    text_color = (15, 23, 42) if brightness > 128 else (241, 245, 249)
 
     # Center label
     display_text = str(text)[:36]
-    draw.text((width // 2, height // 2), display_text, fill=(241, 245, 249), anchor="mm")
+    draw.text((width // 2, height // 2), display_text, fill=text_color, anchor="mm")
 
     buf = io.BytesIO()
-    img.save(buf, format='JPEG', quality=90)
+    img.save(buf, format='PNG')
+    return buf.getvalue()
+
+
+def create_branded_logo(brand, sub, color, symbol, w=320, h=130):
+    """
+    Generates a crisp, authentic corporate logo badge with distinct geometric glyphs
+    and high-contrast typography for client and OEM partner showcases.
+    """
+    img = Image.new('RGB', (w, h), (255, 255, 255))
+    draw = ImageDraw.Draw(img)
+
+    # Card border
+    draw.rounded_rectangle([3, 3, w - 4, h - 4], radius=10, fill=(255, 255, 255), outline=(226, 232, 240), width=2)
+
+    # Left brand emblem box
+    draw.rounded_rectangle([18, 22, 92, 108], radius=12, fill=color)
+
+    # Try font loading, fall back to default
+    try:
+        font_paths = ['C:/Windows/Fonts/segoeuib.ttf', 'C:/Windows/Fonts/arialbd.ttf', '/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf']
+        bold_font_path = next((p for p in font_paths if os.path.exists(p)), None)
+        sub_paths = ['C:/Windows/Fonts/segoeui.ttf', 'C:/Windows/Fonts/arial.ttf', '/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf']
+        regular_font_path = next((p for p in sub_paths if os.path.exists(p)), None)
+        sym_font = ImageFont.truetype(bold_font_path, 28) if bold_font_path else ImageFont.load_default()
+        title_font = ImageFont.truetype(bold_font_path, 16) if bold_font_path else ImageFont.load_default()
+        sub_font = ImageFont.truetype(regular_font_path, 11) if regular_font_path else ImageFont.load_default()
+    except Exception:
+        sym_font = title_font = sub_font = ImageFont.load_default()
+
+    draw.text((55, 65), symbol, fill=(255, 255, 255), font=sym_font, anchor='mm')
+    draw.text((108, 52), brand[:19], fill=(15, 23, 42), font=title_font, anchor='lm')
+    draw.text((108, 78), sub[:26].upper(), fill=(100, 116, 139), font=sub_font, anchor='lm')
+
+    buf = io.BytesIO()
+    img.save(buf, format='PNG')
     return buf.getvalue()
 
 
@@ -74,18 +116,146 @@ class Command(BaseCommand):
         ProductSpecification.objects.all().delete()
         ProductImage.objects.all().delete()
         Product.objects.all().delete()
+        Industry.objects.all().delete()
         Category.objects.all().delete()
         TeamMember.objects.all().delete()
         Partner.objects.all().delete()
         Client.objects.all().delete()
+        HeroSlide.objects.all().delete()
 
         self.stdout.write(self.style.SUCCESS("Existing records purged. Seeding authentic JP Engineering data..."))
 
         # ==========================================================
-        # 0. SITE CONTENT (Corporate Introduction Copy)
+        # 0a. STAFF ADMIN USER (For Admin CMS Access)
+        # ==========================================================
+        admin_user, _ = User.objects.get_or_create(username="admin")
+        admin_user.set_password("admin123")
+        admin_user.is_staff = True
+        admin_user.is_superuser = True
+        admin_user.email = "info@jpec.com.np"
+        admin_user.save()
+        self.stdout.write("  [+] Configured Staff Admin User (admin / admin123)")
+
+        # ==========================================================
+        # 0b. SITE SETTINGS (Singleton Global Identity, Hero & Stats)
+        # ==========================================================
+        site_settings = SiteSettings.get_solo()
+        site_settings.company_name = "JP Engineering & Construction Pvt. Ltd."
+        site_settings.company_short_name = "JP Engineering & Construction Pvt. Ltd."
+        site_settings.tagline = "Engineered for Extreme Industrial Performance"
+        site_settings.company_description = (
+            "JP Engineering & Construction Pvt. Ltd. is Nepal's premier manufacturer and turnkey contractor "
+            "for industrial refrigeration, community and industrial water treatment plants, modern dairy "
+            "processing machinery, precision steel fabrication, and solar energy systems."
+        )
+        site_settings.founding_year = "2014"
+        site_settings.company_type = "Private Limited"
+        site_settings.registration_number = ""
+        site_settings.pan_vat_number = ""
+        site_settings.employee_count = "45+ Technical Engineers & Specialists"
+        site_settings.primary_phone = "01-5385552"
+        site_settings.secondary_phone = "9851112988, 9851158661, 9851158660"
+        site_settings.primary_email = "info@jpec.com.np"
+        site_settings.secondary_email = ""
+        site_settings.address = "Kathmandu, Nepal"
+        site_settings.business_hours = "Mon – Fri: 9:00 AM – 6:00 PM | Sat: 9:00 AM – 2:00 PM"
+        site_settings.map_location_text = "Kathmandu, Nepal"
+        site_settings.hero_badge = "Nepal's Premier Industrial Machinery Manufacturer"
+        site_settings.hero_heading = "Engineered Machinery & Turnkey Industrial Plants"
+        site_settings.hero_subtext = (
+            "Specializing in cold storage facilities, water purification plants, automated dairy processing, "
+            "stainless steel equipment fabrication, and high-efficiency solar thermal systems."
+        )
+        site_settings.hero_cta_primary_label = "Explore Machinery"
+        site_settings.hero_cta_primary_link = "/products"
+        site_settings.hero_cta_secondary_label = "Request a Quote"
+        site_settings.hero_cta_secondary_link = "/contact-us#quote"
+        site_settings.stat_years_experience = "10+"
+        site_settings.stat_projects_completed = "500+"
+        site_settings.stat_happy_clients = "350+"
+        site_settings.stat_business_sectors = "7"
+        site_settings.facebook_url = "https://facebook.com"
+        site_settings.linkedin_url = "https://linkedin.com"
+        site_settings.hero_image = "site_settings/hero/hero_machinery_bg.jpg"
+
+        # Copy official logo asset to media directory if not present
+        logo_dir = os.path.join(settings.MEDIA_ROOT, 'site_settings', 'logo')
+        os.makedirs(logo_dir, exist_ok=True)
+        dest_logo_path = os.path.join(logo_dir, 'logo.png')
+        src_logo_path = os.path.join(settings.BASE_DIR, '..', 'frontend', 'public', 'assets', 'logo.png')
+        if os.path.exists(src_logo_path) and not os.path.exists(dest_logo_path):
+            import shutil
+            shutil.copyfile(src_logo_path, dest_logo_path)
+
+        if os.path.exists(dest_logo_path):
+            site_settings.logo = 'site_settings/logo/logo.png'
+
+        site_settings.save()
+        self.stdout.write("  [+] Configured SiteSettings (Singleton Global Identity, Hero, Logo & Stats)")
+
+        # ==========================================================
+        # 0d. HERO CAROUSEL SLIDES (Dynamic Hero Banner Slides)
+        # ==========================================================
+        hero_slides_data = [
+            {
+                "title": "Turnkey Industrial Machinery & Plants",
+                "badge": "Nepal's Premier Industrial Machinery Manufacturer",
+                "heading": "Engineered Machinery & Turnkey Industrial Plants",
+                "subtext": "Specializing in cold storage facilities, water purification plants, automated dairy processing, stainless steel equipment fabrication, and high-efficiency solar thermal systems.",
+                "image": "site_settings/hero/hero_machinery_bg.jpg",
+                "primary_cta_label": "Explore Machinery",
+                "primary_cta_link": "/products",
+                "secondary_cta_label": "Request a Quote",
+                "secondary_cta_link": "/contact-us#quote",
+                "order": 1,
+            },
+            {
+                "title": "Commercial Cold Storage & Blast Freezers",
+                "badge": "Agro & Pharmaceutical Cold Chain Engineering",
+                "heading": "Controlled-Atmosphere Cold Storage & Blast Freezers",
+                "subtext": "State-of-the-art multi-zone cold storage rooms for fruits, vegetables, dairy, medicines, and rapid blast freezing with automated temperature telemetry.",
+                "image": "site_settings/hero/hero_cold_storage.jpg",
+                "primary_cta_label": "View Cold Storage",
+                "primary_cta_link": "/categories/cold-storage-refrigeration",
+                "secondary_cta_label": "Contact Engineering",
+                "secondary_cta_link": "/contact-us",
+                "order": 2,
+            },
+            {
+                "title": "Turnkey Dairy Processing & Water Purification",
+                "badge": "Automated Food & Beverage Lines",
+                "heading": "Automated Dairy Plants & Industrial Water Treatment",
+                "subtext": "Complete automated engineering for continuous HTST milk pasteurization, rotary rinsing-filling-capping bottling lines, and industrial two-pass RO filtration.",
+                "image": "site_settings/hero/hero_water_dairy.jpg",
+                "primary_cta_label": "Explore Dairy & Water",
+                "primary_cta_link": "/categories/dairy-machinery",
+                "secondary_cta_label": "Get Custom Proposal",
+                "secondary_cta_link": "/contact-us#quote",
+                "order": 3,
+            },
+        ]
+
+        for sdata in hero_slides_data:
+            HeroSlide.objects.create(
+                title=sdata["title"],
+                badge=sdata["badge"],
+                heading=sdata["heading"],
+                subtext=sdata["subtext"],
+                image=sdata["image"],
+                primary_cta_label=sdata["primary_cta_label"],
+                primary_cta_link=sdata["primary_cta_link"],
+                secondary_cta_label=sdata["secondary_cta_label"],
+                secondary_cta_link=sdata["secondary_cta_link"],
+                order=sdata["order"],
+                is_active=True,
+            )
+            self.stdout.write(f"  [+] Created Hero Slide: {sdata['heading']}")
+
+        # ==========================================================
+        # 0c. SITE CONTENT (Corporate Introduction Copy)
         # ==========================================================
         site_content = SiteContent.get_solo()
-        site_content.title = "JP Engineering & Construction (P) Ltd."
+        site_content.title = "JP Engineering & Construction Pvt. Ltd."
         site_content.short_intro = DEFAULT_SHORT_INTRO
         site_content.full_intro = DEFAULT_FULL_INTRO
         site_content.save()
@@ -591,6 +761,106 @@ class Command(BaseCommand):
             created_products.append(prod)
             self.stdout.write(f"  [+] Created Product: {prod.name} ({len(pdata['specs'])} specs)")
 
+        products_by_slug = {p.slug: p for p in created_products}
+
+        # ==========================================================
+        # 2b. INDUSTRIES (Dynamic Industrial Sectors linking Categories & Machinery)
+        # ==========================================================
+        industries_data = [
+            {
+                "name": "Dairy & Milk Industry",
+                "slug": "dairy-milk-industry",
+                "description": "Comprehensive turnkey engineering for milk collection, bulk chilling, continuous HTST pasteurization, homogenization, and pouch/bottle dairy packaging plants.",
+                "order": 1,
+                "image": "dairy_pasteurizer_plant.jpg",
+                "category_slugs": ["dairy-machinery", "steel-fabrication", "cold-storage-refrigeration"],
+                "product_slugs": [
+                    "continuous-htst-milk-pasteurizer-plant",
+                    "sanitary-high-pressure-dairy-homogenizer",
+                    "automated-pouch-milk-curd-packaging-machine",
+                    "stainless-steel-bulk-milk-cooling-tank",
+                    "sanitary-stainless-steel-tanker-process-vessel",
+                ],
+            },
+            {
+                "name": "Fruits & Agro Processing Industry",
+                "slug": "fruits-agro-processing",
+                "description": "Controlled-atmosphere cold storage, rapid blast freezing, solar irrigation pumps, and vacuum packaging systems for orchards, vegetable farms, and post-harvest agro centers.",
+                "order": 2,
+                "image": "cold_storage_blast_freezer.jpg",
+                "category_slugs": ["cold-storage-refrigeration", "solar-irrigation"],
+                "product_slugs": [
+                    "controlled-atmosphere-cold-storage-blast-freezer",
+                    "commercial-double-chamber-vacuum-packaging-machine",
+                    "solar-powered-agricultural-irrigation-pumping-skid",
+                ],
+            },
+            {
+                "name": "Beverages & Water Treatment Industry",
+                "slug": "beverages-water-treatment",
+                "description": "Turnkey two-pass industrial reverse osmosis plants, rotary 3-in-1 bottle/jar packaging monoblocks, and high-intensity UV germicidal water purification stations.",
+                "order": 3,
+                "image": "beverage_bottling_line.jpg",
+                "category_slugs": ["water-treatment"],
+                "product_slugs": [
+                    "industrial-reverse-osmosis-water-plant",
+                    "community-drinking-water-treatment-station",
+                    "rotary-rinsing-filling-capping-bottling-line",
+                    "community-solar-drinking-water-pumping-station",
+                ],
+            },
+            {
+                "name": "Cold Chain & Logistics Industry",
+                "slug": "cold-chain-logistics",
+                "description": "Heavy industrial ammonia screw chillers, vaccine walk-in cold rooms (+2 C to +8 C), blast freezers, and sanitary insulated road transport tankers.",
+                "order": 4,
+                "image": "cold_storage_blast_freezer.jpg",
+                "category_slugs": ["cold-storage-refrigeration", "steel-fabrication"],
+                "product_slugs": [
+                    "industrial-ammonia-screw-compressor-chiller",
+                    "vaccine-pharmaceutical-cold-storage-unit",
+                    "controlled-atmosphere-cold-storage-blast-freezer",
+                    "sanitary-stainless-steel-tanker-process-vessel",
+                ],
+            },
+            {
+                "name": "Meat & Poultry Processing Industry",
+                "slug": "meat-poultry-processing",
+                "description": "High-torque industrial meat grinders, double-chamber vacuum packaging machines with gas flushing, and food-grade stainless steel prep tables and wash basins.",
+                "order": 5,
+                "image": "meat_packaging_machine.jpg",
+                "category_slugs": ["meat-mincing-packaging", "steel-fabrication"],
+                "product_slugs": [
+                    "heavy-duty-industrial-meat-mincing-grinder",
+                    "commercial-double-chamber-vacuum-packaging-machine",
+                    "commercial-kitchen-ss-basin-heavy-storage-shelf",
+                ],
+            },
+        ]
+
+        for idata in industries_data:
+            ind = Industry.objects.create(
+                name=idata["name"],
+                slug=idata["slug"],
+                description=idata["description"],
+                order=idata["order"],
+                is_active=True,
+            )
+            # Link categories
+            linked_cats = [category_objs[cslug] for cslug in idata["category_slugs"] if cslug in category_objs]
+            ind.categories.set(linked_cats)
+
+            # Link products
+            for pslug in idata["product_slugs"]:
+                if pslug in products_by_slug:
+                    products_by_slug[pslug].industries.add(ind)
+
+            # Assign image
+            ind_img_bytes = load_verified_image(idata["image"], ind.name, 600, 400)
+            ind.icon_or_image.save(f"ind_{ind.slug}.jpg", ContentFile(ind_img_bytes), save=True)
+
+            self.stdout.write(f"  [+] Created Industry: {ind.name} ({ind.categories.count()} categories, {ind.products.count()} products)")
+
         # ==========================================================
         # 3. TEAM MEMBERS (Authentic Engineering Leadership with Pravatar Headshots)
         # ==========================================================
@@ -631,24 +901,24 @@ class Command(BaseCommand):
         # 4. PARTNERS (OEM Component & Technology Suppliers with Crisp Logos)
         # ==========================================================
         partners_data = [
-            ("Danfoss Industrial Refrigeration", "https://www.danfoss.com", "https://placehold.co/280x120/ffffff/1e40af.png?text=Danfoss"),
-            ("Alfa Laval Process Technology", "https://www.alfalaval.com", "https://placehold.co/280x120/ffffff/0284c7.png?text=Alfa+Laval"),
-            ("Siemens Industrial Automation", "https://www.siemens.com", "https://placehold.co/280x120/ffffff/0f766e.png?text=Siemens"),
-            ("Grundfos Pumping Systems", "https://www.grundfos.com", "https://placehold.co/280x120/ffffff/1d4ed8.png?text=Grundfos"),
-            ("ABB Motors & Drives", "https://new.abb.com", "https://placehold.co/280x120/ffffff/dc2626.png?text=ABB"),
-            ("Krones Beverage Processing", "https://www.krones.com", "https://placehold.co/280x120/ffffff/2563eb.png?text=KRONES"),
-            ("Schneider Electric Solutions", "https://www.se.com", "https://placehold.co/280x120/ffffff/16a34a.png?text=Schneider"),
-            ("Atlas Copco Compressed Air", "https://www.atlascopco.com", "https://placehold.co/280x120/ffffff/0284c7.png?text=Atlas+Copco"),
+            ("Danfoss Industrial Refrigeration", "https://www.danfoss.com", "Danfoss", "Refrigeration", (220, 38, 38), "DF"),
+            ("Alfa Laval Process Technology", "https://www.alfalaval.com", "Alfa Laval", "Process Systems", (2, 132, 199), "AL"),
+            ("Siemens Industrial Automation", "https://www.siemens.com", "Siemens", "Automation & Drives", (15, 118, 110), "SI"),
+            ("Grundfos Pumping Systems", "https://www.grundfos.com", "Grundfos", "Pumping Systems", (29, 78, 216), "GF"),
+            ("ABB Motors & Drives", "https://new.abb.com", "ABB", "Motors & Drives", (220, 38, 38), "ABB"),
+            ("Krones Beverage Processing", "https://www.krones.com", "Krones", "Beverage Lines", (37, 99, 235), "KR"),
+            ("Schneider Electric Solutions", "https://www.se.com", "Schneider", "Energy & Auto", (22, 163, 74), "SE"),
+            ("Atlas Copco Compressed Air", "https://www.atlascopco.com", "Atlas Copco", "Industrial Air", (2, 132, 199), "AC"),
         ]
 
-        for idx, (pname, purl, logo_url) in enumerate(partners_data):
+        for idx, (pname, purl, brand, sub, color, sym) in enumerate(partners_data):
             partner = Partner.objects.create(
                 name=pname,
                 website_url=purl,
                 order=idx + 1,
                 is_active=True,
             )
-            logo_bytes = fetch_image_bytes(logo_url, pname.split()[0], 280, 120, bg=(255, 255, 255), fg=(30, 64, 175))
+            logo_bytes = create_branded_logo(brand, sub, color, sym)
             partner.logo.save(f"partner_{partner.id}.png", ContentFile(logo_bytes), save=True)
             self.stdout.write(f"  [+] Created Partner: {pname}")
 
@@ -656,24 +926,24 @@ class Command(BaseCommand):
         # 5. CLIENT REFERENCES (Institutional Client Logos)
         # ==========================================================
         clients_data = [
-            ("Himalayan Spring Beverages Ltd", "https://example.com", "https://placehold.co/280x120/ffffff/0f172a.png?text=Himalayan+Spring"),
-            ("National Dairy Development Grid", "https://example.com", "https://placehold.co/280x120/ffffff/1e40af.png?text=National+Dairy"),
-            ("Apex Cold Chain & Logistics", "https://example.com", "https://placehold.co/280x120/ffffff/0369a1.png?text=Apex+Cold+Chain"),
-            ("Everest Agro Processing Mills", "https://example.com", "https://placehold.co/280x120/ffffff/15803d.png?text=Everest+Agro"),
-            ("Valley Health Systems & Hospital", "https://example.com", "https://placehold.co/280x120/ffffff/b91c1c.png?text=Valley+Health"),
-            ("Gandaki Food Products Industries", "https://example.com", "https://placehold.co/280x120/ffffff/c2410c.png?text=Gandaki+Foods"),
-            ("Bagmati Community Water Authority", "https://example.com", "https://placehold.co/280x120/ffffff/1d4ed8.png?text=Bagmati+Water"),
-            ("Nepal Stainless Process Industries", "https://example.com", "https://placehold.co/280x120/ffffff/334155.png?text=Nepal+Stainless"),
+            ("Himalayan Spring Beverages Ltd", "https://example.com", "Himalayan Spring", "Beverages & Water", (26, 86, 160), "HS"),
+            ("National Dairy Development Grid", "https://example.com", "National Dairy", "Development Grid", (14, 116, 144), "ND"),
+            ("Apex Cold Chain & Logistics", "https://example.com", "Apex Cold Chain", "Logistics & Storage", (2, 132, 199), "AC"),
+            ("Everest Agro Processing Mills", "https://example.com", "Everest Agro", "Processing Mills", (22, 101, 52), "EA"),
+            ("Valley Health Systems & Hospital", "https://example.com", "Valley Health", "Systems & Hospital", (185, 28, 28), "VH"),
+            ("Gandaki Food Products Industries", "https://example.com", "Gandaki Food", "Products Industries", (194, 65, 12), "GF"),
+            ("Bagmati Community Water Authority", "https://example.com", "Bagmati Water", "Community Authority", (29, 78, 216), "BW"),
+            ("Nepal Stainless Process Industries", "https://example.com", "Nepal Stainless", "Process Industries", (51, 65, 85), "NS"),
         ]
 
-        for idx, (cname, curl, logo_url) in enumerate(clients_data):
+        for idx, (cname, curl, brand, sub, color, sym) in enumerate(clients_data):
             client = Client.objects.create(
                 name=cname,
                 website_url=curl,
                 order=idx + 1,
                 is_active=True,
             )
-            logo_bytes = fetch_image_bytes(logo_url, cname.split()[0], 280, 120, bg=(255, 255, 255), fg=(15, 23, 42))
+            logo_bytes = create_branded_logo(brand, sub, color, sym)
             client.logo.save(f"client_{client.id}.png", ContentFile(logo_bytes), save=True)
             self.stdout.write(f"  [+] Created Client: {cname}")
 

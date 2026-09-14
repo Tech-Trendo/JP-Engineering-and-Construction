@@ -24,3 +24,5 @@ frontend/.env
 .DS_Store
 .vscode/
 .idea/
+backend.zip
+backend/scratch/

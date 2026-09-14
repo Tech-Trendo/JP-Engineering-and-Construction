@@ -1,2 +1,2 @@
-export * from "./header";
-export * from "./admin-shell";
+export { AdminShell } from "./admin-shell";
+export { AdminHeader } from "./header";

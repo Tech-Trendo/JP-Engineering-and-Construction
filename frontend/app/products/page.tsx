@@ -1,0 +1,220 @@
+import Link from "next/link";
+import PageBanner from "@/components/PageBanner";
+import {
+  getPublicCategories,
+  getPublicProducts,
+  getPublicSiteSettings,
+  getMediaUrl,
+  PublicCategory,
+  PublicProductListItem,
+} from "@/lib/public-api";
+import type { Metadata } from "next";
+
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
+export async function generateMetadata(): Promise<Metadata> {
+  try {
+    const settings = await getPublicSiteSettings();
+    return {
+      title: `Industrial Machinery & Equipment Catalog - ${settings.company_short_name}`,
+      description: `Explore industrial machinery manufactured and supplied by ${settings.company_name}.`,
+    };
+  } catch {
+    return {
+      title: "Industrial Machinery & Equipment Catalog - JP Engineering & Construction Pvt. Ltd.",
+      description: "Explore industrial machinery and turnkey processing equipment.",
+    };
+  }
+}
+
+export default async function ProductsPage() {
+  let categories: PublicCategory[] = [];
+  let products: PublicProductListItem[] = [];
+  let hasError = false;
+
+  const [catsRes, prodsRes] = await Promise.allSettled([
+    getPublicCategories(),
+    getPublicProducts(),
+  ]);
+
+  if (catsRes.status === "fulfilled") {
+    categories = catsRes.value;
+  } else {
+    hasError = true;
+    console.error("[ProductsPage] getPublicCategories failed:", catsRes.reason);
+  }
+
+  if (prodsRes.status === "fulfilled") {
+    products = prodsRes.value;
+  } else {
+    hasError = true;
+    console.error("[ProductsPage] getPublicProducts failed:", prodsRes.reason);
+  }
+
+  return (
+    <>
+      <PageBanner
+        title="Industrial Machinery &amp; Equipment Catalog"
+        breadcrumbs={[{ label: "Machinery Catalog" }]}
+      />
+
+      <section className="py-12 bg-[#f8f9fb]">
+        <div className="max-w-[1280px] mx-auto px-4">
+          {hasError ? (
+            <div className="p-12 border border-red-200 bg-red-50 text-center rounded-lg max-w-lg mx-auto my-8">
+              <div className="w-12 h-12 rounded-full bg-red-100 text-red-600 flex items-center justify-center mx-auto mb-3 font-bold text-xl">
+                !
+              </div>
+              <h3 className="text-red-800 font-bold text-lg mb-1">
+                Unable to load machinery catalog
+              </h3>
+              <p className="text-red-700 text-sm leading-relaxed mb-4">
+                Unable to load machinery catalog — please ensure the backend server is running and try again later.
+              </p>
+              <Link
+                href="/contact-us"
+                className="inline-flex items-center justify-center gap-2 bg-[#c8391a] hover:bg-[#a62d14] text-white text-xs font-bold uppercase tracking-wider px-5 py-2.5 rounded shadow-sm hover:shadow transition-all"
+              >
+                Contact Us
+              </Link>
+            </div>
+          ) : (
+            <>
+              {/* Category Navigation Bar */}
+              {categories.length > 0 && (
+                <div className="flex flex-wrap items-center gap-2 mb-10 bg-white p-4 border border-gray-200 shadow-sm sticky top-[72px] z-30">
+                  <span className="text-xs font-bold text-gray-500 uppercase tracking-wider mr-2 hidden md:inline">
+                    Jump to Category:
+                  </span>
+                  {categories.map((cat) => (
+                    <a
+                      key={cat.id}
+                      href={`#${cat.slug}`}
+                      className="px-3.5 py-1.5 text-[12px] font-bold text-[#1b3a6e] border border-gray-200 hover:border-[#1b3a6e] hover:bg-[#1b3a6e] hover:text-white transition-all rounded-sm"
+                    >
+                      {cat.name}
+                    </a>
+                  ))}
+                </div>
+              )}
+
+              {/* Categories & Products Listing */}
+              {categories.length > 0 ? (
+                <div className="space-y-16">
+                  {categories.map((cat) => {
+                    const categoryProducts = products.filter((p) =>
+                      p.categories.some((c) => c.id === cat.id || c.slug === cat.slug)
+                    );
+
+                    return (
+                      <div
+                        key={cat.id}
+                        id={cat.slug}
+                        className="bg-white border border-gray-200 shadow-sm overflow-hidden scroll-mt-28"
+                      >
+                        {/* Category Header Banner */}
+                        <div className="p-6 md:p-8 bg-[#f5f7fa] border-b border-gray-200 flex flex-col md:flex-row gap-6 items-start md:items-center justify-between">
+                          <div className="max-w-[800px]">
+                            <span className="text-[#c8391a] text-xs font-bold uppercase tracking-widest">
+                              Machinery Category
+                            </span>
+                            <h2 className="text-[#1b3a6e] text-2xl font-bold mt-1 mb-2">
+                              {cat.name}
+                            </h2>
+                            <p className="text-gray-600 text-sm leading-relaxed">
+                              {cat.description ||
+                                "Industrial machinery and turnkey processing equipment designed for maximum reliability and performance."}
+                            </p>
+                          </div>
+                          {cat.icon_or_image && (
+                            <div className="w-24 h-24 shrink-0 rounded overflow-hidden border border-gray-200 bg-white hidden md:block">
+                              <img
+                                src={getMediaUrl(cat.icon_or_image)}
+                                alt={cat.name}
+                                className="w-full h-full object-cover"
+                              />
+                            </div>
+                          )}
+                        </div>
+
+                        {/* Products Grid for this Category */}
+                        <div className="p-6 md:p-8">
+                          {categoryProducts.length > 0 ? (
+                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                              {categoryProducts.map((product) => (
+                                <div
+                                  key={product.id}
+                                  className="border border-gray-200 rounded overflow-hidden hover:shadow-md hover:border-[#1b3a6e] transition-all flex flex-col group bg-white"
+                                >
+                                  <Link
+                                    href={`/products/${product.slug}`}
+                                    className="block relative h-48 bg-gray-100 overflow-hidden flex items-center justify-center cursor-pointer"
+                                  >
+                                    {product.primary_image ? (
+                                      <img
+                                        src={getMediaUrl(product.primary_image)}
+                                        alt={product.name}
+                                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                                      />
+                                    ) : (
+                                      <div className="w-full h-full bg-[#1b3a6e]/5 flex items-center justify-center text-gray-400 text-xs">
+                                        Industrial Machine
+                                      </div>
+                                    )}
+                                  </Link>
+                                  <div className="p-5 flex-1 flex flex-col justify-between">
+                                    <div>
+                                      <h3 className="text-[#1b3a6e] font-bold text-base mb-1.5 group-hover:text-[#c8391a] transition-colors leading-snug">
+                                        <Link href={`/products/${product.slug}`} className="hover:text-[#c8391a] transition-colors">
+                                          {product.name}
+                                        </Link>
+                                      </h3>
+                                      <p className="text-gray-500 text-xs leading-relaxed mb-4 line-clamp-2">
+                                        {product.short_description}
+                                      </p>
+                                    </div>
+                                    <div className="flex gap-2 pt-3 border-t border-gray-100 mt-auto">
+                                      <Link
+                                        href={`/products/${product.slug}`}
+                                        className="flex-1 inline-flex items-center justify-center bg-[#c8391a] hover:bg-[#a62d14] text-white text-xs font-bold uppercase tracking-wider py-2 rounded shadow-sm hover:shadow transition-all"
+                                      >
+                                        Specifications
+                                      </Link>
+                                      <Link
+                                        href={`/contact-us?product=${product.id}&name=${encodeURIComponent(product.name)}`}
+                                        className="flex-1 inline-flex items-center justify-center bg-[#c8391a] hover:bg-[#a62d14] text-white text-xs font-bold uppercase tracking-wider py-2 rounded shadow-sm hover:shadow transition-all"
+                                      >
+                                        Quote
+                                      </Link>
+                                    </div>
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+                          ) : (
+                            <div className="text-center py-10 border border-dashed border-gray-200 rounded p-6 bg-gray-50">
+                              <p className="text-gray-400 text-xs">
+                                Machinery models for {cat.name} are currently being added.
+                              </p>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              ) : (
+                <div className="text-center py-16 bg-white border border-gray-200 p-8 rounded shadow-sm">
+                  <p className="text-gray-500 text-sm">
+                    Categories and machinery products are currently being configured.
+                  </p>
+                </div>
+              )}
+            </>
+          )}
+        </div>
+      </section>
+    </>
+  );
+}
