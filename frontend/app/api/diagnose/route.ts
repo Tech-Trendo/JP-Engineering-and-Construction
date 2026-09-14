@@ -15,7 +15,9 @@ export async function GET() {
     const res = await fetch(target, {
       cache: "no-store",
       headers: {
-        "Accept": "application/json",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
+        "Accept": "application/json, text/plain, */*",
+        "Accept-Language": "en-US,en;q=0.9",
       },
     });
     results.elapsedMs = Date.now() - t0;
@@ -23,7 +25,8 @@ export async function GET() {
     results.statusText = res.statusText;
     const body = await res.text();
     results.bodyLength = body.length;
-    results.bodyPreview = body.slice(0, 300);
+    results.isJson = body.trim().startsWith("[") || body.trim().startsWith("{");
+    results.bodyPreview = body.slice(0, 500);
   } catch (err: unknown) {
     if (err instanceof Error) {
       results.error = err.message;
