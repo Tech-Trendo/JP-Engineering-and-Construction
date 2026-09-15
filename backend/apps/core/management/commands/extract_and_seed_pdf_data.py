@@ -614,6 +614,23 @@ class Command(BaseCommand):
                 ]
             },
             {
+                "name": "Walk-In Modular Cold Room",
+                "slug": "walk-in-modular-cold-room",
+                "category": "cold-store-solution",
+                "industries": ["dairy-industry", "food-industry", "pharma-industry", "beverage-industry"],
+                "short_desc": "Modular polyurethane insulated cold storage chamber complete with refrigeration unit and internal shelving.",
+                "full_desc": "Complete commercial walk-in cold room engineered for preservation of dairy, fruits, vegetables, beverages, and pharmaceuticals. Built with 100mm/150mm tongue-and-groove PUF sandwich panels, airtight hinged door with inside safety glow push-release, digital microprocessor temperature control panel, and matched condensing unit.",
+                "is_featured": True,
+                "image_src": "extracted_pdf_images/page_5_img_1_R410.jp2",
+                "specs": [
+                    ("Storage Volume", "10 m³ to 500 m³ Custom Sizing"),
+                    ("Temperature Range", "+15°C Chilled Storage to -25°C Deep Freeze"),
+                    ("Insulation Panels", "100mm / 150mm High-Density PUF (40 kg/m³)"),
+                    ("Refrigeration Unit", "Matched High-COP Condensing Unit with Ceiling Evaporator"),
+                    ("Floor Finish", "Reinforced Chequered Aluminium / Stainless Steel Floor"),
+                ]
+            },
+            {
                 "name": "Ceiling-Mounted Cold Room Evaporator",
                 "slug": "ceiling-mounted-cold-room-evaporator",
                 "category": "cold-store-solution",
@@ -716,6 +733,23 @@ class Command(BaseCommand):
                 ]
             },
             {
+                "name": "Hermetic Air Cooled Condensing Unit",
+                "slug": "hermetic-air-cooled-condensing-unit",
+                "category": "cold-store-solution",
+                "industries": ["dairy-industry", "food-industry", "pharma-industry", "beverage-industry"],
+                "short_desc": "Compact multi-fan outdoor condensing unit with high-efficiency hermetic scroll refrigeration compressors.",
+                "full_desc": "Engineered for medium-temperature cold rooms, beverage display chillers, and commercial refrigeration systems. Driven by dependable hermetic scroll compressors with low sound levels, dual high-volume axial condenser fans, liquid receiver, filter drier, and weatherproof housing.",
+                "is_featured": False,
+                "image_src": "extracted_pdf_images/page_7_img_22_R569.jpg",
+                "specs": [
+                    ("Compressor Type", "Hermetic Scroll / Reciprocating Compressor"),
+                    ("Cooling Capacity", "2.0 kW to 25.0 kW"),
+                    ("Refrigerant", "R404A / R134a / R407C Eco-Friendly"),
+                    ("Condenser Fans", "Dual External-Rotor Low Noise Axial Fans"),
+                    ("Controls", "High/Low Pressure Dual Pressure Switch Protection"),
+                ]
+            },
+            {
                 "name": "Semi-Hermetic Air Cooled Condensing Unit",
                 "slug": "semi-hermetic-air-cooled-condensing-unit",
                 "category": "cold-store-solution",
@@ -805,6 +839,23 @@ class Command(BaseCommand):
                 ]
             },
             {
+                "name": "Industrial 250-500 LPH Dual-Stage RO System",
+                "slug": "industrial-250-500-lph-dual-stage-ro-system",
+                "category": "water-factory-segment",
+                "industries": ["beverage-industry", "pharma-industry"],
+                "short_desc": "High-purity dual-pass reverse osmosis water system with skid-mounted pre-filtration and PLC console.",
+                "full_desc": "Engineered for industrial beverage bottling plants and pharmaceutical facilities requiring ultra-low TDS conductivity. Incorporates dual-stage reverse osmosis membranes, twin vertical multistage high-pressure pumps, automatic backwash valves, and continuous digital permeate monitoring.",
+                "is_featured": False,
+                "image_src": "extracted_pdf_images/page_10_img_20_R718.jp2",
+                "specs": [
+                    ("Purification Output", "250 to 500 Liters/Hour Dual-Stage Permeate"),
+                    ("Recovery Rate", "Up to 75% High-Efficiency Water Recovery"),
+                    ("Membrane Configuration", "Dual High-Rejection 4040 TFC Polyamide RO Elements"),
+                    ("Pumps", "Twin Stainless Steel SS304 Vertical Multistage Pumps"),
+                    ("Instrumentation", "Permeate/Concentrate Flowmeters, Dual Digital TDS/Conductivity"),
+                ]
+            },
+            {
                 "name": "Industrial Water Storage Tank",
                 "slug": "industrial-water-storage-tank",
                 "category": "water-factory-segment",
@@ -890,6 +941,23 @@ class Command(BaseCommand):
                 ]
             },
             {
+                "name": "Automatic Linear Bottle Filling Machine",
+                "slug": "automatic-linear-bottle-filling-machine",
+                "category": "water-factory-segment",
+                "industries": ["beverage-industry"],
+                "short_desc": "Inline multi-head liquid bottle filling machine with anti-drip diving nozzles and conveyor synchronization.",
+                "full_desc": "High-accuracy linear automatic bottle filling machine designed for packaging mineral water, fruit juices, and flavored beverages into PET and glass bottles. Features servo-driven volumetric piston filling nozzles, bottle neck clamping, diving fill heads, and no-bottle-no-fill optical sensors.",
+                "is_featured": False,
+                "image_src": "extracted_pdf_images/page_12_img_20_R780.jp2",
+                "specs": [
+                    ("Filling Speed", "24 to 60 Bottles/Minute (1,500 – 3,600 BPH)"),
+                    ("Filling Heads", "4, 6, or 8 In-Line Stainless Diving Nozzles"),
+                    ("Filling Accuracy", "± 0.5% High Precision Volumetric Dispensing"),
+                    ("Bottle Size Range", "200ml to 2,000ml Round or Flat Bottles"),
+                    ("Automation", "Siemens Touchscreen HMI and PLC Controller"),
+                ]
+            },
+            {
                 "name": "Automatic Sleeve Labelling Machine",
                 "slug": "automatic-sleeve-labelling-machine",
                 "category": "water-factory-segment",
@@ -938,6 +1006,23 @@ class Command(BaseCommand):
                     ("Air Blower", "Low-Noise Centrifugal Fan with HEPA Intake Filter"),
                     ("Track Configurations", "Straight, Curved, Inclined Sections Custom Engineered"),
                     ("Sensors", "Photoelectric Bottle Jam and Starvation Sensors"),
+                ]
+            },
+            {
+                "name": "Automatic Rotary Bottle Blowing Machine",
+                "slug": "automatic-rotary-bottle-blowing-machine",
+                "category": "water-factory-segment",
+                "industries": ["beverage-industry"],
+                "short_desc": "High-speed multi-cavity stretch blow molding machine for mass production of PET beverage bottles.",
+                "full_desc": "Advanced continuous high-output rotary PET bottle stretch blow molding machine. Integrates automatic preform elevator, near-infrared heating lamps with zone control, servo stretching rods, and high-pressure air recovery to achieve maximum energy efficiency.",
+                "is_featured": True,
+                "image_src": "extracted_pdf_images/page_13_img_22_R943.jp2",
+                "specs": [
+                    ("Blowing Capacity", "2,000 to 6,000 Bottles/Hour High-Speed"),
+                    ("Cavities", "2, 4, or 6 Mould Cavities"),
+                    ("Max Bottle Volume", "2.0 Liters Standard PET Finish"),
+                    ("Blowing Pressure", "30 – 40 bar High-Pressure Air Supply"),
+                    ("Preform Heating", "Multi-Zone Infrared Preform Oven with Air Cooling"),
                 ]
             },
             {
@@ -1180,6 +1265,23 @@ class Command(BaseCommand):
                     ("Orifice", "12mm to 20mm High Flow Orifice"),
                 ]
             },
+            {
+                "name": "High Performance Filter Media",
+                "slug": "high-performance-filter-media",
+                "category": "water-factory-segment",
+                "industries": ["beverage-industry", "food-industry", "pharma-industry"],
+                "short_desc": "Specialized multi-gradient turbidity and particulate filtration media for industrial water filters.",
+                "full_desc": "Engineered multi-mineral filtration media composed of high-purity natural aluminosilicate granules. Delivers microscopic 3-5 micron sediment removal with over twice the dirt-holding capacity of traditional sand filters, reducing backwash frequency.",
+                "is_featured": False,
+                "image_src": "extracted_pdf_images/page_18_img_20_R1279.jp2",
+                "specs": [
+                    ("Filtration Rating", "Down to 3 – 5 Microns Mechanical Filtration"),
+                    ("Bulk Density", "0.80 to 0.90 g/cm³"),
+                    ("Bed Depth", "600mm to 900mm Standard Multi-Media Vessel"),
+                    ("Service Flow Rate", "15 to 25 m/h High Velocity Loading"),
+                    ("Backwash Rate", "25 to 30 m/h Rapid Expansion Bed Release"),
+                ]
+            },
 
             # Water Filter Media (Pages 18-19)
             {
@@ -1197,6 +1299,23 @@ class Command(BaseCommand):
                     ("Bead Size", "0.315 – 1.25 mm Spherical Beads"),
                     ("Regeneration", "Sodium Chloride (NaCl / Brine Solution)"),
                     ("Packaging", "25-Liter / 25 kg Hermetic Bags"),
+                ]
+            },
+            {
+                "name": "Silex Filter Media",
+                "slug": "silex-filter-media",
+                "category": "water-factory-segment",
+                "industries": ["beverage-industry", "food-industry"],
+                "short_desc": "Graded high-silica flint support gravel for pressure sand filter bed stabilization and distribution.",
+                "full_desc": "Pure washed, dried, and sub-angular graded silex flint gravel. Functions as the critical bottom bedding and water distribution layer in commercial media filters and softeners, preventing under-drain nozzle fouling and ensuring laminar flow.",
+                "is_featured": False,
+                "image_src": "extracted_pdf_images/page_18_img_24_R1285.jp2",
+                "specs": [
+                    ("Silica Content", "> 98.5% Pure Silicon Dioxide (SiO₂)"),
+                    ("Size Grading", "2.0 – 4.0 mm, 4.0 – 8.0 mm Graded Flint"),
+                    ("Hardness", "7.0 Mohs Scale Abrasion Resistant"),
+                    ("Specific Gravity", "2.65 g/cm³"),
+                    ("Packaging", "25 kg / 50 kg Moisture-Proof Poly Woven Bags"),
                 ]
             },
             {
@@ -1287,20 +1406,37 @@ class Command(BaseCommand):
 
             # Water Treatment Components & Consumables (Pages 20-23)
             {
-                "name": "Slim Blue & Jumbo Blue Filter Housing",
-                "slug": "slim-blue-jumbo-blue-filter-housing",
+                "name": "Slim Blue Filter Housing",
+                "slug": "slim-blue-filter-housing",
                 "category": "water-factory-segment",
                 "industries": ["beverage-industry", "pharma-industry"],
-                "short_desc": "Reinforced polypropylene 10\" and 20\" filter housings with pressure relief valves.",
-                "full_desc": "Durable reinforced polypropylene cartridge filter housings holding spun, wound, or carbon block cartridges. Built with thick walls, Viton O-ring seal, and pressure relief valve for safe cartridge replacement.",
+                "short_desc": "Reinforced polypropylene 10\" and 20\" Slim profile cartridge filter housings with pressure relief valves.",
+                "full_desc": "Durable reinforced polypropylene 2.5-inch slim diameter filter housing designed for precision point-of-use and pre-RO filtration. Features leak-proof O-ring seal, built-in pressure release valve, and female threaded inlet/outlet ports.",
                 "is_featured": False,
                 "image_src": "extracted_pdf_images/page_20_img_18_R1448.jp2",
                 "specs": [
-                    ("Sizes Available", "10\" Slim, 20\" Slim, 10\" Jumbo (Big Blue), 20\" Jumbo"),
-                    ("Port Sizes", "1/2\", 3/4\", 1\", 1.5\" NPT / BSP"),
-                    ("Max Pressure", "125 PSI (8.6 bar)"),
+                    ("Housing Diameter", "2.5\" Slim Line Standard Cartridges"),
+                    ("Length Compatibility", "10\" and 20\" Universal Slim Cartridges"),
+                    ("Port Sizes", "1/2\", 3/4\" NPT / BSP Brass Inserts"),
+                    ("Max Pressure", "125 PSI (8.6 bar) Hydrostatically Tested"),
                     ("Housing Material", "Food-Grade Reinforced Polypropylene"),
-                    ("Cap Feature", "Built-In Brass Pressure Relief Push Button"),
+                ]
+            },
+            {
+                "name": "Jumbo Blue Filter Housing",
+                "slug": "jumbo-blue-filter-housing",
+                "category": "water-factory-segment",
+                "industries": ["beverage-industry", "pharma-industry"],
+                "short_desc": "Heavy-duty 4.5\" Big Blue cartridge filter housing for commercial high-flow water treatment systems.",
+                "full_desc": "Heavy-duty commercial Jumbo / Big Blue filter housing for high-flow commercial water purification. Accommodates large 4.5-inch diameter filter cartridges for higher dirt holding capacity, minimal pressure drop, and extended service intervals.",
+                "is_featured": True,
+                "image_src": "extracted_pdf_images/page_20_img_16_R1439.jp2",
+                "specs": [
+                    ("Housing Diameter", "4.5\" Jumbo / Big Blue Heavy Duty"),
+                    ("Length Compatibility", "10\" and 20\" High Flow Jumbo Cartridges"),
+                    ("Port Sizes", "1\", 1.5\" High-Flow Female Ports"),
+                    ("Operating Temperature", "Up to 50°C Continuous Duty"),
+                    ("Cap Assembly", "Reinforced Polypropylene with Heavy Dual O-Rings"),
                 ]
             },
             {
