@@ -46,6 +46,7 @@ export default function IndustryProductCatalog({
               const count = products.filter((p) =>
                 p.categories?.some((c) => c.slug === cat.slug)
               ).length;
+              if (count === 0) return null;
               const isSelected = selectedCat === cat.slug;
 
               return (

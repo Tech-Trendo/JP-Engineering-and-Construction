@@ -81,7 +81,8 @@ class IndustrySerializer(serializers.ModelSerializer):
     def get_products_count(self, obj) -> int:
         cat_ids = obj.categories.values_list('id', flat=True)
         return Product.objects.filter(
-            models.Q(industries=obj) | models.Q(categories__id__in=cat_ids),
+            industries=obj,
+            categories__id__in=cat_ids,
             is_active=True
         ).distinct().count()
 
@@ -119,7 +120,8 @@ class IndustryDetailSerializer(serializers.ModelSerializer):
     def get_products(self, obj):
         cat_ids = obj.categories.values_list('id', flat=True)
         products = Product.objects.filter(
-            models.Q(industries=obj) | models.Q(categories__id__in=cat_ids),
+            industries=obj,
+            categories__id__in=cat_ids,
             is_active=True
         ).distinct().prefetch_related('categories', 'images').order_by('order', 'name')
         
