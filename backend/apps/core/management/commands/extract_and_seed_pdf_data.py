@@ -338,8 +338,25 @@ class Command(BaseCommand):
                 order=ind_data["order"],
                 is_active=True,
             )
+            # Link realistic section photography
+            ind_img_rel = f"industries/{ind.slug}.jpg"
+            ind_src = os.path.join(settings.BASE_DIR, 'assets', 'sections', f"{ind.slug}.jpg")
+            ind_dest_backend = os.path.join(settings.MEDIA_ROOT, 'industries', f"{ind.slug}.jpg")
+            ind_dest_frontend = os.path.join(settings.BASE_DIR, '..', 'frontend', 'public', 'media', 'industries', f"{ind.slug}.jpg")
+            os.makedirs(os.path.dirname(ind_dest_backend), exist_ok=True)
+            os.makedirs(os.path.dirname(ind_dest_frontend), exist_ok=True)
+            if os.path.exists(ind_src):
+                import shutil
+                if not os.path.exists(ind_dest_backend) or os.path.getsize(ind_dest_backend) != os.path.getsize(ind_src):
+                    shutil.copyfile(ind_src, ind_dest_backend)
+                if not os.path.exists(ind_dest_frontend) or os.path.getsize(ind_dest_frontend) != os.path.getsize(ind_src):
+                    shutil.copyfile(ind_src, ind_dest_frontend)
+            if os.path.exists(ind_dest_backend):
+                ind.icon_or_image = ind_img_rel
+                ind.save()
+
             industries_dict[ind.slug] = ind
-            self.stdout.write(f"  [+] Created Industry: {ind.name}")
+            self.stdout.write(f"  [+] Created Industry: {ind.name} with realistic section image")
 
         # ==========================================================
         # 5. THE 5 AUTHENTIC CATEGORIES (Segments from JP.pdf)
@@ -394,8 +411,26 @@ class Command(BaseCommand):
             for ind_slug in cat_data["industries"]:
                 if ind_slug in industries_dict:
                     cat.industries.add(industries_dict[ind_slug])
+
+            # Link realistic section photography
+            cat_img_rel = f"categories/{cat.slug}.jpg"
+            cat_src = os.path.join(settings.BASE_DIR, 'assets', 'sections', f"{cat.slug}.jpg")
+            cat_dest_backend = os.path.join(settings.MEDIA_ROOT, 'categories', f"{cat.slug}.jpg")
+            cat_dest_frontend = os.path.join(settings.BASE_DIR, '..', 'frontend', 'public', 'media', 'categories', f"{cat.slug}.jpg")
+            os.makedirs(os.path.dirname(cat_dest_backend), exist_ok=True)
+            os.makedirs(os.path.dirname(cat_dest_frontend), exist_ok=True)
+            if os.path.exists(cat_src):
+                import shutil
+                if not os.path.exists(cat_dest_backend) or os.path.getsize(cat_dest_backend) != os.path.getsize(cat_src):
+                    shutil.copyfile(cat_src, cat_dest_backend)
+                if not os.path.exists(cat_dest_frontend) or os.path.getsize(cat_dest_frontend) != os.path.getsize(cat_src):
+                    shutil.copyfile(cat_src, cat_dest_frontend)
+            if os.path.exists(cat_dest_backend):
+                cat.icon_or_image = cat_img_rel
+                cat.save()
+
             categories_dict[cat.slug] = cat
-            self.stdout.write(f"  [+] Created Category: {cat.name}")
+            self.stdout.write(f"  [+] Created Category: {cat.name} with realistic section image")
 
         # ==========================================================
         # 6. PRODUCTS CATALOG (All ~79 products from JP.pdf)

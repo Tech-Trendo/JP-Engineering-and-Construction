@@ -7,6 +7,7 @@ import {
   getPublicIndustryDetail,
   getPublicIndustries,
   getPublicSiteSettings,
+  getMediaUrl,
   PublicIndustryDetail,
   PublicIndustry,
   PublicSiteSettings,
@@ -141,6 +142,7 @@ export default function DedicatedIndustryPage() {
   const otherIndustries = allIndustries.filter((i) => i.slug !== industry.slug);
   const products = industry.products || [];
   const categories = industry.categories || [];
+  const industryImg = getMediaUrl(industry.icon_or_image_url || industry.icon_or_image);
 
   return (
     <>
@@ -151,6 +153,7 @@ export default function DedicatedIndustryPage() {
           industry.description ||
           `Specialized processing machinery, turnkey industrial plants, and stainless steel fabrication engineered for ${industry.name}.`
         }
+        bgImage={industryImg || undefined}
         breadcrumbs={[
           { label: "Home", href: "/" },
           { label: "Industries", href: "/industries" },
@@ -161,15 +164,27 @@ export default function DedicatedIndustryPage() {
       <section className="py-12 md:py-16 bg-white">
         <div className="max-w-[1280px] mx-auto px-4">
           {/* Executive Overview & Key Technical Capabilities */}
-          <div className="bg-slate-900 text-white rounded-2xl p-6 sm:p-10 mb-12 shadow-md">
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-center">
-              <div className="lg:col-span-2">
-                <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight mb-3">
-                  Tailored Engineering for {industry.name}
-                </h2>
-                <p className="text-gray-300 text-sm sm:text-base leading-relaxed mb-6">
-                  {industry.description}
-                </p>
+          <div className="bg-slate-900 text-white rounded-2xl overflow-hidden mb-12 shadow-md">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-0 items-stretch">
+              {industryImg && (
+                <div className="lg:col-span-4 relative min-h-[240px] lg:min-h-full">
+                  <img
+                    src={industryImg}
+                    alt={industry.name}
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t lg:bg-gradient-to-r from-slate-900/60 via-slate-900/20 to-transparent" />
+                </div>
+              )}
+              <div className={`${industryImg ? "lg:col-span-5" : "lg:col-span-8"} p-6 sm:p-8 flex flex-col justify-between`}>
+                <div>
+                  <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight mb-3">
+                    Tailored Engineering for {industry.name}
+                  </h2>
+                  <p className="text-gray-300 text-sm leading-relaxed mb-6">
+                    {industry.description}
+                  </p>
+                </div>
 
                 {/* Technical Standards */}
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-4 border-t border-slate-800 text-xs">
@@ -189,14 +204,16 @@ export default function DedicatedIndustryPage() {
               </div>
 
               {/* Stats Highlight Card */}
-              <div className="bg-slate-800/80 border border-slate-700 rounded-xl p-6 flex flex-col gap-4">
-                <div className="border-b border-slate-700 pb-3">
-                  <div className="text-3xl font-extrabold text-[#c8391a]">{products.length}</div>
-                  <div className="text-xs text-gray-300 font-medium">Available Machinery &amp; Equipment Models</div>
-                </div>
-                <div className="border-b border-slate-700 pb-3">
-                  <div className="text-3xl font-extrabold text-white">{categories.length}</div>
-                  <div className="text-xs text-gray-300 font-medium">Processing &amp; Utility Categories</div>
+              <div className={`${industryImg ? "lg:col-span-3" : "lg:col-span-4"} bg-slate-800/80 border-t lg:border-t-0 lg:border-l border-slate-700 p-6 flex flex-col justify-between gap-4`}>
+                <div className="space-y-4">
+                  <div className="border-b border-slate-700 pb-3">
+                    <div className="text-3xl font-extrabold text-[#c8391a]">{products.length}</div>
+                    <div className="text-xs text-gray-300 font-medium">Available Machinery &amp; Equipment Models</div>
+                  </div>
+                  <div className="border-b border-slate-700 pb-3">
+                    <div className="text-3xl font-extrabold text-white">{categories.length}</div>
+                    <div className="text-xs text-gray-300 font-medium">Processing &amp; Utility Categories</div>
+                  </div>
                 </div>
                 <Link
                   href={`/contact-us?industry=${encodeURIComponent(industry.name)}#quote`}
