@@ -10,12 +10,12 @@ export default function Footer({
   categories?: PublicCategory[];
   industries?: PublicIndustry[];
 }) {
-  const companyName = siteSettings?.company_name || "JP Engineering & Construction Pvt. Ltd.";
-  const tagline = siteSettings?.tagline || "Industrial Engineering & Turnkey Solutions";
+  const companyName = siteSettings?.company_name || "";
+  const tagline = siteSettings?.tagline || "";
   const description = siteSettings?.company_description || "";
   const address = siteSettings?.address || "";
-  const phone = siteSettings?.primary_phone || "01-5385552";
-  const email = siteSettings?.primary_email || "info@jpec.com.np";
+  const phone = siteSettings?.primary_phone;
+  const email = siteSettings?.primary_email;
   const hours = siteSettings?.business_hours || "";
 
   const socials = [

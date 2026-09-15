@@ -46,13 +46,9 @@ export default function HeroSlider({ siteSettings, slides: dynamicSlides = [] }:
           {
             id: 1,
             image: mainHeroImage,
-            badge:
-              siteSettings?.hero_badge || "Nepal's Premier Industrial Machinery Manufacturer",
-            heading:
-              siteSettings?.hero_heading || "Engineered Machinery & Turnkey Industrial Plants",
-            subtext:
-              siteSettings?.hero_subtext ||
-              "Specializing in cold storage facilities, water purification plants, automated dairy processing, stainless steel equipment fabrication, and high-efficiency solar thermal systems.",
+            badge: siteSettings?.hero_badge || "",
+            heading: siteSettings?.hero_heading || "",
+            subtext: siteSettings?.hero_subtext || "",
             primaryLabel: siteSettings?.hero_cta_primary_label || "Explore Machinery",
             primaryLink: siteSettings?.hero_cta_primary_link || "/products",
             secondaryLabel: siteSettings?.hero_cta_secondary_label || "Request a Quote",

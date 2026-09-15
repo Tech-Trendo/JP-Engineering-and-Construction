@@ -1,37 +1,31 @@
+"use client";
+
+import { useState, useEffect } from "react";
 import PageBanner from "@/components/PageBanner";
-import { getPublicTeam, getPublicSiteSettings, getMediaUrl, PublicTeamMember } from "@/lib/public-api";
-import type { Metadata } from "next";
+import { getPublicTeam, getMediaUrl, PublicTeamMember } from "@/lib/public-api";
 
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
+export default function OurTeamPage() {
+  const [loading, setLoading] = useState(true);
+  const [team, setTeam] = useState<PublicTeamMember[]>([]);
+  const [hasError, setHasError] = useState(false);
 
-export async function generateMetadata(): Promise<Metadata> {
-  try {
-    const settings = await getPublicSiteSettings();
-    return {
-      title: `Our Engineering Team - ${settings.company_short_name}`,
-      description: `Meet the leadership and engineering team of ${settings.company_name}.`,
-    };
-  } catch {
-    return {
-      title: "Our Engineering Team - JP Engineering & Construction Pvt. Ltd.",
-      description: "Meet our multidisciplinary engineering and management team.",
-    };
-  }
-}
+  useEffect(() => {
+    async function loadTeam() {
+      setLoading(true);
+      setHasError(false);
+      try {
+        const data = await getPublicTeam();
+        setTeam(data);
+      } catch (err) {
+        console.error("[OurTeamPage] fetch error:", err);
+        setHasError(true);
+      } finally {
+        setLoading(false);
+      }
+    }
 
-export default async function OurTeamPage() {
-  let apiTeam: PublicTeamMember[] = [];
-  let hasError = false;
-
-  const teamRes = await Promise.allSettled([getPublicTeam()]);
-
-  if (teamRes[0].status === "fulfilled") {
-    apiTeam = teamRes[0].value;
-  } else {
-    hasError = true;
-    console.error("[OurTeamPage] getPublicTeam failed:", teamRes[0].reason);
-  }
+    loadTeam();
+  }, []);
 
   return (
     <>
@@ -54,19 +48,37 @@ export default async function OurTeamPage() {
             </p>
           </div>
 
-          {hasError ? (
+          {loading ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 animate-pulse">
+              {[1, 2, 3, 4].map((i) => (
+                <div key={i} className="bg-white border border-gray-200 rounded overflow-hidden h-80">
+                  <div className="h-56 bg-gray-100" />
+                  <div className="p-4 space-y-2">
+                    <div className="h-4 bg-gray-200 rounded w-3/4" />
+                    <div className="h-3 bg-gray-200 rounded w-1/2" />
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : hasError ? (
             <div className="p-12 border border-red-200 bg-red-50 text-center rounded-lg max-w-lg mx-auto my-8">
               <div className="w-12 h-12 rounded-full bg-red-100 text-red-600 flex items-center justify-center mx-auto mb-3 font-bold text-xl">
                 !
               </div>
               <h3 className="text-red-800 font-bold text-lg mb-1">Unable to load team</h3>
-              <p className="text-red-700 text-sm leading-relaxed">
-                Unable to load team members — please ensure the backend server is running and try again later.
+              <p className="text-red-700 text-sm leading-relaxed mb-4">
+                Team member details could not be loaded from the backend API.
               </p>
+              <button
+                onClick={() => window.location.reload()}
+                className="inline-flex items-center justify-center gap-2 bg-[#c8391a] hover:bg-[#a62d14] text-white text-xs font-bold uppercase tracking-wider px-5 py-2.5 rounded shadow-sm hover:shadow transition-all"
+              >
+                Retry
+              </button>
             </div>
-          ) : apiTeam.length > 0 ? (
+          ) : team.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {apiTeam.map((member) => (
+              {team.map((member) => (
                 <div
                   key={member.id}
                   className="bg-white border border-gray-200 rounded overflow-hidden shadow-sm hover:shadow-md transition-shadow group flex flex-col"

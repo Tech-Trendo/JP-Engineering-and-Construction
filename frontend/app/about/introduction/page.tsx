@@ -1,49 +1,51 @@
+"use client";
+
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import PageBanner from "@/components/PageBanner";
-import { getPublicSiteContent, getPublicSiteSettings, getMediaUrl, PublicSiteContent, PublicSiteSettings } from "@/lib/public-api";
-import type { Metadata } from "next";
+import {
+  getPublicSiteContent,
+  getPublicSiteSettings,
+  getMediaUrl,
+  PublicSiteContent,
+  PublicSiteSettings,
+} from "@/lib/public-api";
 
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
+export default function IntroductionPage() {
+  const [loading, setLoading] = useState(true);
+  const [siteContent, setSiteContent] = useState<PublicSiteContent | null>(null);
+  const [siteSettings, setSiteSettings] = useState<PublicSiteSettings | null>(null);
+  const [hasError, setHasError] = useState(false);
 
-export async function generateMetadata(): Promise<Metadata> {
-  try {
-    const settings = await getPublicSiteSettings();
-    return {
-      title: `Introduction - ${settings.company_short_name}`,
-      description: `About ${settings.company_name} - industrial machinery manufacturer and turnkey engineering partner.`,
-    };
-  } catch {
-    return {
-      title: "Introduction - JP Engineering & Construction Pvt. Ltd.",
-      description: "Corporate introduction and manufacturing capabilities.",
-    };
-  }
-}
+  useEffect(() => {
+    async function loadIntroData() {
+      setLoading(true);
+      setHasError(false);
+      try {
+        const [contentRes, settingsRes] = await Promise.allSettled([
+          getPublicSiteContent(),
+          getPublicSiteSettings(),
+        ]);
 
-export default async function IntroductionPage() {
-  let siteContent: PublicSiteContent | null = null;
-  let siteSettings: PublicSiteSettings | null = null;
-  let hasError = false;
+        if (contentRes.status === "fulfilled") {
+          setSiteContent(contentRes.value);
+        } else {
+          setHasError(true);
+        }
 
-  const [contentRes, settingsRes] = await Promise.allSettled([
-    getPublicSiteContent(),
-    getPublicSiteSettings(),
-  ]);
+        if (settingsRes.status === "fulfilled") {
+          setSiteSettings(settingsRes.value);
+        }
+      } catch (err) {
+        console.error("[IntroductionPage] fetch error:", err);
+        setHasError(true);
+      } finally {
+        setLoading(false);
+      }
+    }
 
-  if (contentRes.status === "fulfilled") {
-    siteContent = contentRes.value;
-  } else {
-    hasError = true;
-    console.error("[IntroductionPage] getPublicSiteContent failed:", contentRes.reason);
-  }
-
-  if (settingsRes.status === "fulfilled") {
-    siteSettings = settingsRes.value;
-  } else {
-    hasError = true;
-    console.error("[IntroductionPage] getPublicSiteSettings failed:", settingsRes.reason);
-  }
+    loadIntroData();
+  }, []);
 
   const paragraphs = siteContent?.full_intro
     ? siteContent.full_intro.split("\n\n").filter(Boolean)
@@ -58,15 +60,38 @@ export default async function IntroductionPage() {
 
       <section className="py-12 bg-white">
         <div className="max-w-[1280px] mx-auto px-4">
-          {hasError ? (
+          {loading ? (
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 animate-pulse">
+              <div className="lg:col-span-2 space-y-4">
+                <div className="h-6 w-36 bg-gray-200 rounded" />
+                <div className="h-10 w-2/3 bg-gray-200 rounded" />
+                <div className="h-64 bg-gray-200 rounded" />
+                <div className="space-y-2">
+                  <div className="h-4 bg-gray-200 rounded" />
+                  <div className="h-4 bg-gray-200 rounded" />
+                  <div className="h-4 bg-gray-200 rounded w-5/6" />
+                </div>
+              </div>
+              <div className="space-y-6">
+                <div className="h-48 bg-gray-200 rounded" />
+                <div className="h-48 bg-gray-200 rounded" />
+              </div>
+            </div>
+          ) : hasError ? (
             <div className="p-12 border border-red-200 bg-red-50 text-center rounded-lg max-w-lg mx-auto my-8">
               <div className="w-12 h-12 rounded-full bg-red-100 text-red-600 flex items-center justify-center mx-auto mb-3 font-bold text-xl">
                 !
               </div>
               <h3 className="text-red-800 font-bold text-lg mb-1">Unable to load introduction</h3>
-              <p className="text-red-700 text-sm leading-relaxed">
-                Unable to load corporate introduction — please ensure the backend server is running and try again later.
+              <p className="text-red-700 text-sm leading-relaxed mb-4">
+                Corporate introduction could not be loaded from the backend API.
               </p>
+              <button
+                onClick={() => window.location.reload()}
+                className="inline-flex items-center justify-center gap-2 bg-[#c8391a] hover:bg-[#a62d14] text-white text-xs font-bold uppercase tracking-wider px-5 py-2.5 rounded shadow-sm hover:shadow transition-all"
+              >
+                Retry
+              </button>
             </div>
           ) : (
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">

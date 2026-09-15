@@ -1,3 +1,6 @@
+"use client";
+
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import {
   getPublicIndustries,
@@ -8,33 +11,44 @@ import {
 } from "@/lib/public-api";
 import PageBanner from "@/components/PageBanner";
 
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
+export default function IndustriesPage() {
+  const [loading, setLoading] = useState(true);
+  const [industries, setIndustries] = useState<PublicIndustry[]>([]);
+  const [siteSettings, setSiteSettings] = useState<PublicSiteSettings | null>(null);
+  const [hasError, setHasError] = useState(false);
 
-export default async function IndustriesPage() {
-  let industries: PublicIndustry[] = [];
-  let siteSettings: PublicSiteSettings | null = null;
-  let hasError = false;
+  useEffect(() => {
+    async function loadIndustries() {
+      setLoading(true);
+      setHasError(false);
+      try {
+        const results = await Promise.allSettled([
+          getPublicIndustries(),
+          getPublicSiteSettings(),
+        ]);
 
-  const results = await Promise.allSettled([
-    getPublicIndustries(),
-    getPublicSiteSettings(),
-  ]);
+        if (results[0].status === "fulfilled") {
+          setIndustries(results[0].value);
+        } else {
+          setHasError(true);
+        }
 
-  if (results[0].status === "fulfilled") {
-    industries = results[0].value;
-  } else {
-    hasError = true;
-    console.error("[IndustriesPage] getPublicIndustries failed:", results[0].reason);
-  }
+        if (results[1].status === "fulfilled") {
+          setSiteSettings(results[1].value);
+        }
+      } catch (err) {
+        console.error("[IndustriesPage] fetch error:", err);
+        setHasError(true);
+      } finally {
+        setLoading(false);
+      }
+    }
 
-  if (results[1].status === "fulfilled") {
-    siteSettings = results[1].value;
-  }
+    loadIndustries();
+  }, []);
 
   return (
     <>
-      {/* Page Hero Banner */}
       <PageBanner
         title="Industrial Sectors We Serve"
         subtitle="Specialized turnkey engineering, automated machinery, and food-grade fabrication tailored for Nepal's critical production industries."
@@ -46,11 +60,26 @@ export default async function IndustriesPage() {
 
       <section className="py-16 md:py-24 bg-white">
         <div className="max-w-[1280px] mx-auto px-4">
-          {hasError ? (
+          {loading ? (
+            <div className="space-y-8 animate-pulse">
+              <div className="h-10 w-1/3 bg-gray-200 rounded mx-auto" />
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {[1, 2, 3, 4, 5, 6].map((i) => (
+                  <div key={i} className="h-80 bg-gray-100 rounded-xl" />
+                ))}
+              </div>
+            </div>
+          ) : hasError ? (
             <div className="p-8 border border-red-200 bg-red-50 text-center rounded-lg max-w-md mx-auto">
-              <p className="text-red-700 font-semibold text-sm">
-                Unable to load industry sectors — please check backend services.
+              <p className="text-red-700 font-semibold text-sm mb-4">
+                Unable to load industry sectors from the backend API.
               </p>
+              <button
+                onClick={() => window.location.reload()}
+                className="inline-flex items-center justify-center gap-2 bg-[#c8391a] hover:bg-[#a62d14] text-white text-xs font-bold uppercase tracking-wider px-5 py-2.5 rounded shadow-sm hover:shadow transition-all"
+              >
+                Retry
+              </button>
             </div>
           ) : industries.length === 0 ? (
             <div className="text-center py-16 bg-gray-50 rounded-xl border border-gray-200 p-8">
@@ -168,7 +197,7 @@ export default async function IndustriesPage() {
                 </Link>
                 <Link
                   href="/products"
-                  className="inline-flex items-center justify-center gap-2 bg-[#c8391a] hover:bg-[#a62d14] text-white text-xs font-bold uppercase tracking-wider px-6 py-3.5 rounded shadow-sm hover:shadow transition-all"
+                  className="inline-flex items-center justify-center gap-2 bg-[#1b3a6e] hover:bg-[#0f2347] text-white text-xs font-bold uppercase tracking-wider px-6 py-3.5 rounded shadow-sm hover:shadow transition-all"
                 >
                   Browse Full Machinery Catalog
                 </Link>

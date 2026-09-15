@@ -1,56 +1,53 @@
+"use client";
+
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import PageBanner from "@/components/PageBanner";
 import {
   getPublicCategories,
   getPublicProducts,
-  getPublicSiteSettings,
   getMediaUrl,
   PublicCategory,
   PublicProductListItem,
 } from "@/lib/public-api";
-import type { Metadata } from "next";
 
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
+export default function ProductsPage() {
+  const [loading, setLoading] = useState(true);
+  const [categories, setCategories] = useState<PublicCategory[]>([]);
+  const [products, setProducts] = useState<PublicProductListItem[]>([]);
+  const [hasError, setHasError] = useState(false);
 
-export async function generateMetadata(): Promise<Metadata> {
-  try {
-    const settings = await getPublicSiteSettings();
-    return {
-      title: `Industrial Machinery & Equipment Catalog - ${settings.company_short_name}`,
-      description: `Explore industrial machinery manufactured and supplied by ${settings.company_name}.`,
-    };
-  } catch {
-    return {
-      title: "Industrial Machinery & Equipment Catalog - JP Engineering & Construction Pvt. Ltd.",
-      description: "Explore industrial machinery and turnkey processing equipment.",
-    };
-  }
-}
+  useEffect(() => {
+    async function fetchProductsData() {
+      setLoading(true);
+      setHasError(false);
+      try {
+        const [catsRes, prodsRes] = await Promise.allSettled([
+          getPublicCategories(),
+          getPublicProducts(),
+        ]);
 
-export default async function ProductsPage() {
-  let categories: PublicCategory[] = [];
-  let products: PublicProductListItem[] = [];
-  let hasError = false;
+        if (catsRes.status === "fulfilled") {
+          setCategories(catsRes.value);
+        } else {
+          setHasError(true);
+        }
 
-  const [catsRes, prodsRes] = await Promise.allSettled([
-    getPublicCategories(),
-    getPublicProducts(),
-  ]);
+        if (prodsRes.status === "fulfilled") {
+          setProducts(prodsRes.value);
+        } else {
+          setHasError(true);
+        }
+      } catch (err) {
+        console.error("[ProductsPage] fetch error:", err);
+        setHasError(true);
+      } finally {
+        setLoading(false);
+      }
+    }
 
-  if (catsRes.status === "fulfilled") {
-    categories = catsRes.value;
-  } else {
-    hasError = true;
-    console.error("[ProductsPage] getPublicCategories failed:", catsRes.reason);
-  }
-
-  if (prodsRes.status === "fulfilled") {
-    products = prodsRes.value;
-  } else {
-    hasError = true;
-    console.error("[ProductsPage] getPublicProducts failed:", prodsRes.reason);
-  }
+    fetchProductsData();
+  }, []);
 
   return (
     <>
@@ -61,7 +58,16 @@ export default async function ProductsPage() {
 
       <section className="py-12 bg-[#f8f9fb]">
         <div className="max-w-[1280px] mx-auto px-4">
-          {hasError ? (
+          {loading ? (
+            <div className="space-y-8 animate-pulse">
+              <div className="h-12 bg-white rounded border border-gray-200" />
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {[1, 2, 3, 4, 5, 6].map((i) => (
+                  <div key={i} className="h-80 bg-white rounded border border-gray-200" />
+                ))}
+              </div>
+            </div>
+          ) : hasError ? (
             <div className="p-12 border border-red-200 bg-red-50 text-center rounded-lg max-w-lg mx-auto my-8">
               <div className="w-12 h-12 rounded-full bg-red-100 text-red-600 flex items-center justify-center mx-auto mb-3 font-bold text-xl">
                 !
@@ -70,14 +76,14 @@ export default async function ProductsPage() {
                 Unable to load machinery catalog
               </h3>
               <p className="text-red-700 text-sm leading-relaxed mb-4">
-                Unable to load machinery catalog — please ensure the backend server is running and try again later.
+                The machinery catalog could not be loaded from the backend API.
               </p>
-              <Link
-                href="/contact-us"
+              <button
+                onClick={() => window.location.reload()}
                 className="inline-flex items-center justify-center gap-2 bg-[#c8391a] hover:bg-[#a62d14] text-white text-xs font-bold uppercase tracking-wider px-5 py-2.5 rounded shadow-sm hover:shadow transition-all"
               >
-                Contact Us
-              </Link>
+                Retry
+              </button>
             </div>
           ) : (
             <>
@@ -123,8 +129,7 @@ export default async function ProductsPage() {
                               {cat.name}
                             </h2>
                             <p className="text-gray-600 text-sm leading-relaxed">
-                              {cat.description ||
-                                "Industrial machinery and turnkey processing equipment designed for maximum reliability and performance."}
+                              {cat.description || ""}
                             </p>
                           </div>
                           {cat.icon_or_image && (
@@ -183,7 +188,7 @@ export default async function ProductsPage() {
                                       </Link>
                                       <Link
                                         href={`/contact-us?product=${product.id}&name=${encodeURIComponent(product.name)}`}
-                                        className="flex-1 inline-flex items-center justify-center bg-[#c8391a] hover:bg-[#a62d14] text-white text-xs font-bold uppercase tracking-wider py-2 rounded shadow-sm hover:shadow transition-all"
+                                        className="flex-1 inline-flex items-center justify-center bg-[#1b3a6e] hover:bg-[#0f2347] text-white text-xs font-bold uppercase tracking-wider py-2 rounded shadow-sm hover:shadow transition-all"
                                       >
                                         Quote
                                       </Link>

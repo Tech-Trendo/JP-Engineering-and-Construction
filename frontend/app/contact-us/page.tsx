@@ -1,37 +1,32 @@
-import { Suspense } from "react";
+"use client";
+
+import { useState, useEffect, Suspense } from "react";
 import PageBanner from "@/components/PageBanner";
 import ContactForm from "@/components/ContactForm";
 import { getPublicSiteSettings, PublicSiteSettings } from "@/lib/public-api";
-import type { Metadata } from "next";
 
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
+export default function ContactPage() {
+  const [loading, setLoading] = useState(true);
+  const [siteSettings, setSiteSettings] = useState<PublicSiteSettings | null>(null);
+  const [hasError, setHasError] = useState(false);
 
-export async function generateMetadata(): Promise<Metadata> {
-  try {
-    const settings = await getPublicSiteSettings();
-    return {
-      title: `Contact Us - ${settings.company_short_name}`,
-      description: `Get in touch with ${settings.company_name} for machinery quotations and turnkey engineering solutions.`,
-    };
-  } catch {
-    return {
-      title: "Contact Us - JP Engineering & Construction Pvt. Ltd.",
-      description: "Get in touch with our engineering team for machinery quotations and consultations.",
-    };
-  }
-}
+  useEffect(() => {
+    async function loadSettings() {
+      setLoading(true);
+      setHasError(false);
+      try {
+        const data = await getPublicSiteSettings();
+        setSiteSettings(data);
+      } catch (err) {
+        console.error("[ContactPage] getPublicSiteSettings failed:", err);
+        setHasError(true);
+      } finally {
+        setLoading(false);
+      }
+    }
 
-export default async function ContactPage() {
-  let siteSettings: PublicSiteSettings | null = null;
-  let hasError = false;
-
-  try {
-    siteSettings = await getPublicSiteSettings();
-  } catch (err) {
-    console.error("[ContactPage] getPublicSiteSettings failed:", err);
-    hasError = true;
-  }
+    loadSettings();
+  }, []);
 
   const contactItems = siteSettings
     ? [
@@ -89,7 +84,19 @@ export default async function ContactPage() {
       {/* Contact info cards */}
       <section className="py-10 bg-[#f5f6f8] border-b border-gray-200">
         <div className="max-w-[1280px] mx-auto px-4">
-          {hasError ? (
+          {loading ? (
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 animate-pulse">
+              {[1, 2, 3].map((i) => (
+                <div key={i} className="bg-white border border-gray-200 p-6 flex items-start gap-4 rounded h-28">
+                  <div className="w-12 h-12 bg-gray-200 rounded shrink-0" />
+                  <div className="flex-1 space-y-2">
+                    <div className="h-4 bg-gray-200 rounded w-1/2" />
+                    <div className="h-3 bg-gray-200 rounded w-3/4" />
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : hasError ? (
             <div className="p-4 bg-amber-50 border border-amber-200 rounded text-center">
               <p className="text-amber-800 text-xs font-medium">
                 Live contact details currently offline. You may submit an equipment inquiry below.

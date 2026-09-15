@@ -6,12 +6,16 @@ import { apiClient, ApiError } from "./api";
  */
 export function getMediaUrl(url: string | null | undefined): string {
   if (!url) return "";
-  if (url.startsWith("/media/")) return url;
-  const mediaIdx = url.indexOf("/media/");
-  if (mediaIdx !== -1) {
-    return url.slice(mediaIdx);
+  if (url.startsWith("http://") || url.startsWith("https://")) {
+    return url;
   }
-  return url;
+  const clean = url.startsWith("/") ? url : `/${url}`;
+  const base = process.env.NEXT_PUBLIC_API_URL
+    ? process.env.NEXT_PUBLIC_API_URL.replace(/\/api(\/v1)?\/?$/, "")
+    : (process.env.NODE_ENV === "production"
+      ? "https://app.jpengineering.com.np"
+      : "http://127.0.0.1:8000");
+  return `${base}${clean}`;
 }
 
 export interface PublicCategory {

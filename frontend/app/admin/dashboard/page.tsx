@@ -383,7 +383,7 @@ export default function AdminDashboardPage() {
             <div className="p-3.5 rounded-2xl bg-slate-900/90 border border-slate-800/80">
               <span className="text-[11px] text-slate-400 font-medium block">Office Landline</span>
               <p className="text-sm font-bold text-white mt-1">
-                {siteSettings?.primary_phone || "01-5385552"}
+                {siteSettings?.primary_phone || "—"}
               </p>
               <span className="text-[10px] text-emerald-400 mt-1 block">Click-to-call enabled</span>
             </div>
@@ -391,15 +391,15 @@ export default function AdminDashboardPage() {
             <div className="p-3.5 rounded-2xl bg-slate-900/90 border border-slate-800/80">
               <span className="text-[11px] text-slate-400 font-medium block">Mobile &amp; Hotlines</span>
               <p className="text-xs font-bold text-white mt-1 leading-snug">
-                {siteSettings?.secondary_phone || "9851112988, 9851158661, 9851158660"}
+                {siteSettings?.secondary_phone || "—"}
               </p>
-              <span className="text-[10px] text-blue-400 mt-1 block">3 Direct Lines</span>
+              <span className="text-[10px] text-blue-400 mt-1 block">Direct Lines</span>
             </div>
 
             <div className="p-3.5 rounded-2xl bg-slate-900/90 border border-slate-800/80">
               <span className="text-[11px] text-slate-400 font-medium block">Official Inquiry Email</span>
               <p className="text-xs font-bold text-white mt-1 truncate">
-                {siteSettings?.primary_email || "info@jpec.com.np"}
+                {siteSettings?.primary_email || "—"}
               </p>
               <span className="text-[10px] text-slate-400 mt-1 block">Quotes delivered here</span>
             </div>
@@ -407,10 +407,10 @@ export default function AdminDashboardPage() {
             <div className="p-3.5 rounded-2xl bg-slate-900/90 border border-slate-800/80">
               <span className="text-[11px] text-slate-400 font-medium block">Office Address &amp; Hours</span>
               <p className="text-xs font-bold text-white mt-1 truncate">
-                {siteSettings?.address || "Kathmandu, Nepal"}
+                {siteSettings?.address || "—"}
               </p>
               <span className="text-[10px] text-slate-400 mt-1 block truncate">
-                {siteSettings?.business_hours || "Sun - Fri: 9:00 AM - 6:00 PM"}
+                {siteSettings?.business_hours || "—"}
               </span>
             </div>
           </div>

@@ -1,5 +1,8 @@
+"use client";
+
+import { useState, useEffect } from "react";
+import { useParams } from "next/navigation";
 import Link from "next/link";
-import { notFound } from "next/navigation";
 import PageBanner from "@/components/PageBanner";
 import ProductGallery from "@/components/ProductGallery";
 import ContactForm from "@/components/ContactForm";
@@ -7,78 +10,96 @@ import {
   getPublicProductDetail,
   getPublicSiteSettings,
   getMediaUrl,
+  PublicProductDetail,
+  PublicSiteSettings,
 } from "@/lib/public-api";
-import type { Metadata } from "next";
 
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
+export default function ProductDetailPage() {
+  const params = useParams();
+  const slug = (params?.slug as string) || "";
 
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ slug: string }>;
-}): Promise<Metadata> {
-  const { slug } = await params;
-  try {
-    const [product, settings] = await Promise.all([
-      getPublicProductDetail(slug),
-      getPublicSiteSettings().catch(() => null),
-    ]);
+  const [loading, setLoading] = useState(true);
+  const [product, setProduct] = useState<PublicProductDetail | null>(null);
+  const [siteSettings, setSiteSettings] = useState<PublicSiteSettings | null>(null);
+  const [hasError, setHasError] = useState(false);
+  const [isNotFound, setIsNotFound] = useState(false);
 
-    if (!product) {
-      return {
-        title: `Product Not Found - JP Engineering & Construction Pvt. Ltd.`,
-      };
+  useEffect(() => {
+    if (!slug) return;
+
+    async function loadProduct() {
+      setLoading(true);
+      setHasError(false);
+      setIsNotFound(false);
+      try {
+        const [pRes, sRes] = await Promise.allSettled([
+          getPublicProductDetail(slug),
+          getPublicSiteSettings(),
+        ]);
+
+        if (pRes.status === "fulfilled") {
+          if (!pRes.value) {
+            setIsNotFound(true);
+          } else {
+            setProduct(pRes.value);
+          }
+        } else {
+          setHasError(true);
+        }
+
+        if (sRes.status === "fulfilled") {
+          setSiteSettings(sRes.value);
+        }
+      } catch (err) {
+        console.error(`[ProductDetailPage] Error loading product ${slug}:`, err);
+        setHasError(true);
+      } finally {
+        setLoading(false);
+      }
     }
 
-    return {
-      title: `${product.name} - ${settings?.company_name || "JP Engineering & Construction Pvt. Ltd."}`,
-      description: product.short_description,
-    };
-  } catch {
-    return {
-      title: "Machinery Specifications - JP Engineering & Construction Pvt. Ltd.",
-    };
-  }
-}
+    loadProduct();
+  }, [slug]);
 
-export default async function ProductDetailPage({
-  params,
-}: {
-  params: Promise<{ slug: string }>;
-}) {
-  const { slug } = await params;
-  let product: Awaited<ReturnType<typeof getPublicProductDetail>> = null;
-  let siteSettings: Awaited<ReturnType<typeof getPublicSiteSettings>> | null = null;
-  let hasError = false;
-
-  try {
-    const [p, s] = await Promise.all([
-      getPublicProductDetail(slug),
-      getPublicSiteSettings().catch(() => null),
-    ]);
-    product = p;
-    siteSettings = s;
-  } catch (err) {
-    console.error(`[ProductDetailPage] Error loading product ${slug}:`, err);
-    hasError = true;
+  if (loading) {
+    return (
+      <>
+        <div className="bg-[#1b3a6e] py-16 text-white animate-pulse">
+          <div className="max-w-[1280px] mx-auto px-4">
+            <div className="h-4 w-32 bg-white/20 rounded mb-4" />
+            <div className="h-10 w-96 bg-white/30 rounded mb-2" />
+          </div>
+        </div>
+        <div className="max-w-[1280px] mx-auto px-4 py-12 animate-pulse">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
+            <div className="lg:col-span-7 h-96 bg-gray-200 rounded-lg" />
+            <div className="lg:col-span-5 space-y-4">
+              <div className="h-6 w-32 bg-gray-200 rounded" />
+              <div className="h-8 w-4/5 bg-gray-200 rounded" />
+              <div className="h-24 bg-gray-200 rounded" />
+              <div className="h-32 bg-gray-200 rounded" />
+            </div>
+          </div>
+        </div>
+      </>
+    );
   }
 
-  if (hasError) {
+  if (isNotFound) {
     return (
       <div className="py-20 bg-[#f8f9fb]">
         <div className="max-w-[1280px] mx-auto px-4 text-center">
-          <div className="p-12 border border-red-200 bg-red-50 rounded-lg max-w-lg mx-auto">
-            <div className="w-12 h-12 rounded-full bg-red-100 text-red-600 flex items-center justify-center mx-auto mb-3 font-bold text-xl">
-              !
+          <div className="p-12 border border-gray-200 bg-white rounded-xl max-w-lg mx-auto shadow-sm">
+            <div className="w-14 h-14 rounded-full bg-amber-100 text-amber-600 flex items-center justify-center mx-auto mb-4 font-bold text-2xl">
+              ?
             </div>
-            <h2 className="text-xl font-bold text-red-800 mb-2">Unable to load product</h2>
-            <p className="text-red-700 text-sm mb-6 leading-relaxed">
-              Unable to load product specifications — please ensure the backend server is running and try again later.
+            <h2 className="text-xl font-bold text-[#1b3a6e] mb-2">Machine Not Found</h2>
+            <p className="text-gray-600 text-sm mb-6 leading-relaxed">
+              The requested machinery specification could not be located in our catalog.
             </p>
             <Link
               href="/products"
-              className="inline-flex items-center justify-center gap-2 bg-[#c8391a] hover:bg-[#a62d14] text-white text-xs font-bold uppercase tracking-wider px-5 py-2.5 rounded shadow-sm hover:shadow transition-all"
+              className="inline-flex items-center justify-center gap-2 bg-[#c8391a] hover:bg-[#a62d14] text-white text-xs font-bold uppercase tracking-wider px-6 py-3 rounded shadow-sm hover:shadow transition-all"
             >
               Back to Machinery Catalog
             </Link>
@@ -88,8 +109,36 @@ export default async function ProductDetailPage({
     );
   }
 
-  if (!product) {
-    notFound();
+  if (hasError || !product) {
+    return (
+      <div className="py-20 bg-[#f8f9fb]">
+        <div className="max-w-[1280px] mx-auto px-4 text-center">
+          <div className="p-12 border border-red-200 bg-red-50 rounded-lg max-w-lg mx-auto">
+            <div className="w-12 h-12 rounded-full bg-red-100 text-red-600 flex items-center justify-center mx-auto mb-3 font-bold text-xl">
+              !
+            </div>
+            <h2 className="text-xl font-bold text-red-800 mb-2">Unable to load product</h2>
+            <p className="text-red-700 text-sm mb-6 leading-relaxed">
+              Unable to load product specifications from the backend API.
+            </p>
+            <div className="flex justify-center gap-3">
+              <button
+                onClick={() => window.location.reload()}
+                className="inline-flex items-center justify-center gap-2 bg-[#c8391a] hover:bg-[#a62d14] text-white text-xs font-bold uppercase tracking-wider px-5 py-2.5 rounded shadow-sm hover:shadow transition-all"
+              >
+                Retry
+              </button>
+              <Link
+                href="/products"
+                className="inline-flex items-center justify-center gap-2 bg-gray-200 hover:bg-gray-300 text-gray-800 text-xs font-bold uppercase tracking-wider px-5 py-2.5 rounded transition-all"
+              >
+                Back to Catalog
+              </Link>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   const primaryCategory = product.categories[0];

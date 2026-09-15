@@ -1,38 +1,32 @@
+"use client";
+
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import PageBanner from "@/components/PageBanner";
-import { getPublicPartners, getPublicSiteSettings, getMediaUrl, PublicPartner } from "@/lib/public-api";
-import type { Metadata } from "next";
+import { getPublicPartners, getMediaUrl, PublicPartner } from "@/lib/public-api";
 
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
+export default function OurPartnersPage() {
+  const [loading, setLoading] = useState(true);
+  const [partners, setPartners] = useState<PublicPartner[]>([]);
+  const [hasError, setHasError] = useState(false);
 
-export async function generateMetadata(): Promise<Metadata> {
-  try {
-    const settings = await getPublicSiteSettings();
-    return {
-      title: `Our Technology & Equipment Partners - ${settings.company_short_name}`,
-      description: `Global technology partners collaborating with ${settings.company_name}.`,
-    };
-  } catch {
-    return {
-      title: "Our Technology & Equipment Partners - JP Engineering & Construction Pvt. Ltd.",
-      description: "Global technology and equipment partners.",
-    };
-  }
-}
+  useEffect(() => {
+    async function loadPartners() {
+      setLoading(true);
+      setHasError(false);
+      try {
+        const data = await getPublicPartners();
+        setPartners(data);
+      } catch (err) {
+        console.error("[OurPartnersPage] fetch error:", err);
+        setHasError(true);
+      } finally {
+        setLoading(false);
+      }
+    }
 
-export default async function OurPartnersPage() {
-  let apiPartners: PublicPartner[] = [];
-  let hasError = false;
-
-  const partnerRes = await Promise.allSettled([getPublicPartners()]);
-
-  if (partnerRes[0].status === "fulfilled") {
-    apiPartners = partnerRes[0].value;
-  } else {
-    hasError = true;
-    console.error("[OurPartnersPage] getPublicPartners failed:", partnerRes[0].reason);
-  }
+    loadPartners();
+  }, []);
 
   return (
     <>
@@ -55,19 +49,35 @@ export default async function OurPartnersPage() {
             </p>
           </div>
 
-          {hasError ? (
+          {loading ? (
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6 animate-pulse">
+              {[1, 2, 3, 4].map((i) => (
+                <div key={i} className="bg-[#f8f9fb] border border-gray-200 rounded-lg p-6 flex flex-col items-center justify-center h-48">
+                  <div className="w-full h-20 bg-gray-200 rounded mb-4" />
+                  <div className="h-4 bg-gray-200 rounded w-2/3 mb-2" />
+                  <div className="h-3 bg-gray-200 rounded w-1/3" />
+                </div>
+              ))}
+            </div>
+          ) : hasError ? (
             <div className="p-12 border border-red-200 bg-red-50 text-center rounded-lg max-w-lg mx-auto my-8">
               <div className="w-12 h-12 rounded-full bg-red-100 text-red-600 flex items-center justify-center mx-auto mb-3 font-bold text-xl">
                 !
               </div>
               <h3 className="text-red-800 font-bold text-lg mb-1">Unable to load partners</h3>
-              <p className="text-red-700 text-sm leading-relaxed">
-                Unable to load partners — please ensure the backend server is running and try again later.
+              <p className="text-red-700 text-sm leading-relaxed mb-4">
+                Technology partners could not be loaded from the backend API.
               </p>
+              <button
+                onClick={() => window.location.reload()}
+                className="inline-flex items-center justify-center gap-2 bg-[#c8391a] hover:bg-[#a62d14] text-white text-xs font-bold uppercase tracking-wider px-5 py-2.5 rounded shadow-sm hover:shadow transition-all"
+              >
+                Retry
+              </button>
             </div>
-          ) : apiPartners.length > 0 ? (
+          ) : partners.length > 0 ? (
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
-              {apiPartners.map((partner) => (
+              {partners.map((partner) => (
                 <div
                   key={partner.id}
                   className="bg-[#f8f9fb] border border-gray-200 rounded-lg p-6 flex flex-col items-center justify-center text-center hover:border-[#1b3a6e] hover:shadow-md transition-all group"

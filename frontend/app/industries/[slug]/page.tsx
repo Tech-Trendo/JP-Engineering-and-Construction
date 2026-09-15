@@ -1,66 +1,141 @@
-import { notFound } from "next/navigation";
+"use client";
+
+import { useState, useEffect } from "react";
+import { useParams } from "next/navigation";
 import Link from "next/link";
 import {
   getPublicIndustryDetail,
   getPublicIndustries,
   getPublicSiteSettings,
-  getMediaUrl,
+  PublicIndustryDetail,
+  PublicIndustry,
+  PublicSiteSettings,
 } from "@/lib/public-api";
 import PageBanner from "@/components/PageBanner";
 import IndustryProductCatalog from "@/components/IndustryProductCatalog";
 
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
+export default function DedicatedIndustryPage() {
+  const params = useParams();
+  const slug = (params?.slug as string) || "";
 
-interface IndustryPageProps {
-  params: Promise<{ slug: string }>;
-}
+  const [loading, setLoading] = useState(true);
+  const [industry, setIndustry] = useState<PublicIndustryDetail | null>(null);
+  const [allIndustries, setAllIndustries] = useState<PublicIndustry[]>([]);
+  const [siteSettings, setSiteSettings] = useState<PublicSiteSettings | null>(null);
+  const [hasError, setHasError] = useState(false);
+  const [isNotFound, setIsNotFound] = useState(false);
 
-export async function generateMetadata({ params }: IndustryPageProps) {
-  const { slug } = await params;
-  try {
-    const industry = await getPublicIndustryDetail(slug);
-    if (!industry) return { title: "Industry Not Found - JP Engineering & Construction Pvt. Ltd." };
-    return {
-      title: `${industry.name} Machinery & Turnkey Plants - JP Engineering & Construction Pvt. Ltd.`,
-      description:
-        industry.description ||
-        `Engineered machinery, processing plants, and equipment for ${industry.name}.`,
-    };
-  } catch {
-    return { title: "Industry Machinery - JP Engineering & Construction Pvt. Ltd." };
+  useEffect(() => {
+    if (!slug) return;
+
+    async function loadIndustryData() {
+      setLoading(true);
+      setHasError(false);
+      setIsNotFound(false);
+
+      try {
+        const [detailRes, listRes, settingsRes] = await Promise.allSettled([
+          getPublicIndustryDetail(slug),
+          getPublicIndustries(),
+          getPublicSiteSettings(),
+        ]);
+
+        if (detailRes.status === "fulfilled") {
+          if (!detailRes.value) {
+            setIsNotFound(true);
+          } else {
+            setIndustry(detailRes.value);
+          }
+        } else {
+          setHasError(true);
+        }
+
+        if (listRes.status === "fulfilled") {
+          setAllIndustries(listRes.value);
+        }
+
+        if (settingsRes.status === "fulfilled") {
+          setSiteSettings(settingsRes.value);
+        }
+      } catch (err) {
+        console.error(`[DedicatedIndustryPage] Error loading industry ${slug}:`, err);
+        setHasError(true);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    loadIndustryData();
+  }, [slug]);
+
+  if (loading) {
+    return (
+      <>
+        <div className="bg-[#1b3a6e] py-16 text-white animate-pulse">
+          <div className="max-w-[1280px] mx-auto px-4">
+            <div className="h-4 w-32 bg-white/20 rounded mb-4" />
+            <div className="h-10 w-96 bg-white/30 rounded mb-2" />
+            <div className="h-4 w-2/3 bg-white/20 rounded" />
+          </div>
+        </div>
+        <div className="max-w-[1280px] mx-auto px-4 py-12 animate-pulse space-y-8">
+          <div className="h-48 bg-slate-900/10 rounded-2xl" />
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {[1, 2, 3].map((i) => (
+              <div key={i} className="h-72 bg-gray-100 rounded-xl" />
+            ))}
+          </div>
+        </div>
+      </>
+    );
   }
-}
 
-export default async function DedicatedIndustryPage({ params }: IndustryPageProps) {
-  const { slug } = await params;
-
-  let industry = null;
-  let allIndustries: Awaited<ReturnType<typeof getPublicIndustries>> = [];
-  let siteSettings: Awaited<ReturnType<typeof getPublicSiteSettings>> | null = null;
-
-  try {
-    const [detailRes, listRes, settingsRes] = await Promise.allSettled([
-      getPublicIndustryDetail(slug),
-      getPublicIndustries(),
-      getPublicSiteSettings(),
-    ]);
-
-    if (detailRes.status === "fulfilled") {
-      industry = detailRes.value;
-    }
-    if (listRes.status === "fulfilled") {
-      allIndustries = listRes.value;
-    }
-    if (settingsRes.status === "fulfilled") {
-      siteSettings = settingsRes.value;
-    }
-  } catch (err) {
-    console.error(`[DedicatedIndustryPage] Error loading industry ${slug}:`, err);
+  if (isNotFound) {
+    return (
+      <div className="py-20 bg-[#f8f9fb]">
+        <div className="max-w-[1280px] mx-auto px-4 text-center">
+          <div className="p-12 border border-gray-200 bg-white rounded-xl max-w-lg mx-auto shadow-sm">
+            <div className="w-14 h-14 rounded-full bg-amber-100 text-amber-600 flex items-center justify-center mx-auto mb-4 font-bold text-2xl">
+              ?
+            </div>
+            <h2 className="text-xl font-bold text-[#1b3a6e] mb-2">Industry Sector Not Found</h2>
+            <p className="text-gray-600 text-sm mb-6 leading-relaxed">
+              The requested industrial machinery sector could not be located.
+            </p>
+            <Link
+              href="/industries"
+              className="inline-flex items-center justify-center gap-2 bg-[#c8391a] hover:bg-[#a62d14] text-white text-xs font-bold uppercase tracking-wider px-6 py-3 rounded shadow-sm hover:shadow transition-all"
+            >
+              Browse All Industries
+            </Link>
+          </div>
+        </div>
+      </div>
+    );
   }
 
-  if (!industry) {
-    notFound();
+  if (hasError || !industry) {
+    return (
+      <div className="py-20 bg-[#f8f9fb]">
+        <div className="max-w-[1280px] mx-auto px-4 text-center">
+          <div className="p-12 border border-red-200 bg-red-50 rounded-xl max-w-lg mx-auto">
+            <div className="w-12 h-12 rounded-full bg-red-100 text-red-600 flex items-center justify-center mx-auto mb-3 font-bold text-xl">
+              !
+            </div>
+            <h2 className="text-xl font-bold text-red-800 mb-2">Unable to load industry details</h2>
+            <p className="text-red-700 text-sm mb-6 leading-relaxed">
+              Unable to load industry specifications from the backend API.
+            </p>
+            <button
+              onClick={() => window.location.reload()}
+              className="inline-flex items-center justify-center gap-2 bg-[#c8391a] hover:bg-[#a62d14] text-white text-xs font-bold uppercase tracking-wider px-5 py-2.5 rounded shadow-sm hover:shadow transition-all"
+            >
+              Retry
+            </button>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   const otherIndustries = allIndustries.filter((i) => i.slug !== industry.slug);
@@ -210,7 +285,7 @@ export default async function DedicatedIndustryPage({ params }: IndustryPageProp
                 Need a Custom Proposal for {industry.name}?
               </h3>
               <p className="text-gray-300 text-xs sm:text-sm max-w-xl">
-                Speak directly with Er. Ramesh Adhikari and our mechanical engineering specialists for complete technical specifications and budget estimates.
+                Speak directly with our mechanical engineering specialists for complete technical specifications and budget estimates.
               </p>
             </div>
             <Link
