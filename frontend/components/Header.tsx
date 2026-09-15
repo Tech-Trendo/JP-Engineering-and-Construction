@@ -229,9 +229,9 @@ export default function Header({
       <div className="bg-white border-b border-gray-200">
         <div className="max-w-[1280px] mx-auto px-4 flex items-center justify-between h-[72px]">
           {/* Logo & Brand Identity */}
-          <div className="flex items-center gap-2 sm:gap-3 min-w-0 mr-2">
+          <div className="flex items-center gap-2 sm:gap-3 min-w-0 mr-1 xl:mr-3 shrink-0">
             <Link href="/" className="flex items-center gap-2 sm:gap-3 min-w-0 group">
-              <div className="w-[42px] h-[42px] sm:w-[48px] sm:h-[48px] rounded flex items-center justify-center shrink-0 overflow-hidden bg-white shadow-sm border border-gray-100 p-0.5">
+              <div className="w-[40px] h-[40px] sm:w-[46px] sm:h-[46px] rounded flex items-center justify-center shrink-0 overflow-hidden bg-white shadow-sm border border-gray-100 p-0.5">
                 <img
                   src={getMediaUrl(siteSettings?.logo_url) || "/assets/logo.webp"}
                   alt={companyName}
@@ -239,47 +239,53 @@ export default function Header({
                 />
               </div>
               <div className="min-w-0">
-                <div className="font-bold text-[#1b3a6e] text-xs sm:text-base leading-tight group-hover:text-[#c8391a] transition-colors truncate sm:whitespace-normal">
+                <div className="font-bold text-[#1b3a6e] text-xs sm:text-sm xl:text-base leading-tight group-hover:text-[#c8391a] transition-colors whitespace-nowrap">
                   {companyName}
                 </div>
                 {tagline ? (
-                  <div className="text-[10px] text-gray-500 leading-tight hidden sm:block truncate">
+                  <div className="text-[10px] text-gray-500 leading-tight hidden xl:block truncate">
                     {tagline}
                   </div>
                 ) : null}
               </div>
             </Link>
 
-            {/* ISO 9001:2015 Certified Badge */}
-            <div className="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-1 bg-emerald-50 border border-emerald-200 text-emerald-800 rounded-md text-[11px] font-bold shrink-0 shadow-2xs">
-              <svg className="w-3.5 h-3.5 text-emerald-600 shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-              </svg>
-              <span>ISO 9001:2015 Certified</span>
-            </div>
+            {/* Dynamic ISO 9001:2015 Certified Badge */}
+            {siteSettings?.iso_certified !== false && (
+              <Link
+                href="/#iso-certified"
+                className="hidden md:inline-flex items-center gap-1.5 px-2 xl:px-2.5 py-1 bg-emerald-50 hover:bg-emerald-100/80 border border-emerald-200 text-emerald-800 rounded-md text-[10.5px] xl:text-[11px] font-bold shrink-0 shadow-2xs transition-colors whitespace-nowrap"
+                title="View ISO 9001:2015 Registration Certificate"
+              >
+                <svg className="w-3.5 h-3.5 text-emerald-600 shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                </svg>
+                <span>{siteSettings?.iso_standard ? `${siteSettings.iso_standard} Certified` : "ISO 9001:2015 Certified"}</span>
+              </Link>
+            )}
           </div>
 
           {/* Desktop nav + CTA */}
-          <div className="hidden lg:flex items-center">
-            <nav className="flex items-center">
+          <div className="hidden lg:flex items-center shrink-0">
+            <nav className="flex items-center shrink-0">
               {navItems.map((item) => (
                 <div
                   key={item.label}
-                  className="relative"
+                  className="relative shrink-0"
                   onMouseEnter={() => item.dropdown && openDropdown(item.label)}
                   onMouseLeave={scheduleClose}
                 >
                   <Link
                     href={item.href}
-                    className={`flex items-center gap-1 px-4 py-[24px] text-[13px] font-semibold uppercase tracking-wider transition-colors border-b-2 ${
+                    className={`flex items-center gap-1 px-2.5 xl:px-3.5 py-[24px] text-[12px] xl:text-[13px] font-semibold uppercase tracking-wider transition-colors border-b-2 whitespace-nowrap shrink-0 ${
                       isActive(item.href)
                         ? "text-[#c8391a] border-[#c8391a]"
                         : "text-[#1b3a6e] border-transparent hover:text-[#c8391a] hover:border-[#c8391a]"
                     }`}
                   >
-                    {item.label}
+                    <span className="whitespace-nowrap">{item.label}</span>
                     {item.dropdown && (
-                      <svg className="w-3 h-3 ml-0.5" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24">
+                      <svg className="w-3 h-3 ml-0.5 shrink-0" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
                       </svg>
                     )}
@@ -296,7 +302,7 @@ export default function Header({
                         <Link
                           key={child.label}
                           href={child.href}
-                          className="block px-4 py-2.5 text-[13px] text-gray-700 hover:bg-[#1b3a6e] hover:text-white border-b border-gray-50 last:border-0 transition-colors"
+                          className="block px-4 py-2.5 text-[13px] text-gray-700 hover:bg-[#1b3a6e] hover:text-white border-b border-gray-50 last:border-0 transition-colors whitespace-nowrap"
                         >
                           {child.label}
                         </Link>
@@ -310,9 +316,9 @@ export default function Header({
             {/* Persistent Quote CTA */}
             <Link
               href="/contact-us#quote"
-              className="ml-5 inline-flex items-center gap-2 bg-[#c8391a] hover:bg-[#a62d14] text-white text-xs font-bold uppercase tracking-wider px-5 py-2.5 rounded shadow-sm hover:shadow transition-all"
+              className="ml-2.5 xl:ml-4 inline-flex items-center gap-1.5 xl:gap-2 bg-[#c8391a] hover:bg-[#a62d14] text-white text-xs font-bold uppercase tracking-wider px-3.5 xl:px-4 py-2 xl:py-2.5 rounded shadow-sm hover:shadow transition-all whitespace-nowrap shrink-0"
             >
-              <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+              <svg className="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
               </svg>
               <span>Request a Quote</span>
@@ -328,8 +334,8 @@ export default function Header({
               Quote
             </Link>
             <button
-              className="p-1.5 sm:p-2 text-[#1b3a6e] hover:text-[#c8391a] transition-colors"
-              onClick={() => setMobileOpen((v) => !v)}
+              onClick={() => setMobileOpen(!mobileOpen)}
+              className="p-2 text-gray-700 hover:text-[#1b3a6e] focus:outline-none"
               aria-label="Toggle menu"
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -348,12 +354,18 @@ export default function Header({
       {mobileOpen && (
         <div className="lg:hidden bg-white border-b border-gray-200 shadow-xl max-h-[calc(100vh-80px)] overflow-y-auto">
           <div className="p-4 space-y-1">
-            <div className="flex items-center gap-1.5 px-3 py-1.5 bg-emerald-50 border border-emerald-200 text-emerald-800 rounded-md text-xs font-bold mb-3 shadow-2xs">
-              <svg className="w-4 h-4 text-emerald-600 shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-              </svg>
-              <span>ISO 9001:2015 Certified Company</span>
-            </div>
+            {siteSettings?.iso_certified !== false && (
+              <Link
+                href="/#iso-certified"
+                onClick={() => setMobileOpen(false)}
+                className="flex items-center gap-1.5 px-3 py-1.5 bg-emerald-50 hover:bg-emerald-100/80 border border-emerald-200 text-emerald-800 rounded-md text-xs font-bold mb-3 shadow-2xs transition-colors"
+              >
+                <svg className="w-4 h-4 text-emerald-600 shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                </svg>
+                <span>{siteSettings?.iso_standard ? `${siteSettings.iso_standard} Certified Company` : "ISO 9001:2015 Certified Company"}</span>
+              </Link>
+            )}
             {navItems.map((item) => (
               <div key={item.label} className="border-b border-gray-100 last:border-0 pb-1">
                 <div className="flex items-center justify-between">

@@ -7,11 +7,14 @@ import { useAdminAuth } from "@/lib/admin-auth-context";
 import {
   getAdminSiteSettings,
   updateAdminSiteSettings,
+  getAdminSiteContent,
+  updateAdminSiteContent,
   AdminSiteSettings,
+  AdminSiteContent,
   getMediaUrl,
 } from "@/lib/admin-api";
 
-type TabId = "identity" | "contact" | "socials" | "hero" | "stats" | "cta" | "iso";
+type TabId = "identity" | "contact" | "socials" | "hero" | "stats" | "cta" | "iso" | "intro";
 
 interface TabItem {
   id: TabId;
@@ -99,6 +102,17 @@ const TABS: TabItem[] = [
       </svg>
     ),
   },
+  {
+    id: "intro",
+    label: "Corporate Introduction",
+    shortLabel: "Introduction",
+    description: "Short introduction on homepage and full intro on /about/introduction",
+    icon: (props) => (
+      <svg {...props} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+      </svg>
+    ),
+  },
 ];
 
 function SiteSettingsContent() {
@@ -112,7 +126,7 @@ function SiteSettingsContent() {
 
   useEffect(() => {
     const tabParam = (searchParams.get("tab") || searchParams.get("section")) as TabId;
-    if (tabParam && ["identity", "contact", "socials", "hero", "stats", "cta", "iso"].includes(tabParam)) {
+    if (tabParam && ["identity", "contact", "socials", "hero", "stats", "cta", "iso", "intro"].includes(tabParam)) {
       setActiveTab(tabParam);
     }
   }, [searchParams]);
@@ -170,6 +184,11 @@ function SiteSettingsContent() {
   const [logoPreview, setLogoPreview] = useState<string | null>(null);
   const [certFile, setCertFile] = useState<File | null>(null);
   const [certPreview, setCertPreview] = useState<string | null>(null);
+  const [siteContentData, setSiteContentData] = useState<AdminSiteContent>({
+    title: "",
+    short_intro: "",
+    full_intro: "",
+  });
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isSaving, setIsSaving] = useState<boolean>(false);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
@@ -181,9 +200,15 @@ function SiteSettingsContent() {
 
     async function loadSettings() {
       try {
-        const data = await getAdminSiteSettings(accessToken!);
+        const [data, content] = await Promise.all([
+          getAdminSiteSettings(accessToken!),
+          getAdminSiteContent(accessToken!).catch(() => null),
+        ]);
         if (isMounted) {
           setFormData(data);
+          if (content) {
+            setSiteContentData(content);
+          }
           if (data.hero_image) {
             setHeroImagePreview(getMediaUrl(data.hero_image));
           }
@@ -311,6 +336,15 @@ function SiteSettingsContent() {
         const { hero_image: _heroImg, logo: _logo, iso_certificate_image: _certImg, ...payload } = formData;
         const updated = await updateAdminSiteSettings(accessToken, payload);
         setFormData(updated);
+      }
+
+      if (siteContentData.title || siteContentData.short_intro || siteContentData.full_intro) {
+        try {
+          const updatedContent = await updateAdminSiteContent(accessToken, siteContentData);
+          setSiteContentData(updatedContent);
+        } catch (contentErr) {
+          console.error("Save site content error:", contentErr);
+        }
       }
 
       setSuccessMessage("Changes saved successfully! Your live website has been updated.");
@@ -1319,6 +1353,66 @@ function SiteSettingsContent() {
                 placeholder="Scope of manufacturing activities covered by this certificate..."
                 className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white text-xs focus:outline-hidden focus:border-blue-500 leading-relaxed font-mono text-[11px]"
               />
+            </div>
+          </div>
+        )}
+
+        {/* Tab 8: Corporate Introduction */}
+        {activeTab === "intro" && (
+          <div className="space-y-6">
+            <div className="border-b border-slate-800 pb-4">
+              <h3 className="text-white text-base font-bold flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-blue-500" />
+                Corporate Story &amp; Overview Copy
+              </h3>
+              <p className="text-slate-400 text-xs mt-1">
+                Live backend content driving the homepage &ldquo;Who We Are&rdquo; section and the dedicated Corporate Introduction page (/about/introduction).
+              </p>
+            </div>
+
+            <div>
+              <label className="block text-slate-200 text-xs font-semibold mb-1.5">
+                Corporate / Brand Title
+              </label>
+              <input
+                type="text"
+                value={siteContentData.title || ""}
+                onChange={(e) => setSiteContentData({ ...siteContentData, title: e.target.value })}
+                placeholder="JP Engineering & Construction (P) Ltd."
+                className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white text-xs focus:outline-hidden focus:border-blue-500"
+              />
+            </div>
+
+            <div>
+              <label className="block text-slate-200 text-xs font-semibold mb-1.5">
+                Homepage Short Introduction
+              </label>
+              <textarea
+                rows={4}
+                value={siteContentData.short_intro || ""}
+                onChange={(e) => setSiteContentData({ ...siteContentData, short_intro: e.target.value })}
+                placeholder="Summary paragraph displayed in the Who We Are section of the homepage..."
+                className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white text-xs focus:outline-hidden focus:border-blue-500 leading-relaxed"
+              />
+              <p className="text-[11px] text-slate-500 mt-1">
+                Displayed in the homepage overview section beneath the hero slider.
+              </p>
+            </div>
+
+            <div>
+              <label className="block text-slate-200 text-xs font-semibold mb-1.5">
+                Full Corporate Introduction (/about/introduction)
+              </label>
+              <textarea
+                rows={12}
+                value={siteContentData.full_intro || ""}
+                onChange={(e) => setSiteContentData({ ...siteContentData, full_intro: e.target.value })}
+                placeholder="Full multi-paragraph corporate history, equipment specialties, and engineering credentials..."
+                className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white text-xs focus:outline-hidden focus:border-blue-500 leading-relaxed font-mono text-[11px]"
+              />
+              <p className="text-[11px] text-slate-500 mt-1">
+                Separate paragraphs with double enters. Rendered on the dedicated Corporate Introduction page.
+              </p>
             </div>
           </div>
         )}

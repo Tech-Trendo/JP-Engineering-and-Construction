@@ -276,3 +276,22 @@ export async function updateAdminSiteSettings(
     token
   );
 }
+
+export async function getAdminSiteContent(token: string): Promise<AdminSiteContent> {
+  return adminFetch<AdminSiteContent>("admin/site-content/", { method: "GET" }, token);
+}
+
+export async function updateAdminSiteContent(
+  token: string,
+  data: Partial<AdminSiteContent>
+): Promise<AdminSiteContent> {
+  return adminFetch<AdminSiteContent>(
+    "admin/site-content/",
+    {
+      method: "PATCH",
+      body: JSON.stringify(data),
+    },
+    token
+  );
+}
+

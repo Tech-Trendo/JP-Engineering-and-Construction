@@ -11,6 +11,7 @@ class SiteSettingsAdmin(admin.ModelAdmin):
             "fields": (
                 "company_name",
                 "company_short_name",
+                "logo",
                 "tagline",
                 "company_description",
                 "founding_year",
@@ -18,6 +19,18 @@ class SiteSettingsAdmin(admin.ModelAdmin):
                 "registration_number",
                 "pan_vat_number",
                 "employee_count",
+            )
+        }),
+        ("ISO 9001:2015 Certification", {
+            "description": "ISO Quality Management System credentials and uploaded certificate.",
+            "fields": (
+                "iso_certified",
+                "iso_standard",
+                "iso_certificate_number",
+                "iso_certificate_image",
+                ("iso_issue_date", "iso_expiry_date"),
+                "iso_accreditation",
+                "iso_scope",
             )
         }),
         ("Contact Information & Business Hours", {
