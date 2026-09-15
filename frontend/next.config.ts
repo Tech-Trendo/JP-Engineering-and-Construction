@@ -75,10 +75,6 @@ const nextConfig: NextConfig = {
         source: "/api/:path*",
         destination: `${backendOrigin}/api/:path*`,
       },
-      {
-        source: "/media/:path*",
-        destination: `${backendOrigin}/media/:path*`,
-      },
     ];
   },
 };

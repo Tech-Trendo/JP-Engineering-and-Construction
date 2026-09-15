@@ -4,18 +4,42 @@ import { apiClient, ApiError } from "./api";
  * Normalizes any backend media URL to a relative path (`/media/...`)
  * so it routes through Next.js proxy rewrites without CORS blocks.
  */
+/**
+ * Normalizes any backend media URL to a local relative path (`/media/...`)
+ * so all assets are served directly with maximum performance and zero 404s.
+ */
 export function getMediaUrl(url: string | null | undefined): string {
   if (!url) return "";
-  if (url.startsWith("http://") || url.startsWith("https://")) {
+
+  // If it's a third-party external URL (e.g. unsplash), return as is
+  if (
+    (url.startsWith("http://") || url.startsWith("https://")) &&
+    !url.includes("jpengineering.com.np") &&
+    !url.includes("127.0.0.1") &&
+    !url.includes("localhost")
+  ) {
     return url;
   }
-  const clean = url.startsWith("/") ? url : `/${url}`;
-  const base = process.env.NEXT_PUBLIC_API_URL
-    ? process.env.NEXT_PUBLIC_API_URL.replace(/\/api(\/v1)?\/?$/, "")
-    : (process.env.NODE_ENV === "production"
-      ? "https://app.jpengineering.com.np"
-      : "http://127.0.0.1:8000");
-  return `${base}${clean}`;
+
+  // Extract relative /media/... path if full backend origin was included
+  const mediaIdx = url.indexOf("/media/");
+  if (mediaIdx !== -1) {
+    return url.substring(mediaIdx);
+  }
+
+  // If path starts with media/ (no leading slash)
+  if (url.startsWith("media/")) {
+    return `/${url}`;
+  }
+
+  // If already relative /assets/ or /images/
+  if (url.startsWith("/assets/") || url.startsWith("/images/")) {
+    return url;
+  }
+
+  // Otherwise treat as a media root relative path
+  const clean = url.startsWith("/") ? url.substring(1) : url;
+  return `/media/${clean}`;
 }
 
 export interface PublicCategory {

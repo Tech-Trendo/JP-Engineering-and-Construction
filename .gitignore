@@ -1,7 +1,14 @@
 # Python & Django
 backend/.venv/
 backend/.env
-backend/media/
+backend/media/*
+!backend/media/products/
+backend/media/products/*
+!backend/media/products/images/
+!backend/media/site_settings/
+!backend/media/showcase/
+!backend/media/categories/
+!backend/media/industries/
 backend/staticfiles/
 backend/*.sqlite3
 backend/**/__pycache__/
@@ -26,3 +33,4 @@ frontend/.env
 .idea/
 backend.zip
 backend/scratch/
+extracted_pdf_images/
