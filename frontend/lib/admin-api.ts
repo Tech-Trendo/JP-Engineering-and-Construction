@@ -173,6 +173,15 @@ export interface AdminSiteSettings {
   cta_subtext: string;
   cta_button_label: string;
   cta_button_link: string;
+  iso_certified?: boolean;
+  iso_standard?: string;
+  iso_certificate_number?: string;
+  iso_certificate_image?: string | File | null;
+  iso_certificate_image_url?: string | null;
+  iso_scope?: string;
+  iso_accreditation?: string;
+  iso_issue_date?: string;
+  iso_expiry_date?: string;
   updated_at?: string;
 }
 

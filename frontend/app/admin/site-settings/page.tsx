@@ -11,7 +11,7 @@ import {
   getMediaUrl,
 } from "@/lib/admin-api";
 
-type TabId = "identity" | "contact" | "socials" | "hero" | "stats" | "cta";
+type TabId = "identity" | "contact" | "socials" | "hero" | "stats" | "cta" | "iso";
 
 interface TabItem {
   id: TabId;
@@ -88,6 +88,17 @@ const TABS: TabItem[] = [
       </svg>
     ),
   },
+  {
+    id: "iso",
+    label: "ISO 9001:2015 Certification",
+    shortLabel: "ISO Certified",
+    description: "Registration number, validity, certificate document and manufacturing scope",
+    icon: (props) => (
+      <svg {...props} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+      </svg>
+    ),
+  },
 ];
 
 function SiteSettingsContent() {
@@ -95,12 +106,13 @@ function SiteSettingsContent() {
   const searchParams = useSearchParams();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const logoInputRef = useRef<HTMLInputElement>(null);
+  const certInputRef = useRef<HTMLInputElement>(null);
 
   const [activeTab, setActiveTab] = useState<TabId>("identity");
 
   useEffect(() => {
     const tabParam = (searchParams.get("tab") || searchParams.get("section")) as TabId;
-    if (tabParam && ["identity", "contact", "socials", "hero", "stats", "cta"].includes(tabParam)) {
+    if (tabParam && ["identity", "contact", "socials", "hero", "stats", "cta", "iso"].includes(tabParam)) {
       setActiveTab(tabParam);
     }
   }, [searchParams]);
@@ -143,12 +155,21 @@ function SiteSettingsContent() {
     cta_subtext: "",
     cta_button_label: "",
     cta_button_link: "",
+    iso_certified: true,
+    iso_standard: "ISO 9001:2015",
+    iso_certificate_number: "129594/A/0001/UK/En",
+    iso_scope: "",
+    iso_accreditation: "",
+    iso_issue_date: "",
+    iso_expiry_date: "",
   });
 
   const [heroImageFile, setHeroImageFile] = useState<File | null>(null);
   const [heroImagePreview, setHeroImagePreview] = useState<string | null>(null);
   const [logoFile, setLogoFile] = useState<File | null>(null);
   const [logoPreview, setLogoPreview] = useState<string | null>(null);
+  const [certFile, setCertFile] = useState<File | null>(null);
+  const [certPreview, setCertPreview] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isSaving, setIsSaving] = useState<boolean>(false);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
@@ -169,6 +190,9 @@ function SiteSettingsContent() {
           if (data.logo || data.logo_url) {
             setLogoPreview(getMediaUrl(data.logo_url || data.logo));
           }
+          if (data.iso_certificate_image || data.iso_certificate_image_url) {
+            setCertPreview(getMediaUrl(data.iso_certificate_image_url || (data.iso_certificate_image as string)));
+          }
         }
       } catch (err: unknown) {
         console.error("Failed to load site settings:", err);
@@ -188,8 +212,9 @@ function SiteSettingsContent() {
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    const { name, value, type } = e.target;
+    const val = type === "checkbox" ? (e.target as HTMLInputElement).checked : value;
+    setFormData((prev) => ({ ...prev, [name]: val }));
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -208,6 +233,14 @@ function SiteSettingsContent() {
     }
   };
 
+  const handleCertChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      setCertFile(file);
+      setCertPreview(URL.createObjectURL(file));
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!accessToken) return;
@@ -217,7 +250,7 @@ function SiteSettingsContent() {
     setErrorMessage(null);
 
     try {
-      if (heroImageFile || logoFile) {
+      if (heroImageFile || logoFile || certFile) {
         const data = new FormData();
         Object.entries(formData).forEach(([key, val]) => {
           if (
@@ -225,6 +258,8 @@ function SiteSettingsContent() {
             key !== "logo" &&
             key !== "logo_url" &&
             key !== "hero_image_url" &&
+            key !== "iso_certificate_image" &&
+            key !== "iso_certificate_image_url" &&
             val !== undefined &&
             val !== null
           ) {
@@ -236,6 +271,9 @@ function SiteSettingsContent() {
         }
         if (logoFile) {
           data.append("logo", logoFile);
+        }
+        if (certFile) {
+          data.append("iso_certificate_image", certFile);
         }
 
         const res = await fetch(
@@ -262,11 +300,15 @@ function SiteSettingsContent() {
         if (updated.logo || updated.logo_url) {
           setLogoPreview(getMediaUrl(updated.logo_url || updated.logo));
         }
+        if (updated.iso_certificate_image || updated.iso_certificate_image_url) {
+          setCertPreview(getMediaUrl(updated.iso_certificate_image_url || updated.iso_certificate_image));
+        }
         setHeroImageFile(null);
         setLogoFile(null);
+        setCertFile(null);
       } else {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const { hero_image: _heroImg, logo: _logo, ...payload } = formData;
+        const { hero_image: _heroImg, logo: _logo, iso_certificate_image: _certImg, ...payload } = formData;
         const updated = await updateAdminSiteSettings(accessToken, payload);
         setFormData(updated);
       }
@@ -1134,6 +1176,149 @@ function SiteSettingsContent() {
                   className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white text-xs focus:outline-hidden focus:border-blue-500 font-mono text-[11px]"
                 />
               </div>
+            </div>
+          </div>
+        )}
+
+        {/* TAB 7: ISO 9001:2015 Certification */}
+        {activeTab === "iso" && (
+          <div className="bg-[#0b1325] border border-slate-800 rounded-2xl p-6 sm:p-8 space-y-6 shadow-xl">
+            <div className="border-b border-slate-800/80 pb-4">
+              <div className="flex items-center gap-2">
+                <span className="text-emerald-400 font-bold text-sm">Step 7</span>
+                <span className="text-slate-600">•</span>
+                <h2 className="text-base font-bold text-white">
+                  ISO 9001:2015 Quality Certification
+                </h2>
+              </div>
+              <p className="text-slate-400 text-xs mt-1">
+                Manage the registration certificate details, accreditation bodies, valid period, and official certificate document shown across the website and homepage showcase.
+              </p>
+            </div>
+
+            {/* Certificate Document Upload */}
+            <div className="p-5 rounded-xl bg-slate-900/60 border border-slate-800 space-y-4">
+              <label className="block text-slate-200 text-xs font-semibold">
+                Official Certificate Document Image (.webp / image)
+              </label>
+              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6">
+                <div className="w-36 h-48 rounded-lg overflow-hidden bg-slate-950 border border-slate-700 flex items-center justify-center shrink-0 shadow-inner">
+                  {certPreview ? (
+                    <img
+                      src={certPreview}
+                      alt="Certificate Preview"
+                      className="w-full h-full object-contain p-1"
+                    />
+                  ) : (
+                    <span className="text-slate-500 text-[11px] text-center px-2">No certificate uploaded</span>
+                  )}
+                </div>
+                <div className="space-y-3">
+                  <input
+                    type="file"
+                    ref={certInputRef}
+                    onChange={handleCertChange}
+                    accept="image/*"
+                    className="hidden"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => certInputRef.current?.click()}
+                    className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-semibold shadow-sm transition-colors cursor-pointer"
+                  >
+                    Upload New Certificate
+                  </button>
+                  <p className="text-[11px] text-slate-400 max-w-sm leading-relaxed">
+                    Upload a high-resolution scan or rendered image of your ISO Certificate of Registration. Converted to WebP for fast loading.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+              <div>
+                <label className="block text-slate-200 text-xs font-semibold mb-1.5">
+                  ISO Standard Name
+                </label>
+                <input
+                  type="text"
+                  name="iso_standard"
+                  value={formData.iso_standard || ""}
+                  onChange={handleChange}
+                  placeholder="e.g. ISO 9001:2015"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white text-xs focus:outline-hidden focus:border-blue-500 font-bold"
+                />
+              </div>
+
+              <div>
+                <label className="block text-slate-200 text-xs font-semibold mb-1.5">
+                  Certificate Number
+                </label>
+                <input
+                  type="text"
+                  name="iso_certificate_number"
+                  value={formData.iso_certificate_number || ""}
+                  onChange={handleChange}
+                  placeholder="e.g. 129594/A/0001/UK/En"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white text-xs focus:outline-hidden focus:border-blue-500 font-mono"
+                />
+              </div>
+
+              <div>
+                <label className="block text-slate-200 text-xs font-semibold mb-1.5">
+                  Date of Issue
+                </label>
+                <input
+                  type="text"
+                  name="iso_issue_date"
+                  value={formData.iso_issue_date || ""}
+                  onChange={handleChange}
+                  placeholder="e.g. 18 November 2023"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white text-xs focus:outline-hidden focus:border-blue-500"
+                />
+              </div>
+
+              <div>
+                <label className="block text-slate-200 text-xs font-semibold mb-1.5">
+                  Certificate Expiry Date
+                </label>
+                <input
+                  type="text"
+                  name="iso_expiry_date"
+                  value={formData.iso_expiry_date || ""}
+                  onChange={handleChange}
+                  placeholder="e.g. 17 November 2026"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white text-xs focus:outline-hidden focus:border-blue-500 text-emerald-400 font-semibold"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-slate-200 text-xs font-semibold mb-1.5">
+                Accreditation Bodies &amp; Registrar
+              </label>
+              <input
+                type="text"
+                name="iso_accreditation"
+                value={formData.iso_accreditation || ""}
+                onChange={handleChange}
+                placeholder="e.g. URS / UKAS Management Systems (0043) / IAF Multilateral Recognition Arrangement"
+                className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white text-xs focus:outline-hidden focus:border-blue-500"
+              />
+            </div>
+
+            <div>
+              <label className="block text-slate-200 text-xs font-semibold mb-1.5">
+                Certified Manufacturing Scope
+              </label>
+              <textarea
+                name="iso_scope"
+                rows={3}
+                value={formData.iso_scope || ""}
+                onChange={handleChange}
+                placeholder="Scope of manufacturing activities covered by this certificate..."
+                className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white text-xs focus:outline-hidden focus:border-blue-500 leading-relaxed font-mono text-[11px]"
+              />
             </div>
           </div>
         )}

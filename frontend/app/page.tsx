@@ -6,6 +6,7 @@ import ProductCarousel from "@/components/ProductCarousel";
 import HeroSlider from "@/components/HeroSlider";
 import AnimatedStatCounter from "@/components/AnimatedStatCounter";
 import MapSection from "@/components/MapSection";
+import IsoCertificationSection from "@/components/IsoCertificationSection";
 import {
   getPublicSiteSettings,
   getPublicSiteContent,
@@ -257,6 +258,9 @@ export default function HomePage() {
           </div>
         </section>
       )}
+
+      {/* ISO 9001:2015 Certification Section */}
+      <IsoCertificationSection siteSettings={siteSettings} />
 
       {/* Machinery Categories Grid */}
       {categories.length > 0 && (

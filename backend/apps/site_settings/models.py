@@ -227,6 +227,53 @@ class SiteSettings(TimeStampedModel):
         help_text="CTA button link destination."
     )
 
+    # -------------------------------------------------------------------------
+    # ISO Certification
+    # -------------------------------------------------------------------------
+    iso_certified = models.BooleanField(
+        default=True,
+        help_text="Whether the company holds active ISO certification."
+    )
+    iso_standard = models.CharField(
+        max_length=100,
+        default="ISO 9001:2015",
+        help_text="ISO standard name (e.g. 'ISO 9001:2015')."
+    )
+    iso_certificate_number = models.CharField(
+        max_length=100,
+        default="129594/A/0001/UK/En",
+        help_text="Official registration certificate number."
+    )
+    iso_certificate_image = models.ImageField(
+        upload_to="site_settings/certificates/",
+        blank=True,
+        null=True,
+        help_text="Official ISO registration certificate image (.webp)."
+    )
+    iso_scope = models.TextField(
+        default=(
+            "Manufacturing and Assembly of Reverse Osmosis Plant, Dairy Equipment's "
+            "(Pasteurizer, Homogenizer, Chilling Vat, Road Milk Tanker), Cold Storage Equipment's, "
+            "Solar Energy & Heat Pump System, Steel Fabrication"
+        ),
+        help_text="Scope of activities covered by this certificate."
+    )
+    iso_accreditation = models.CharField(
+        max_length=255,
+        default="URS / UKAS Management Systems (0043) / IAF Multilateral Recognition Arrangement",
+        help_text="Accreditation and registrar bodies."
+    )
+    iso_issue_date = models.CharField(
+        max_length=50,
+        default="18 November 2023",
+        help_text="Certificate issue date."
+    )
+    iso_expiry_date = models.CharField(
+        max_length=50,
+        default="17 November 2026",
+        help_text="Certificate expiry date."
+    )
+
     class Meta:
         verbose_name = "Site Settings"
         verbose_name_plural = "Site Settings"

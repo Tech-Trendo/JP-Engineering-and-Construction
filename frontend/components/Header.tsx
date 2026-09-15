@@ -228,26 +228,36 @@ export default function Header({
       {/* Main header */}
       <div className="bg-white border-b border-gray-200">
         <div className="max-w-[1280px] mx-auto px-4 flex items-center justify-between h-[72px]">
-          {/* Logo */}
-          <Link href="/" className="flex items-center gap-2 sm:gap-3 min-w-0 mr-2 group">
-            <div className="w-[42px] h-[42px] sm:w-[48px] sm:h-[48px] rounded flex items-center justify-center shrink-0 overflow-hidden bg-white shadow-sm border border-gray-100 p-0.5">
-              <img
-                src={getMediaUrl(siteSettings?.logo_url) || "/assets/logo.webp"}
-                alt={companyName}
-                className="w-full h-full object-contain"
-              />
-            </div>
-            <div className="min-w-0">
-              <div className="font-bold text-[#1b3a6e] text-xs sm:text-base leading-tight group-hover:text-[#c8391a] transition-colors truncate sm:whitespace-normal">
-                {companyName}
+          {/* Logo & Brand Identity */}
+          <div className="flex items-center gap-2 sm:gap-3 min-w-0 mr-2">
+            <Link href="/" className="flex items-center gap-2 sm:gap-3 min-w-0 group">
+              <div className="w-[42px] h-[42px] sm:w-[48px] sm:h-[48px] rounded flex items-center justify-center shrink-0 overflow-hidden bg-white shadow-sm border border-gray-100 p-0.5">
+                <img
+                  src={getMediaUrl(siteSettings?.logo_url) || "/assets/logo.webp"}
+                  alt={companyName}
+                  className="w-full h-full object-contain"
+                />
               </div>
-              {tagline ? (
-                <div className="text-[10px] text-gray-500 leading-tight hidden sm:block truncate">
-                  {tagline}
+              <div className="min-w-0">
+                <div className="font-bold text-[#1b3a6e] text-xs sm:text-base leading-tight group-hover:text-[#c8391a] transition-colors truncate sm:whitespace-normal">
+                  {companyName}
                 </div>
-              ) : null}
+                {tagline ? (
+                  <div className="text-[10px] text-gray-500 leading-tight hidden sm:block truncate">
+                    {tagline}
+                  </div>
+                ) : null}
+              </div>
+            </Link>
+
+            {/* ISO 9001:2015 Certified Badge */}
+            <div className="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-1 bg-emerald-50 border border-emerald-200 text-emerald-800 rounded-md text-[11px] font-bold shrink-0 shadow-2xs">
+              <svg className="w-3.5 h-3.5 text-emerald-600 shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+              </svg>
+              <span>ISO 9001:2015 Certified</span>
             </div>
-          </Link>
+          </div>
 
           {/* Desktop nav + CTA */}
           <div className="hidden lg:flex items-center">
@@ -338,6 +348,12 @@ export default function Header({
       {mobileOpen && (
         <div className="lg:hidden bg-white border-b border-gray-200 shadow-xl max-h-[calc(100vh-80px)] overflow-y-auto">
           <div className="p-4 space-y-1">
+            <div className="flex items-center gap-1.5 px-3 py-1.5 bg-emerald-50 border border-emerald-200 text-emerald-800 rounded-md text-xs font-bold mb-3 shadow-2xs">
+              <svg className="w-4 h-4 text-emerald-600 shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+              </svg>
+              <span>ISO 9001:2015 Certified Company</span>
+            </div>
             {navItems.map((item) => (
               <div key={item.label} className="border-b border-gray-100 last:border-0 pb-1">
                 <div className="flex items-center justify-between">

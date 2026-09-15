@@ -7,6 +7,7 @@ from .models import SiteSettings, HeroSlide
 class SiteSettingsSerializer(serializers.ModelSerializer):
     hero_image_url = serializers.SerializerMethodField()
     logo_url = serializers.SerializerMethodField()
+    iso_certificate_image_url = serializers.SerializerMethodField()
 
     class Meta:
         model = SiteSettings
@@ -51,10 +52,19 @@ class SiteSettingsSerializer(serializers.ModelSerializer):
             'cta_subtext',
             'cta_button_label',
             'cta_button_link',
+            'iso_certified',
+            'iso_standard',
+            'iso_certificate_number',
+            'iso_certificate_image',
+            'iso_certificate_image_url',
+            'iso_scope',
+            'iso_accreditation',
+            'iso_issue_date',
+            'iso_expiry_date',
             'created_at',
             'updated_at',
         ]
-        read_only_fields = ['id', 'created_at', 'updated_at', 'hero_image_url', 'logo_url']
+        read_only_fields = ['id', 'created_at', 'updated_at', 'hero_image_url', 'logo_url', 'iso_certificate_image_url']
 
     def get_hero_image_url(self, obj) -> str | None:
         if obj.hero_image:
@@ -70,6 +80,14 @@ class SiteSettingsSerializer(serializers.ModelSerializer):
             if request is not None:
                 return request.build_absolute_uri(obj.logo.url)
             return obj.logo.url
+        return None
+
+    def get_iso_certificate_image_url(self, obj) -> str | None:
+        if obj.iso_certificate_image:
+            request = self.context.get('request')
+            if request is not None:
+                return request.build_absolute_uri(obj.iso_certificate_image.url)
+            return obj.iso_certificate_image.url
         return None
 
 

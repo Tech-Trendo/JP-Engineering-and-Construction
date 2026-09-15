@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Work_Sans, Open_Sans } from "next/font/google";
+import { Poppins } from "next/font/google";
 import "./globals.css";
 
 export const viewport: Viewport = {
@@ -17,15 +17,10 @@ import {
   PublicProductListItem,
 } from "@/lib/public-api";
 
-const workSans = Work_Sans({
+const poppins = Poppins({
   subsets: ["latin"],
-  variable: "--font-display",
-  display: "swap",
-});
-
-const openSans = Open_Sans({
-  subsets: ["latin"],
-  variable: "--font-sans",
+  weight: ["300", "400", "500", "600", "700", "800"],
+  variable: "--font-poppins",
   display: "swap",
 });
 
@@ -84,7 +79,7 @@ export default async function RootLayout({
   }
 
   return (
-    <html lang="en" className={`${workSans.variable} ${openSans.variable}`}>
+    <html lang="en" className={`${poppins.variable}`}>
       <body className="flex flex-col min-h-screen text-gray-800 bg-white antialiased overflow-x-hidden w-full">
         <ConditionalShell siteSettings={siteSettings} categories={categories} industries={industries} products={products}>
           {children}
