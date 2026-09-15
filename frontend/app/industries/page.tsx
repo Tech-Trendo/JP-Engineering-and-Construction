@@ -107,7 +107,7 @@ export default function IndustriesPage() {
                 {industries.map((ind) => {
                   const imgSrc =
                     getMediaUrl(ind.icon_or_image_url || ind.icon_or_image) ||
-                    "/images/hero-machinery.jpg";
+                    "/images/hero-machinery.webp";
 
                   return (
                     <div

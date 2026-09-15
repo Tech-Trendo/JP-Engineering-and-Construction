@@ -6,12 +6,21 @@
 
 html {
   scroll-behavior: smooth;
+  overflow-x: hidden;
+  max-width: 100vw;
 }
 
 body {
   font-family: var(--font-sans, 'Open Sans', system-ui, sans-serif);
   color: #333333;
   background: #ffffff;
+  overflow-x: hidden;
+  max-width: 100vw;
+}
+
+img, video {
+  max-width: 100%;
+  height: auto;
 }
 
 h1, h2, h3, h4, h5, h6 {

@@ -67,7 +67,7 @@ export default function Footer({
             <div className="flex items-center gap-3 mb-4">
               <div className="w-[46px] h-[46px] rounded flex items-center justify-center shrink-0 overflow-hidden bg-white/10 p-1 border border-white/10">
                 <img
-                  src={getMediaUrl(siteSettings?.logo_url) || "/assets/logo.png"}
+                  src={getMediaUrl(siteSettings?.logo_url) || "/assets/logo.webp"}
                   alt={companyName}
                   className="w-full h-full object-contain"
                 />

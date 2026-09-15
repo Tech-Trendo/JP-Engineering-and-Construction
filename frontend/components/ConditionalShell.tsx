@@ -69,7 +69,7 @@ export default function ConditionalShell({
         industries={industries}
         products={products}
       />
-      <main className="flex-1">{children}</main>
+      <main className="flex-1 w-full overflow-x-hidden">{children}</main>
       <Footer
         siteSettings={siteSettings}
         categories={categories}

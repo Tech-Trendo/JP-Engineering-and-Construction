@@ -129,7 +129,7 @@ export default function AdminDashboardPage() {
 
   const logoUrl = siteSettings?.logo_url || siteSettings?.logo
     ? getMediaUrl(siteSettings.logo_url || siteSettings.logo)
-    : "/assets/logo.png";
+    : "/assets/logo.webp";
 
   const companyName = siteSettings?.company_name || "JP Engineering & Construction Pvt. Ltd.";
 

@@ -27,7 +27,7 @@ export default function HeroSlider({ siteSettings, slides: dynamicSlides = [] }:
 
   const mainHeroImage =
     (siteSettings && getMediaUrl(siteSettings.hero_image_url || siteSettings.hero_image)) ||
-    "/images/hero-machinery.jpg";
+    "/images/hero-machinery.webp";
 
   const slides: SlideItem[] =
     dynamicSlides.length > 0
@@ -128,15 +128,15 @@ export default function HeroSlider({ siteSettings, slides: dynamicSlides = [] }:
                 </p>
 
                 {/* Action Buttons */}
-                <div className="flex flex-wrap items-center gap-4">
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4">
                   {slide.primaryLabel && (
                     <Link
                       href={slide.primaryLink}
-                      className="inline-flex items-center justify-center gap-2 bg-[#c8391a] hover:bg-[#a62d14] text-white text-xs sm:text-sm font-bold uppercase tracking-wider px-6 sm:px-8 py-3.5 rounded shadow-sm hover:shadow transition-all group cursor-pointer"
+                      className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-[#c8391a] hover:bg-[#a62d14] text-white text-xs sm:text-sm font-bold uppercase tracking-wider px-6 sm:px-8 py-3.5 rounded shadow-sm hover:shadow transition-all group cursor-pointer text-center"
                     >
                       <span>{slide.primaryLabel}</span>
                       <svg
-                        className="w-4 h-4 group-hover:translate-x-1 transition-transform"
+                        className="w-4 h-4 group-hover:translate-x-1 transition-transform shrink-0"
                         fill="none"
                         stroke="currentColor"
                         strokeWidth={2.5}
@@ -153,7 +153,7 @@ export default function HeroSlider({ siteSettings, slides: dynamicSlides = [] }:
                   {slide.secondaryLabel && (
                     <Link
                       href={slide.secondaryLink}
-                      className="inline-flex items-center justify-center gap-2 bg-[#c8391a] hover:bg-[#a62d14] text-white text-xs sm:text-sm font-bold uppercase tracking-wider px-6 sm:px-8 py-3.5 rounded shadow-sm hover:shadow transition-all cursor-pointer"
+                      className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-[#c8391a] hover:bg-[#a62d14] text-white text-xs sm:text-sm font-bold uppercase tracking-wider px-6 sm:px-8 py-3.5 rounded shadow-sm hover:shadow transition-all cursor-pointer text-center"
                     >
                       {slide.secondaryLabel}
                     </Link>
@@ -165,12 +165,12 @@ export default function HeroSlider({ siteSettings, slides: dynamicSlides = [] }:
         </div>
       </div>
 
-      {/* Prev / Next Navigation Arrows */}
+      {/* Prev / Next Navigation Arrows (visible on tablet/desktop) */}
       <button
         type="button"
         onClick={handlePrev}
         aria-label="Previous Slide"
-        className="absolute left-4 top-1/2 -translate-y-1/2 z-30 w-11 h-11 rounded-full bg-black/40 hover:bg-[#c8391a] text-white backdrop-blur-sm border border-white/20 flex items-center justify-center transition-all cursor-pointer shadow-lg hover:scale-105 active:scale-95"
+        className="hidden sm:flex absolute left-4 top-1/2 -translate-y-1/2 z-30 w-11 h-11 rounded-full bg-black/40 hover:bg-[#c8391a] text-white backdrop-blur-sm border border-white/20 items-center justify-center transition-all cursor-pointer shadow-lg hover:scale-105 active:scale-95"
       >
         <svg
           className="w-5 h-5"
@@ -187,7 +187,7 @@ export default function HeroSlider({ siteSettings, slides: dynamicSlides = [] }:
         type="button"
         onClick={handleNext}
         aria-label="Next Slide"
-        className="absolute right-4 top-1/2 -translate-y-1/2 z-30 w-11 h-11 rounded-full bg-black/40 hover:bg-[#c8391a] text-white backdrop-blur-sm border border-white/20 flex items-center justify-center transition-all cursor-pointer shadow-lg hover:scale-105 active:scale-95"
+        className="hidden sm:flex absolute right-4 top-1/2 -translate-y-1/2 z-30 w-11 h-11 rounded-full bg-black/40 hover:bg-[#c8391a] text-white backdrop-blur-sm border border-white/20 items-center justify-center transition-all cursor-pointer shadow-lg hover:scale-105 active:scale-95"
       >
         <svg
           className="w-5 h-5"

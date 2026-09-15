@@ -140,7 +140,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [newQuotesCount, setNewQuotesCount] = useState<number>(0);
   const [companyName, setCompanyName] = useState<string>("JP Engineering & Construction Pvt. Ltd.");
-  const [logoUrl, setLogoUrl] = useState<string>("/assets/logo.png");
+  const [logoUrl, setLogoUrl] = useState<string>("/assets/logo.webp");
 
   const isLoginPage = pathname === "/admin/login";
 
@@ -150,7 +150,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
       .then((s) => {
         if (isMounted) {
           if (s.company_name) setCompanyName(s.company_name);
-          if (s.logo_url) setLogoUrl(getMediaUrl(s.logo_url) || "/assets/logo.png");
+          if (s.logo_url) setLogoUrl(getMediaUrl(s.logo_url) || "/assets/logo.webp");
         }
       })
       .catch(() => {});

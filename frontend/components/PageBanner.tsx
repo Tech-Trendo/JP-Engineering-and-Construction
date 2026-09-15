@@ -28,7 +28,7 @@ export default function PageBanner({ title, subtitle, badge, breadcrumbs, bgImag
         <h1 className="text-white text-2xl md:text-3xl font-bold mb-2">{title}</h1>
         {subtitle && <p className="text-gray-200 text-sm max-w-2xl mb-4 leading-relaxed">{subtitle}</p>}
         {breadcrumbs && breadcrumbs.length > 0 && (
-          <nav aria-label="breadcrumb" className="flex items-center gap-2 text-[13px]">
+          <nav aria-label="breadcrumb" className="flex flex-wrap items-center gap-2 text-xs sm:text-[13px] leading-relaxed">
             <Link href="/" className="text-gray-300 hover:text-white transition-colors">
               Home
             </Link>

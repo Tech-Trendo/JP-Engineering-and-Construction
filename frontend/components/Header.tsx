@@ -229,20 +229,20 @@ export default function Header({
       <div className="bg-white border-b border-gray-200">
         <div className="max-w-[1280px] mx-auto px-4 flex items-center justify-between h-[72px]">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-3 shrink-0 group">
-            <div className="w-[48px] h-[48px] rounded flex items-center justify-center overflow-hidden bg-white shadow-sm border border-gray-100 p-0.5">
+          <Link href="/" className="flex items-center gap-2 sm:gap-3 min-w-0 mr-2 group">
+            <div className="w-[42px] h-[42px] sm:w-[48px] sm:h-[48px] rounded flex items-center justify-center shrink-0 overflow-hidden bg-white shadow-sm border border-gray-100 p-0.5">
               <img
-                src={getMediaUrl(siteSettings?.logo_url) || "/assets/logo.png"}
+                src={getMediaUrl(siteSettings?.logo_url) || "/assets/logo.webp"}
                 alt={companyName}
                 className="w-full h-full object-contain"
               />
             </div>
-            <div>
-              <div className="font-bold text-[#1b3a6e] text-sm sm:text-base leading-tight group-hover:text-[#c8391a] transition-colors">
+            <div className="min-w-0">
+              <div className="font-bold text-[#1b3a6e] text-xs sm:text-base leading-tight group-hover:text-[#c8391a] transition-colors truncate sm:whitespace-normal">
                 {companyName}
               </div>
               {tagline ? (
-                <div className="text-[10px] text-gray-500 leading-tight hidden sm:block">
+                <div className="text-[10px] text-gray-500 leading-tight hidden sm:block truncate">
                   {tagline}
                 </div>
               ) : null}
@@ -310,15 +310,15 @@ export default function Header({
           </div>
 
           {/* Mobile hamburger */}
-          <div className="lg:hidden flex items-center gap-2">
+          <div className="lg:hidden flex items-center gap-1.5 sm:gap-2 shrink-0">
             <Link
               href="/contact-us#quote"
-              className="bg-[#c8391a] text-white text-[11px] font-bold uppercase tracking-wider px-3 py-1.5 rounded"
+              className="bg-[#c8391a] hover:bg-[#a62d14] text-white text-[11px] font-bold uppercase tracking-wider px-2.5 sm:px-3 py-1.5 rounded transition-colors"
             >
               Quote
             </Link>
             <button
-              className="p-2 text-[#1b3a6e]"
+              className="p-1.5 sm:p-2 text-[#1b3a6e] hover:text-[#c8391a] transition-colors"
               onClick={() => setMobileOpen((v) => !v)}
               aria-label="Toggle menu"
             >
@@ -336,7 +336,7 @@ export default function Header({
 
       {/* Mobile menu */}
       {mobileOpen && (
-        <div className="lg:hidden bg-white border-b border-gray-200 shadow-xl max-h-[calc(100vh-120px)] overflow-y-auto">
+        <div className="lg:hidden bg-white border-b border-gray-200 shadow-xl max-h-[calc(100vh-80px)] overflow-y-auto">
           <div className="p-4 space-y-1">
             {navItems.map((item) => (
               <div key={item.label} className="border-b border-gray-100 last:border-0 pb-1">

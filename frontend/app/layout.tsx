@@ -1,6 +1,12 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Work_Sans, Open_Sans } from "next/font/google";
 import "./globals.css";
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+};
 import ConditionalShell from "@/components/ConditionalShell";
 import {
   getPublicSiteSettings,
@@ -79,7 +85,7 @@ export default async function RootLayout({
 
   return (
     <html lang="en" className={`${workSans.variable} ${openSans.variable}`}>
-      <body className="flex flex-col min-h-screen text-gray-800 bg-white antialiased">
+      <body className="flex flex-col min-h-screen text-gray-800 bg-white antialiased overflow-x-hidden w-full">
         <ConditionalShell siteSettings={siteSettings} categories={categories} industries={industries} products={products}>
           {children}
         </ConditionalShell>

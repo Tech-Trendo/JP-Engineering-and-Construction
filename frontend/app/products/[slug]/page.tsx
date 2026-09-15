@@ -320,8 +320,8 @@ export default function ProductDetailPage() {
                     Technical Specifications &amp; Parameters
                   </h2>
                 </div>
-                <div className="border border-gray-200 rounded-xl overflow-hidden shadow-xs">
-                  <table className="w-full text-left border-collapse text-sm">
+                <div className="border border-gray-200 rounded-xl overflow-x-auto shadow-xs">
+                  <table className="w-full min-w-[480px] sm:min-w-0 text-left border-collapse text-sm">
                     <thead>
                       <tr className="bg-[#1b3a6e] text-white text-xs uppercase tracking-wider">
                         <th className="py-3.5 px-5 font-semibold w-1/3">

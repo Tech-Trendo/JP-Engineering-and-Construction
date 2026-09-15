@@ -227,7 +227,7 @@ export default function IndustryMachinerySection({
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {previewProducts.map((product) => {
                 const primaryCat = product.categories?.[0]?.name || "Machinery";
-                const imgSrc = getMediaUrl(product.primary_image) || "/images/hero-machinery.jpg";
+                const imgSrc = getMediaUrl(product.primary_image) || "/images/hero-machinery.webp";
 
                 return (
                   <div
