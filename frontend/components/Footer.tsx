@@ -10,7 +10,7 @@ export default function Footer({
   categories?: PublicCategory[];
   industries?: PublicIndustry[];
 }) {
-  const companyName = siteSettings?.company_name || "";
+  const companyName = siteSettings?.company_name || "JP Engineering and Construction Pvt Ltd";
   const tagline = siteSettings?.tagline || "";
   const description = siteSettings?.company_description || "";
   const address = siteSettings?.address || "";

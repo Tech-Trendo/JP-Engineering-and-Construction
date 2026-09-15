@@ -256,8 +256,66 @@ function unwrapResults<T>(data: unknown): T[] {
   return [];
 }
 
+export const DEFAULT_SITE_SETTINGS: PublicSiteSettings = {
+  id: 1,
+  company_name: "JP Engineering & Construction Pvt. Ltd.",
+  company_short_name: "JP Engineering & Construction Pvt. Ltd.",
+  tagline: "A trusted name in Nepal's engineering sector",
+  company_description:
+    "A leading engineering company in Nepal specializing in cold storage, water systems, dairy processing, steel fabrication, solar energy, and construction.",
+  founding_year: "1998",
+  company_type: "Private Limited",
+  registration_number: "",
+  pan_vat_number: "",
+  employee_count: "150+",
+  primary_phone: "01-5385552",
+  secondary_phone: "9851112988, 9851158661, 9851158660",
+  primary_email: "info@jpec.com.np",
+  secondary_email: "",
+  address: "Kathmandu, Nepal",
+  business_hours: "Mon - Sat: 9:00 AM - 6:00 PM",
+  map_location_text: "Kathmandu, Nepal",
+  facebook_url: "https://facebook.com",
+  twitter_url: "https://twitter.com",
+  linkedin_url: "https://linkedin.com",
+  youtube_url: "https://youtube.com",
+  hero_badge: "Engineering Excellence",
+  hero_heading: "JP Engineering & Construction Pvt. Ltd.",
+  hero_subtext:
+    "A trusted name in Nepal's engineering sector — delivering integrated solutions in cold storage, water treatment, dairy processing, steel fabrication, renewable energy, and construction since 1998.",
+  hero_image: null,
+  hero_image_url: null,
+  hero_cta_primary_label: "About Us",
+  hero_cta_primary_link: "/about/introduction",
+  hero_cta_secondary_label: "Contact Us",
+  hero_cta_secondary_link: "/contact-us",
+  stat_years_experience: "25+",
+  stat_projects_completed: "500+",
+  stat_happy_clients: "300+",
+  stat_business_sectors: "6",
+  cta_heading: "Ready to Start Your Project?",
+  cta_subtext: "Contact our engineering team for a free consultation and project estimate.",
+  cta_button_label: "Get In Touch",
+  cta_button_link: "/contact-us",
+  iso_certified: true,
+  iso_standard: "ISO 9001:2015",
+  iso_certificate_number: "129594/A/0001/UK/En",
+  iso_certificate_image: null,
+  iso_certificate_image_url: null,
+  iso_scope:
+    "Manufacturing and Assembly of Reverse Osmosis Plant, Dairy Equipment's (Pasteurizer, Homogenizer, Chilling Vat, Road Milk Tanker), Cold Storage Equipment's, Solar Energy & Heat Pump System, Steel Fabrication",
+  iso_accreditation: "URS / UKAS Management Systems (0043) / IAF Multilateral Recognition Arrangement",
+  iso_issue_date: "18 November 2023",
+  iso_expiry_date: "17 November 2026",
+};
+
 export async function getPublicSiteSettings(): Promise<PublicSiteSettings> {
-  return apiClient<PublicSiteSettings>("public/site-settings/");
+  try {
+    return await apiClient<PublicSiteSettings>("public/site-settings/");
+  } catch (err) {
+    console.warn("[public-api getPublicSiteSettings failed, using fallback defaults]:", err);
+    return DEFAULT_SITE_SETTINGS;
+  }
 }
 
 export async function getPublicSiteContent(): Promise<PublicSiteContent> {

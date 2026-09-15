@@ -63,7 +63,7 @@ export default function Header({
   const phone = siteSettings?.primary_phone;
   const email = siteSettings?.primary_email;
   const hours = siteSettings?.business_hours;
-  const companyName = siteSettings?.company_name || "";
+  const companyName = siteSettings?.company_name || "JP Engineering and Construction Pvt Ltd";
   const tagline = siteSettings?.tagline || "";
 
   const industryDropdown: NavDropdownItem[] = [
@@ -160,6 +160,14 @@ export default function Header({
                 <span>{email}</span>
               </a>
             ) : null}
+            <span className="hidden xl:inline-block text-gray-400 text-[11px]">|</span>
+            <Link
+              href="/#iso-certified"
+              className="hidden xl:inline-flex items-center gap-1 text-gray-300 hover:text-white transition-colors text-[11px] font-normal tracking-wide"
+              title="View ISO 9001:2015 Certificate"
+            >
+              <span>An {siteSettings?.iso_standard || "ISO 9001:2015"} Certified Company</span>
+            </Link>
           </div>
           <div className="hidden sm:flex items-center gap-4">
             {hours ? <span className="text-gray-300">{hours}</span> : null}
@@ -229,9 +237,9 @@ export default function Header({
       <div className="bg-white border-b border-gray-200">
         <div className="max-w-[1280px] mx-auto px-4 flex items-center justify-between h-[72px]">
           {/* Logo & Brand Identity */}
-          <div className="flex items-center gap-2 sm:gap-3 min-w-0 mr-1 xl:mr-3 shrink-0">
-            <Link href="/" className="flex items-center gap-2 sm:gap-3 min-w-0 group">
-              <div className="w-[40px] h-[40px] sm:w-[46px] sm:h-[46px] rounded flex items-center justify-center shrink-0 overflow-hidden bg-white shadow-sm border border-gray-100 p-0.5">
+          <div className="flex items-center gap-2.5 sm:gap-3.5 min-w-0 mr-2 xl:mr-4 shrink-0">
+            <Link href="/" className="flex items-center gap-2.5 sm:gap-3 min-w-0 group">
+              <div className="w-[42px] h-[42px] sm:w-[48px] sm:h-[48px] rounded flex items-center justify-center shrink-0 overflow-hidden bg-white shadow-xs border border-gray-100 p-0.5">
                 <img
                   src={getMediaUrl(siteSettings?.logo_url) || "/assets/logo.webp"}
                   alt={companyName}
@@ -239,30 +247,18 @@ export default function Header({
                 />
               </div>
               <div className="min-w-0">
-                <div className="font-bold text-[#1b3a6e] text-xs sm:text-sm xl:text-base leading-tight group-hover:text-[#c8391a] transition-colors whitespace-nowrap">
+                <div className="font-bold text-[#1b3a6e] text-[13px] sm:text-[15px] xl:text-[16px] leading-tight group-hover:text-[#c8391a] transition-colors whitespace-nowrap tracking-tight">
                   {companyName}
                 </div>
-                {tagline ? (
-                  <div className="text-[10px] text-gray-500 leading-tight hidden xl:block truncate">
-                    {tagline}
-                  </div>
-                ) : null}
+                <div className="text-[10.5px] sm:text-[11px] text-gray-500 leading-tight mt-0.5 flex items-center gap-1.5 font-normal">
+                  <span className="hidden sm:inline text-gray-500">Engineering Solutions</span>
+                  <span className="hidden sm:inline text-gray-300">•</span>
+                  <span className="text-slate-600 font-medium">
+                    {siteSettings?.iso_standard || "ISO 9001:2015"} Certified
+                  </span>
+                </div>
               </div>
             </Link>
-
-            {/* Dynamic ISO 9001:2015 Certified Badge */}
-            {siteSettings?.iso_certified !== false && (
-              <Link
-                href="/#iso-certified"
-                className="hidden md:inline-flex items-center gap-1.5 px-2 xl:px-2.5 py-1 bg-emerald-50 hover:bg-emerald-100/80 border border-emerald-200 text-emerald-800 rounded-md text-[10.5px] xl:text-[11px] font-bold shrink-0 shadow-2xs transition-colors whitespace-nowrap"
-                title="View ISO 9001:2015 Registration Certificate"
-              >
-                <svg className="w-3.5 h-3.5 text-emerald-600 shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                </svg>
-                <span>{siteSettings?.iso_standard ? `${siteSettings.iso_standard} Certified` : "ISO 9001:2015 Certified"}</span>
-              </Link>
-            )}
           </div>
 
           {/* Desktop nav + CTA */}
@@ -354,18 +350,16 @@ export default function Header({
       {mobileOpen && (
         <div className="lg:hidden bg-white border-b border-gray-200 shadow-xl max-h-[calc(100vh-80px)] overflow-y-auto">
           <div className="p-4 space-y-1">
-            {siteSettings?.iso_certified !== false && (
+            <div className="pb-2.5 mb-2 border-b border-gray-100 flex items-center justify-between text-xs font-medium">
+              <span className="text-[#1b3a6e] font-bold truncate mr-2">{companyName}</span>
               <Link
                 href="/#iso-certified"
                 onClick={() => setMobileOpen(false)}
-                className="flex items-center gap-1.5 px-3 py-1.5 bg-emerald-50 hover:bg-emerald-100/80 border border-emerald-200 text-emerald-800 rounded-md text-xs font-bold mb-3 shadow-2xs transition-colors"
+                className="text-slate-600 hover:text-[#c8391a] transition-colors shrink-0 text-[11px]"
               >
-                <svg className="w-4 h-4 text-emerald-600 shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                </svg>
-                <span>{siteSettings?.iso_standard ? `${siteSettings.iso_standard} Certified Company` : "ISO 9001:2015 Certified Company"}</span>
+                {siteSettings?.iso_standard || "ISO 9001:2015"} Certified
               </Link>
-            )}
+            </div>
             {navItems.map((item) => (
               <div key={item.label} className="border-b border-gray-100 last:border-0 pb-1">
                 <div className="flex items-center justify-between">
