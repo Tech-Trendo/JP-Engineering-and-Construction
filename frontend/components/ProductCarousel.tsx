@@ -147,16 +147,16 @@ export default function ProductCarousel({ products }: ProductCarouselProps) {
                 {/* Image Container */}
                 <Link
                   href={`/products/${p.slug}`}
-                  className="block relative h-48 bg-gray-100 overflow-hidden flex items-center justify-center cursor-pointer"
+                  className="block relative aspect-square bg-white overflow-hidden flex items-center justify-center p-3 cursor-pointer"
                 >
                   {p.primary_image ? (
                     <img
                       src={getMediaUrl(p.primary_image)}
                       alt={p.name}
-                      className="w-full h-full object-cover group-hover/card:scale-105 transition-transform duration-500"
+                      className="w-full h-full object-contain group-hover/card:scale-105 transition-transform duration-500"
                     />
                   ) : (
-                    <div className="w-full h-full bg-[#1b3a6e]/5 flex flex-col items-center justify-center text-gray-400 text-xs">
+                    <div className="w-full h-full bg-white flex flex-col items-center justify-center text-gray-400 text-xs">
                       <svg
                         className="w-10 h-10 text-gray-300 mb-1"
                         fill="none"

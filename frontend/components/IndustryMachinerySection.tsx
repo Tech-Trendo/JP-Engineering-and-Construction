@@ -235,17 +235,20 @@ export default function IndustryMachinerySection({
                     className="bg-white rounded-xl overflow-hidden border border-gray-200 hover:border-gray-300 hover:shadow-md transition-all duration-200 flex flex-col group"
                   >
                     {/* Machine Thumbnail */}
-                    <div className="relative h-44 bg-gray-100 overflow-hidden">
+                    <Link
+                      href={`/products/${product.slug}`}
+                      className="block relative aspect-square bg-white overflow-hidden flex items-center justify-center p-3 cursor-pointer"
+                    >
                       <img
                         src={imgSrc}
                         alt={product.name}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                        className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
                         loading="lazy"
                       />
                       <div className="absolute top-2.5 left-2.5 bg-[#0f2347]/90 text-white text-[10px] font-semibold px-2 py-0.5 rounded-sm uppercase tracking-wider">
                         {primaryCat}
                       </div>
-                    </div>
+                    </Link>
 
                     {/* Machine Details */}
                     <div className="p-4 flex-1 flex flex-col justify-between">

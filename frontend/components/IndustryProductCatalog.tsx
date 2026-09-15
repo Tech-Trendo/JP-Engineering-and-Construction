@@ -100,12 +100,12 @@ export default function IndustryProductCatalog({
                 {/* Photo */}
                 <Link
                   href={`/products/${product.slug}`}
-                  className="block relative h-52 bg-gray-100 overflow-hidden cursor-pointer"
+                  className="block relative aspect-square bg-white overflow-hidden flex items-center justify-center p-3 cursor-pointer"
                 >
                   <img
                     src={imgSrc}
                     alt={product.name}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
                     loading="lazy"
                   />
                 </Link>

@@ -34,3 +34,5 @@ frontend/.env
 backend.zip
 backend/scratch/
 extracted_pdf_images/
+JP.pdf
+matched_catalog_analysis.txt

@@ -29,7 +29,7 @@ export default function ProductGallery({
   return (
     <div className="space-y-4">
       {/* Main Image Display */}
-      <div className="relative h-[360px] md:h-[460px] bg-gray-100 border border-gray-200 rounded-lg overflow-hidden shadow-inner flex items-center justify-center">
+      <div className="relative aspect-square max-h-[500px] w-full bg-white border border-gray-200 rounded-lg overflow-hidden shadow-sm flex items-center justify-center p-4">
         {activeImage ? (
           <img
             src={activeImage}
@@ -57,7 +57,7 @@ export default function ProductGallery({
                 key={img.id}
                 type="button"
                 onClick={() => setActiveImage(imgSrc)}
-                className={`relative w-20 h-20 rounded border-2 overflow-hidden bg-gray-50 transition-all ${
+                className={`relative w-20 h-20 rounded border-2 overflow-hidden bg-white p-1 transition-all ${
                   isSelected
                     ? "border-[#c8391a] shadow-md scale-105"
                     : "border-gray-200 opacity-70 hover:opacity-100"
@@ -66,7 +66,7 @@ export default function ProductGallery({
                 <img
                   src={imgSrc}
                   alt={img.alt_text || productName}
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-contain"
                 />
               </button>
             );

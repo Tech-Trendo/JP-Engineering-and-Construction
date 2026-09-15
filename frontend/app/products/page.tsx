@@ -154,16 +154,16 @@ export default function ProductsPage() {
                                 >
                                   <Link
                                     href={`/products/${product.slug}`}
-                                    className="block relative h-48 bg-gray-100 overflow-hidden flex items-center justify-center cursor-pointer"
+                                    className="block relative aspect-square bg-white overflow-hidden flex items-center justify-center p-3 cursor-pointer"
                                   >
                                     {product.primary_image ? (
                                       <img
                                         src={getMediaUrl(product.primary_image)}
                                         alt={product.name}
-                                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                                        className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
                                       />
                                     ) : (
-                                      <div className="w-full h-full bg-[#1b3a6e]/5 flex items-center justify-center text-gray-400 text-xs">
+                                      <div className="w-full h-full bg-white flex items-center justify-center text-gray-400 text-xs">
                                         Industrial Machine
                                       </div>
                                     )}
