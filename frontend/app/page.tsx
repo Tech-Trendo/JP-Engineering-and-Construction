@@ -349,30 +349,31 @@ export default function HomePage() {
                   <Link
                     key={industry.id}
                     href={`/industries/${industry.slug}`}
-                    className="group relative overflow-hidden rounded-xl bg-[#1b3a6e] aspect-[4/3] flex items-end shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
+                    className="group relative overflow-hidden rounded-xl bg-slate-900 aspect-video flex items-end shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
                   >
                     {imgSrc ? (
                       <img
                         src={imgSrc}
                         alt={industry.name}
-                        className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        className="absolute inset-0 w-full !h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        style={{ width: "100%", height: "100%", objectFit: "cover" }}
                       />
                     ) : (
-                      <div className="absolute inset-0 bg-gradient-to-br from-[#1b3a6e] to-[#0d2144]" />
+                      <div className="absolute inset-0 bg-gradient-to-br from-slate-900 to-slate-800" />
                     )}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent" />
-                    <div className="relative z-10 p-4 w-full flex items-end justify-between">
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent pointer-events-none" />
+                    <div className="relative z-10 p-3.5 sm:p-4 w-full flex items-end justify-between">
                       <div>
-                        <div className="text-white font-bold text-[14px] leading-snug drop-shadow">
+                        <div className="text-white font-bold text-sm sm:text-base leading-snug drop-shadow-md">
                           {industry.name}
                         </div>
                         {industry.products_count > 0 && (
-                          <div className="text-gray-300 text-[11px] mt-0.5">
+                          <div className="text-gray-200 text-[11px] sm:text-xs mt-0.5 font-medium drop-shadow-xs">
                             {industry.products_count} machine{industry.products_count !== 1 ? "s" : ""}
                           </div>
                         )}
                       </div>
-                      <div className="w-8 h-8 rounded-full bg-[#c8391a] flex items-center justify-center shrink-0 ml-2 group-hover:bg-white group-hover:text-[#c8391a] transition-colors shadow">
+                      <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-[#c8391a] flex items-center justify-center shrink-0 ml-2 group-hover:bg-white group-hover:text-[#c8391a] transition-colors shadow-md">
                         <svg className="w-4 h-4 text-white group-hover:text-[#c8391a] transition-colors" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
                         </svg>
@@ -384,15 +385,15 @@ export default function HomePage() {
 
               <Link
                 href="/industries"
-                className="group relative overflow-hidden rounded-xl aspect-[4/3] flex flex-col items-center justify-center bg-gradient-to-br from-[#c8391a] to-[#a62d14] shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
+                className="group relative overflow-hidden rounded-xl aspect-video flex flex-col items-center justify-center bg-gradient-to-br from-[#c8391a] to-[#a62d14] shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1 p-4 text-center"
               >
-                <div className="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center mb-3 group-hover:bg-white/30 transition-colors">
-                  <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white/20 flex items-center justify-center mb-2 group-hover:bg-white/30 transition-colors">
+                  <svg className="w-5 h-5 sm:w-6 sm:h-6 text-white" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
                   </svg>
                 </div>
-                <div className="text-white font-bold text-[14px]">View All Sectors</div>
-                <div className="text-white/70 text-[11px] mt-0.5">Explore Every Industry</div>
+                <div className="text-white font-bold text-sm sm:text-base leading-snug">View All Sectors</div>
+                <div className="text-white/80 text-[11px] sm:text-xs mt-0.5">Explore Every Industry</div>
               </Link>
             </div>
           </div>

@@ -25,6 +25,9 @@ body {
 
 img, video {
   max-width: 100%;
+}
+
+img:not([class*="h-full"]):not([class*="object-cover"]) {
   height: auto;
 }
 
