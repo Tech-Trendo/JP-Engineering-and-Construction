@@ -79,8 +79,8 @@ export default async function RootLayout({
   }
 
   return (
-    <html lang="en" className={`${poppins.variable}`}>
-      <body className="flex flex-col min-h-screen text-gray-800 bg-white antialiased overflow-x-hidden w-full">
+    <html lang="en" className={`${poppins.variable} ${poppins.className}`}>
+      <body className={`${poppins.className} flex flex-col min-h-screen text-gray-800 bg-white antialiased overflow-x-hidden w-full font-sans`}>
         <ConditionalShell siteSettings={siteSettings} categories={categories} industries={industries} products={products}>
           {children}
         </ConditionalShell>

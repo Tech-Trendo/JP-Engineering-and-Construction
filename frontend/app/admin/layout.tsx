@@ -9,7 +9,7 @@ export default function AdminLayout({
 }>) {
   return (
     <AdminAuthProvider>
-      <div style={{ fontFamily: "var(--font-poppins, 'Poppins', sans-serif)" }}>
+      <div className="font-sans antialiased" style={{ fontFamily: "var(--font-poppins, 'Poppins', sans-serif)" }}>
         <AdminShell>{children}</AdminShell>
       </div>
     </AdminAuthProvider>
