@@ -181,19 +181,21 @@ export default function AdminIndustriesPage() {
   };
 
   return (
-    <div className="p-6 md:p-8 max-w-7xl mx-auto space-y-6">
+    <div className="space-y-6 max-w-7xl mx-auto">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 pb-5">
         <div>
-          <h1 className="text-2xl font-bold text-white tracking-tight">Industries &amp; Sectors</h1>
-          <p className="text-slate-400 text-sm mt-1">
+          <h1 className="text-xl font-bold tracking-tight text-slate-900 sm:text-2xl">
+            Industries &amp; Sectors
+          </h1>
+          <p className="mt-1 text-xs text-slate-500">
             Configure industrial sectors (e.g. Dairy &amp; Milk, Fruits &amp; Agro, Beverages &amp; Water)
             and group machinery categories and products.
           </p>
         </div>
         <button
           onClick={handleOpenCreate}
-          className="inline-flex items-center gap-2 bg-[#c8391a] hover:bg-[#a62d14] text-white font-semibold text-sm px-4 py-2.5 rounded-lg transition-colors shadow-sm cursor-pointer"
+          className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-[#1b3a6e] hover:bg-[#152e57] text-white text-xs font-semibold shadow-2xs transition-colors"
         >
           <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -204,45 +206,45 @@ export default function AdminIndustriesPage() {
 
       {/* Global Error Banner */}
       {errorMessage && !isModalOpen && (
-        <div className="p-4 bg-red-900/40 border border-red-800 text-red-200 rounded-lg text-sm flex items-center justify-between">
+        <div className="p-3.5 bg-red-50 border border-red-200 text-red-700 rounded-lg text-xs font-medium flex items-center justify-between">
           <span>{errorMessage}</span>
-          <button onClick={() => setErrorMessage(null)} className="text-red-400 hover:text-white">
+          <button onClick={() => setErrorMessage(null)} className="text-red-500 hover:text-red-800">
             &times;
           </button>
         </div>
       )}
 
       {/* Table Card */}
-      <div className="bg-[#0a0f1d] border border-slate-800 rounded-xl overflow-hidden shadow-sm">
+      <div className="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-2xs">
         {isLoading ? (
-          <div className="p-12 text-center text-slate-400 flex flex-col items-center justify-center">
+          <div className="p-12 text-center text-xs text-slate-500 flex flex-col items-center justify-center">
             <div className="w-8 h-8 border-2 border-[#1b3a6e] border-t-transparent rounded-full animate-spin mb-3" />
-            <span className="text-sm">Loading industries...</span>
+            <span>Loading industries...</span>
           </div>
         ) : industries.length === 0 ? (
           <div className="p-12 text-center text-slate-500">
-            <p className="text-sm">No industry sectors found.</p>
-            <p className="text-xs mt-1 text-slate-600">Click &quot;Add New Industry&quot; to create your first sector.</p>
+            <p className="text-sm font-bold text-slate-800">No industry sectors found.</p>
+            <p className="text-xs mt-1 text-slate-500">Click &quot;Add New Industry&quot; to create your first sector.</p>
           </div>
         ) : (
           <div className="overflow-x-auto">
-            <table className="w-full text-left border-collapse text-sm">
+            <table className="w-full text-left border-collapse text-xs text-slate-700">
               <thead>
-                <tr className="border-b border-slate-800 bg-[#0d1424] text-slate-400 text-xs font-semibold uppercase tracking-wider">
-                  <th className="py-3.5 px-4">Image</th>
-                  <th className="py-3.5 px-4">Sector Name</th>
-                  <th className="py-3.5 px-4">Categories</th>
-                  <th className="py-3.5 px-4">Products</th>
-                  <th className="py-3.5 px-4">Order</th>
-                  <th className="py-3.5 px-4">Status</th>
-                  <th className="py-3.5 px-4 text-right">Actions</th>
+                <tr className="border-b border-slate-200 bg-slate-50 text-slate-600 text-[11px] font-semibold uppercase tracking-wider">
+                  <th className="py-3.5 px-5">Image</th>
+                  <th className="py-3.5 px-5">Sector Name</th>
+                  <th className="py-3.5 px-5">Categories</th>
+                  <th className="py-3.5 px-5">Products</th>
+                  <th className="py-3.5 px-5">Order</th>
+                  <th className="py-3.5 px-5">Status</th>
+                  <th className="py-3.5 px-5 text-right">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-800/60">
+              <tbody className="divide-y divide-slate-100">
                 {industries.map((ind) => (
-                  <tr key={ind.id} className="hover:bg-slate-800/30 transition-colors">
-                    <td className="py-3 px-4">
-                      <div className="w-12 h-10 rounded bg-slate-800 overflow-hidden flex items-center justify-center border border-slate-700">
+                  <tr key={ind.id} className="hover:bg-slate-50/80 transition-colors">
+                    <td className="py-3.5 px-5">
+                      <div className="w-12 h-10 rounded-lg bg-slate-100 overflow-hidden flex items-center justify-center border border-slate-200">
                         {ind.icon_or_image_url || ind.icon_or_image ? (
                           <img
                             src={getMediaUrl(ind.icon_or_image_url || (ind.icon_or_image as string))}
@@ -250,59 +252,58 @@ export default function AdminIndustriesPage() {
                             className="w-full h-full object-cover"
                           />
                         ) : (
-                          <span className="text-[10px] text-slate-500 font-bold uppercase">No Img</span>
+                          <span className="text-[10px] text-slate-400 font-bold uppercase">No Img</span>
                         )}
                       </div>
                     </td>
-                    <td className="py-3 px-4 font-medium text-white">
+                    <td className="py-3.5 px-5 font-bold text-slate-900">
                       <div>{ind.name}</div>
-                      <div className="text-xs text-slate-400 font-mono mt-0.5">/{ind.slug}</div>
+                      <div className="text-[11px] text-slate-500 font-mono mt-0.5">/{ind.slug}</div>
                     </td>
-                    <td className="py-3 px-4">
+                    <td className="py-3.5 px-5">
                       <div className="flex flex-wrap gap-1 max-w-xs">
                         {ind.categories_details && ind.categories_details.length > 0 ? (
                           ind.categories_details.map((c) => (
                             <span
                               key={c.id}
-                              className="text-[11px] bg-slate-800 text-slate-300 px-2 py-0.5 rounded border border-slate-700"
+                              className="text-[10px] font-medium bg-slate-100 text-slate-700 px-2 py-0.5 rounded border border-slate-200"
                             >
                               {c.name}
                             </span>
                           ))
                         ) : (
-                          <span className="text-xs text-slate-500">None linked</span>
+                          <span className="text-[11px] text-slate-400 italic">None linked</span>
                         )}
                       </div>
                     </td>
-                    <td className="py-3 px-4 text-slate-300">
-                      <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold bg-emerald-950 text-emerald-300 border border-emerald-800">
+                    <td className="py-3.5 px-5 text-slate-700">
+                      <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-semibold bg-blue-50 text-[#1b3a6e] border border-blue-200">
                         {ind.products_count ?? 0} machines
                       </span>
                     </td>
-                    <td className="py-3 px-4 text-slate-400 font-mono text-xs">{ind.order}</td>
-                    <td className="py-3 px-4">
+                    <td className="py-3.5 px-5 text-slate-600 font-mono text-xs font-medium">{ind.order}</td>
+                    <td className="py-3.5 px-5">
                       {ind.is_active ? (
-                        <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-xs font-medium bg-emerald-950/80 text-emerald-400 border border-emerald-800">
-                          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+                        <span className="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-semibold uppercase tracking-wider bg-emerald-50 text-emerald-700 border border-emerald-200">
                           Active
                         </span>
                       ) : (
-                        <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-xs font-medium bg-slate-800 text-slate-400 border border-slate-700">
+                        <span className="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-semibold uppercase tracking-wider bg-slate-100 text-slate-600 border border-slate-200">
                           Inactive
                         </span>
                       )}
                     </td>
-                    <td className="py-3 px-4 text-right space-x-2">
+                    <td className="py-3.5 px-5 text-right space-x-3">
                       <button
                         onClick={() => handleOpenEdit(ind)}
-                        className="text-xs text-indigo-400 hover:text-indigo-300 font-medium px-2 py-1 rounded bg-indigo-950/50 border border-indigo-800 hover:bg-indigo-900/50 transition-colors cursor-pointer"
+                        className="text-xs font-semibold text-[#1b3a6e] hover:text-[#152e57] transition-colors cursor-pointer"
                       >
                         Edit
                       </button>
                       <button
                         onClick={() => handleDelete(ind.id)}
                         disabled={deletingId === ind.id}
-                        className="text-xs text-red-400 hover:text-red-300 font-medium px-2 py-1 rounded bg-red-950/50 border border-red-800 hover:bg-red-900/50 transition-colors disabled:opacity-50 cursor-pointer"
+                        className="text-xs font-semibold text-red-600 hover:text-red-700 transition-colors disabled:opacity-50 cursor-pointer"
                       >
                         {deletingId === ind.id ? "Deleting..." : "Delete"}
                       </button>
@@ -317,31 +318,31 @@ export default function AdminIndustriesPage() {
 
       {/* Create / Edit Modal */}
       {isModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-xs overflow-y-auto">
-          <div className="bg-[#0e1628] border border-slate-700 rounded-xl w-full max-w-xl overflow-hidden shadow-2xl my-8">
-            <div className="flex items-center justify-between px-6 py-4 border-b border-slate-800 bg-[#0a0f1d]">
-              <h2 className="text-lg font-bold text-white">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs overflow-y-auto">
+          <div className="bg-white border border-slate-200 rounded-2xl w-full max-w-xl overflow-hidden shadow-2xl my-8">
+            <div className="flex items-center justify-between px-6 py-4 border-b border-slate-200 bg-white">
+              <h2 className="text-base font-bold text-slate-900">
                 {formData.id ? "Edit Industry Sector" : "Create Industry Sector"}
               </h2>
               <button
                 onClick={() => setIsModalOpen(false)}
-                className="text-slate-400 hover:text-white transition-colors text-xl leading-none"
+                className="text-slate-400 hover:text-slate-700 p-1.5 rounded-lg hover:bg-slate-100 transition-colors text-xl leading-none"
               >
                 &times;
               </button>
             </div>
 
-            <form onSubmit={handleSubmit} className="p-6 space-y-4">
+            <form onSubmit={handleSubmit} className="p-6 space-y-4 text-xs">
               {errorMessage && (
-                <div className="p-3 bg-red-900/50 border border-red-700 text-red-200 text-xs rounded">
+                <div className="p-3.5 bg-red-50 border border-red-200 text-red-700 rounded-lg font-medium">
                   {errorMessage}
                 </div>
               )}
 
               {/* Name */}
               <div>
-                <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">
-                  Industry Name *
+                <label className="block font-semibold text-slate-700 mb-1">
+                  Industry Name <span className="text-red-500">*</span>
                 </label>
                 <input
                   type="text"
@@ -349,27 +350,27 @@ export default function AdminIndustriesPage() {
                   placeholder="e.g. Dairy & Milk Industry"
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  className="w-full px-3.5 py-2 bg-slate-900 border border-slate-700 rounded-lg text-sm text-white placeholder-slate-500 focus:outline-hidden focus:border-indigo-500"
+                  className="w-full px-3.5 py-2 bg-white border border-slate-300 rounded-lg text-slate-900 placeholder:text-slate-400 focus:outline-hidden focus:border-[#1b3a6e] focus:ring-2 focus:ring-[#1b3a6e]/15 shadow-2xs"
                 />
               </div>
 
               {/* Slug */}
               <div>
-                <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">
-                  Slug (Optional - auto generated if blank)
+                <label className="block font-semibold text-slate-700 mb-1">
+                  Slug <span className="text-slate-400 font-normal">(Optional - auto generated if blank)</span>
                 </label>
                 <input
                   type="text"
                   placeholder="e.g. dairy-milk-industry"
                   value={formData.slug}
                   onChange={(e) => setFormData({ ...formData, slug: e.target.value })}
-                  className="w-full px-3.5 py-2 bg-slate-900 border border-slate-700 rounded-lg text-sm text-white placeholder-slate-500 focus:outline-hidden focus:border-indigo-500 font-mono text-xs"
+                  className="w-full px-3.5 py-2 bg-white border border-slate-300 rounded-lg text-slate-900 placeholder:text-slate-400 focus:outline-hidden focus:border-[#1b3a6e] focus:ring-2 focus:ring-[#1b3a6e]/15 font-mono text-[11px] shadow-2xs"
                 />
               </div>
 
               {/* Description */}
               <div>
-                <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">
+                <label className="block font-semibold text-slate-700 mb-1">
                   Description
                 </label>
                 <textarea
@@ -377,32 +378,32 @@ export default function AdminIndustriesPage() {
                   placeholder="Describe the machinery, turnkey plants, and applications for this industry..."
                   value={formData.description}
                   onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                  className="w-full px-3.5 py-2 bg-slate-900 border border-slate-700 rounded-lg text-sm text-white placeholder-slate-500 focus:outline-hidden focus:border-indigo-500"
+                  className="w-full px-3.5 py-2 bg-white border border-slate-300 rounded-lg text-slate-900 placeholder:text-slate-400 focus:outline-hidden focus:border-[#1b3a6e] focus:ring-2 focus:ring-[#1b3a6e]/15 shadow-2xs"
                 />
               </div>
 
               {/* Categories Assignment */}
               <div>
-                <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">
+                <label className="block font-semibold text-slate-700 mb-2">
                   Linked Machinery Categories
                 </label>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 max-h-40 overflow-y-auto p-2 bg-slate-900/60 rounded-lg border border-slate-800">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 max-h-48 overflow-y-auto p-3 bg-slate-50/70 rounded-xl border border-slate-200">
                   {categories.map((cat) => {
                     const isChecked = formData.categories.includes(cat.id);
                     return (
                       <label
                         key={cat.id}
-                        className={`flex items-center gap-2 p-2 rounded text-xs cursor-pointer transition-colors ${
+                        className={`flex items-center gap-2.5 p-2 rounded-lg text-xs cursor-pointer transition-colors border ${
                           isChecked
-                            ? "bg-[#1b3a6e]/40 border border-[#1b3a6e] text-white"
-                            : "text-slate-400 hover:bg-slate-800/40"
+                            ? "bg-[#1b3a6e] border-[#1b3a6e] text-white font-semibold shadow-2xs"
+                            : "bg-white border-slate-300 text-slate-700 hover:border-slate-400 hover:bg-slate-50"
                         }`}
                       >
                         <input
                           type="checkbox"
                           checked={isChecked}
                           onChange={() => toggleCategorySelection(cat.id)}
-                          className="rounded text-[#c8391a] focus:ring-0"
+                          className="rounded text-[#1b3a6e] focus:ring-0"
                         />
                         <span className="truncate">{cat.name}</span>
                       </label>
@@ -417,7 +418,7 @@ export default function AdminIndustriesPage() {
               {/* Order & Active */}
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">
+                  <label className="block font-semibold text-slate-700 mb-1">
                     Display Order
                   </label>
                   <input
@@ -426,16 +427,16 @@ export default function AdminIndustriesPage() {
                     onChange={(e) =>
                       setFormData({ ...formData, order: parseInt(e.target.value, 10) || 0 })
                     }
-                    className="w-full px-3.5 py-2 bg-slate-900 border border-slate-700 rounded-lg text-sm text-white placeholder-slate-500 focus:outline-hidden focus:border-indigo-500"
+                    className="w-full px-3.5 py-2 bg-white border border-slate-300 rounded-lg text-slate-900 focus:outline-hidden focus:border-[#1b3a6e] focus:ring-2 focus:ring-[#1b3a6e]/15 shadow-2xs"
                   />
                 </div>
                 <div className="flex items-center pt-6">
-                  <label className="flex items-center gap-2 text-sm text-slate-300 cursor-pointer">
+                  <label className="flex items-center gap-2 text-xs font-medium text-slate-800 cursor-pointer">
                     <input
                       type="checkbox"
                       checked={formData.is_active}
                       onChange={(e) => setFormData({ ...formData, is_active: e.target.checked })}
-                      className="w-4 h-4 rounded text-indigo-600 focus:ring-0"
+                      className="w-4 h-4 rounded border-slate-300 text-[#1b3a6e] focus:ring-0"
                     />
                     <span>Active on site</span>
                   </label>
@@ -444,12 +445,12 @@ export default function AdminIndustriesPage() {
 
               {/* Image Upload */}
               <div>
-                <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">
+                <label className="block font-semibold text-slate-700 mb-1">
                   Sector Image / Thumbnail
                 </label>
                 <div className="flex items-center gap-4">
                   {formData.current_image && (
-                    <div className="w-16 h-12 rounded bg-slate-800 overflow-hidden shrink-0 border border-slate-700">
+                    <div className="w-16 h-12 rounded-lg bg-slate-100 overflow-hidden shrink-0 border border-slate-200">
                       <img
                         src={getMediaUrl(formData.current_image)}
                         alt="Preview"
@@ -466,24 +467,24 @@ export default function AdminIndustriesPage() {
                         setFormData({ ...formData, file: e.target.files[0] });
                       }
                     }}
-                    className="text-xs text-slate-400 file:mr-3 file:py-1.5 file:px-3 file:rounded file:border-0 file:text-xs file:font-semibold file:bg-slate-800 file:text-slate-200 hover:file:bg-slate-700 cursor-pointer"
+                    className="text-xs text-slate-600 file:mr-3 file:py-1.5 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-slate-100 file:text-slate-700 hover:file:bg-slate-200 cursor-pointer"
                   />
                 </div>
               </div>
 
               {/* Submit Buttons */}
-              <div className="pt-4 border-t border-slate-800 flex justify-end gap-3">
+              <div className="pt-4 border-t border-slate-200 flex justify-end gap-2.5">
                 <button
                   type="button"
                   onClick={() => setIsModalOpen(false)}
-                  className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 text-sm font-medium rounded-lg transition-colors cursor-pointer"
+                  className="px-4 py-2 bg-white hover:bg-slate-50 text-slate-700 text-xs font-medium rounded-lg border border-slate-300 transition-colors shadow-2xs cursor-pointer"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="px-5 py-2 bg-[#c8391a] hover:bg-[#a62d14] text-white text-sm font-semibold rounded-lg transition-colors shadow-sm disabled:opacity-50 cursor-pointer"
+                  className="px-5 py-2 bg-[#1b3a6e] hover:bg-[#152e57] text-white text-xs font-semibold rounded-lg transition-colors shadow-2xs disabled:opacity-50 cursor-pointer"
                 >
                   {isSubmitting ? "Saving..." : formData.id ? "Update Industry" : "Create Industry"}
                 </button>

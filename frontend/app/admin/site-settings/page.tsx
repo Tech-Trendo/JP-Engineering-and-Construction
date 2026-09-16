@@ -372,14 +372,14 @@ function SiteSettingsContent() {
   return (
     <div className="space-y-6 max-w-5xl pb-24">
       {/* Friendly Top Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-6 border-b border-slate-800">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-6 border-b border-slate-200">
         <div>
           <div className="flex items-center gap-2 mb-1">
-            <span className="text-[11px] font-bold uppercase tracking-widest text-blue-400 bg-blue-950/60 px-2.5 py-0.5 rounded border border-blue-800/40">
+            <span className="text-[11px] font-bold uppercase tracking-widest text-[#1b3a6e] bg-blue-50 px-2.5 py-0.5 rounded border border-blue-100">
               CMS Customizer
             </span>
           </div>
-          <h1 className="text-2xl font-bold tracking-tight text-white">
+          <h1 className="text-2xl font-bold tracking-tight text-slate-900">
             Website Content &amp; Identity
           </h1>
           <p className="text-xs sm:text-sm text-slate-400 mt-1 max-w-2xl">
@@ -389,7 +389,7 @@ function SiteSettingsContent() {
         <Link
           href="/"
           target="_blank"
-          className="inline-flex items-center justify-center gap-2 px-3.5 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold border border-slate-700 transition shrink-0"
+          className="inline-flex items-center justify-center gap-2 px-3.5 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-700 text-xs font-semibold border border-slate-700 transition shrink-0"
         >
           <span>View Live Website</span>
           <svg className="w-3.5 h-3.5 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -428,7 +428,7 @@ function SiteSettingsContent() {
       )}
 
       {/* Modern Section Tabs Bar */}
-      <div className="bg-[#0b1325] border border-slate-800 rounded-2xl p-1.5 shadow-inner">
+      <div className="bg-white border border-slate-200 rounded-xl p-1.5 shadow-2xs">
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-1">
           {TABS.map((tab) => {
             const isActive = activeTab === tab.id;
@@ -440,8 +440,8 @@ function SiteSettingsContent() {
                 onClick={() => setActiveTab(tab.id)}
                 className={`flex items-center gap-2 px-3 py-2.5 rounded-xl text-xs font-semibold transition-all text-left justify-center sm:justify-start ${
                   isActive
-                    ? "bg-blue-600 text-white shadow-md shadow-blue-900/30"
-                    : "text-slate-400 hover:text-white hover:bg-slate-800/60"
+                    ? "bg-[#1b3a6e] text-white shadow-xs"
+                    : "text-slate-600 hover:text-slate-900 hover:bg-slate-100"
                 }`}
               >
                 <Icon className={`w-4 h-4 shrink-0 ${isActive ? "text-white" : "text-slate-400"}`} />
@@ -456,32 +456,32 @@ function SiteSettingsContent() {
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* TAB 1: Company Profile & Identity */}
         {activeTab === "identity" && (
-          <div className="bg-[#0b1325] border border-slate-800 rounded-2xl p-6 sm:p-8 space-y-6 shadow-xl">
-            <div className="border-b border-slate-800/80 pb-4">
+          <div className="bg-white border border-slate-200 rounded-xl p-6 sm:p-8 space-y-6 shadow-2xs">
+            <div className="border-b border-slate-100 pb-4">
               <div className="flex items-center gap-2">
-                <span className="text-blue-400 font-bold text-sm">Step 1</span>
+                <span className="text-[#1b3a6e] font-bold text-sm">Step 1</span>
                 <span className="text-slate-600">•</span>
-                <h2 className="text-base font-bold text-white">
+                <h2 className="text-base font-bold text-slate-900">
                   Company Identity &amp; Branding
                 </h2>
               </div>
-              <p className="text-slate-400 text-xs mt-1">
+              <p className="text-slate-500 text-xs mt-1">
                 This information defines the official company name, logo, slogan, and description shown on your website header and footer.
               </p>
             </div>
 
             {/* Logo Uploader */}
-            <div className="p-4 rounded-xl bg-slate-900/80 border border-slate-800 space-y-3">
+            <div className="p-4 rounded-xl bg-slate-50 border border-slate-200/80 space-y-3">
               <div className="flex items-center justify-between">
                 <div>
-                  <label className="block text-slate-200 text-xs font-bold">Official Company Logo</label>
-                  <p className="text-[11px] text-slate-400 mt-0.5">
+                  <label className="block text-slate-800 text-xs font-bold">Official Company Logo</label>
+                  <p className="text-[11px] text-slate-500 mt-0.5">
                     Recommended: Transparent PNG or SVG logo image (looks sharp on both light and dark backgrounds).
                   </p>
                 </div>
               </div>
               <div className="flex flex-col sm:flex-row items-center gap-5 pt-2">
-                <div className="w-20 h-20 rounded-xl bg-white/10 p-2 border border-slate-700 flex items-center justify-center overflow-hidden shrink-0 shadow-inner">
+                <div className="w-20 h-20 rounded-xl bg-white p-2 border border-slate-200 shadow-2xs flex items-center justify-center overflow-hidden shrink-0 shadow-inner">
                   {logoPreview ? (
                     <img src={logoPreview} alt="Company Logo" className="w-full h-full object-contain" />
                   ) : (
@@ -499,14 +499,14 @@ function SiteSettingsContent() {
                   <button
                     type="button"
                     onClick={() => logoInputRef.current?.click()}
-                    className="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold shadow transition cursor-pointer inline-flex items-center gap-2"
+                    className="px-4 py-2 rounded-lg bg-[#1b3a6e] hover:bg-[#152e57] text-white text-xs font-semibold shadow transition cursor-pointer inline-flex items-center gap-2"
                   >
                     <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
                     </svg>
                     <span>Choose Logo Image</span>
                   </button>
-                  <p className="text-[11px] text-slate-400">
+                  <p className="text-[11px] text-slate-500">
                     Displayed in the navbar, footer, and admin panel.
                   </p>
                 </div>
@@ -515,7 +515,7 @@ function SiteSettingsContent() {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
               <div>
-                <label className="block text-slate-200 text-xs font-semibold mb-1.5">
+                <label className="block text-slate-700 text-xs font-semibold mb-1.5">
                   Full Company Name <span className="text-red-400">*</span>
                 </label>
                 <input
@@ -525,15 +525,15 @@ function SiteSettingsContent() {
                   value={formData.company_name}
                   onChange={handleChange}
                   placeholder="e.g. JP Engineering & Construction Pvt. Ltd."
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white text-xs focus:outline-hidden focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 font-medium"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-white border border-slate-300 text-slate-900 text-xs focus:outline-hidden focus:border-[#1b3a6e] focus:ring-2 focus:ring-[#1b3a6e]/20 transition font-medium"
                 />
-                <span className="text-[11px] text-slate-400 mt-1 block">
-                  💡 Primary registered company name shown in page titles, header, footer, and copyright.
+                <span className="text-[11px] text-slate-500 mt-1 block">
+                  Primary registered company name shown in page titles, header, footer, and copyright.
                 </span>
               </div>
 
               <div>
-                <label className="block text-slate-200 text-xs font-semibold mb-1.5">
+                <label className="block text-slate-700 text-xs font-semibold mb-1.5">
                   Short Brand Name <span className="text-red-400">*</span>
                 </label>
                 <input
@@ -543,16 +543,16 @@ function SiteSettingsContent() {
                   value={formData.company_short_name}
                   onChange={handleChange}
                   placeholder="e.g. JP Engineering & Construction"
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white text-xs focus:outline-hidden focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 font-medium"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-white border border-slate-300 text-slate-900 text-xs focus:outline-hidden focus:border-[#1b3a6e] focus:ring-2 focus:ring-[#1b3a6e]/20 transition font-medium"
                 />
-                <span className="text-[11px] text-slate-400 mt-1 block">
-                  💡 Compact name used in tight navigation spaces and mobile headers.
+                <span className="text-[11px] text-slate-500 mt-1 block">
+                  Compact name used in tight navigation spaces and mobile headers.
                 </span>
               </div>
             </div>
 
             <div>
-              <label className="block text-slate-200 text-xs font-semibold mb-1.5">
+              <label className="block text-slate-700 text-xs font-semibold mb-1.5">
                 Company Slogan / Tagline
               </label>
               <input
@@ -561,15 +561,15 @@ function SiteSettingsContent() {
                 value={formData.tagline}
                 onChange={handleChange}
                 placeholder="e.g. Engineered for Extreme Industrial Performance"
-                className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white text-xs focus:outline-hidden focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
+                className="w-full px-3.5 py-2.5 rounded-xl bg-white border border-slate-300 text-slate-900 text-xs focus:outline-hidden focus:border-[#1b3a6e] focus:ring-2 focus:ring-[#1b3a6e]/20 transition"
               />
-              <span className="text-[11px] text-slate-400 mt-1 block">
-                💡 Displayed directly underneath your company logo in the header and footer.
+              <span className="text-[11px] text-slate-500 mt-1 block">
+                Displayed directly underneath your company logo in the header and footer.
               </span>
             </div>
 
             <div>
-              <label className="block text-slate-200 text-xs font-semibold mb-1.5">
+              <label className="block text-slate-700 text-xs font-semibold mb-1.5">
                 About / Corporate Description
               </label>
               <textarea
@@ -578,15 +578,15 @@ function SiteSettingsContent() {
                 value={formData.company_description}
                 onChange={handleChange}
                 placeholder="Brief paragraph describing your company's core services and expertise..."
-                className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white text-xs focus:outline-hidden focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 leading-relaxed"
+                className="w-full px-3.5 py-2.5 rounded-xl bg-white border border-slate-300 text-slate-900 text-xs focus:outline-hidden focus:border-[#1b3a6e] focus:ring-2 focus:ring-[#1b3a6e]/20 transition leading-relaxed"
               />
-              <span className="text-[11px] text-slate-400 mt-1 block">
-                💡 Displayed in the footer column and used for search engine previews (SEO).
+              <span className="text-[11px] text-slate-500 mt-1 block">
+                Displayed in the footer column and used for search engine previews (SEO).
               </span>
             </div>
 
             {/* Corporate Details */}
-            <div className="pt-4 border-t border-slate-800">
+            <div className="pt-4 border-t border-slate-200">
               <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3">
                 Corporate Details &amp; Team Size
               </h3>
@@ -631,23 +631,23 @@ function SiteSettingsContent() {
 
         {/* TAB 2: Contact Details & Location */}
         {activeTab === "contact" && (
-          <div className="bg-[#0b1325] border border-slate-800 rounded-2xl p-6 sm:p-8 space-y-6 shadow-xl">
-            <div className="border-b border-slate-800/80 pb-4">
+          <div className="bg-white border border-slate-200 rounded-xl p-6 sm:p-8 space-y-6 shadow-2xs">
+            <div className="border-b border-slate-100 pb-4">
               <div className="flex items-center gap-2">
-                <span className="text-blue-400 font-bold text-sm">Step 2</span>
+                <span className="text-[#1b3a6e] font-bold text-sm">Step 2</span>
                 <span className="text-slate-600">•</span>
-                <h2 className="text-base font-bold text-white">
+                <h2 className="text-base font-bold text-slate-900">
                   Contact Information &amp; Office Hours
                 </h2>
               </div>
-              <p className="text-slate-400 text-xs mt-1">
+              <p className="text-slate-500 text-xs mt-1">
                 Manage telephone numbers, emails, physical address, and hours shown on your header topbar, contact page, and footer.
               </p>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
               <div>
-                <label className="block text-slate-200 text-xs font-semibold mb-1.5">
+                <label className="block text-slate-700 text-xs font-semibold mb-1.5">
                   Main Office Landline / Phone
                 </label>
                 <input
@@ -656,15 +656,15 @@ function SiteSettingsContent() {
                   value={formData.primary_phone}
                   onChange={handleChange}
                   placeholder="e.g. 01-5385552"
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white text-xs focus:outline-hidden focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 font-medium"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-white border border-slate-300 text-slate-900 text-xs focus:outline-hidden focus:border-[#1b3a6e] focus:ring-2 focus:ring-[#1b3a6e]/20 transition font-medium"
                 />
-                <span className="text-[11px] text-slate-400 mt-1 block">
-                  💡 Appears in the header top bar and footer with a direct tap-to-call link.
+                <span className="text-[11px] text-slate-500 mt-1 block">
+                  Appears in the header top bar and footer with a direct tap-to-call link.
                 </span>
               </div>
 
               <div>
-                <label className="block text-slate-200 text-xs font-semibold mb-1.5">
+                <label className="block text-slate-700 text-xs font-semibold mb-1.5">
                   Direct Mobile / Sales Numbers
                 </label>
                 <input
@@ -673,17 +673,17 @@ function SiteSettingsContent() {
                   value={formData.secondary_phone}
                   onChange={handleChange}
                   placeholder="e.g. 9851112988, 9851158661, 9851158660"
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white text-xs focus:outline-hidden focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 font-medium"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-white border border-slate-300 text-slate-900 text-xs focus:outline-hidden focus:border-[#1b3a6e] focus:ring-2 focus:ring-[#1b3a6e]/20 transition font-medium"
                 />
-                <span className="text-[11px] text-slate-400 mt-1 block">
-                  💡 Separate multiple numbers with commas. Each number will get an individual click-to-call button.
+                <span className="text-[11px] text-slate-500 mt-1 block">
+                  Separate multiple numbers with commas. Each number will get an individual click-to-call button.
                 </span>
               </div>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
               <div>
-                <label className="block text-slate-200 text-xs font-semibold mb-1.5">
+                <label className="block text-slate-700 text-xs font-semibold mb-1.5">
                   Official Inquiry Email <span className="text-red-400">*</span>
                 </label>
                 <input
@@ -693,15 +693,15 @@ function SiteSettingsContent() {
                   value={formData.primary_email}
                   onChange={handleChange}
                   placeholder="e.g. info@jpec.com.np"
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white text-xs focus:outline-hidden focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 font-medium"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-white border border-slate-300 text-slate-900 text-xs focus:outline-hidden focus:border-[#1b3a6e] focus:ring-2 focus:ring-[#1b3a6e]/20 transition font-medium"
                 />
-                <span className="text-[11px] text-slate-400 mt-1 block">
-                  💡 Main email address for machinery consultations and inquiries.
+                <span className="text-[11px] text-slate-500 mt-1 block">
+                  Main email address for machinery consultations and inquiries.
                 </span>
               </div>
 
               <div>
-                <label className="block text-slate-200 text-xs font-semibold mb-1.5">
+                <label className="block text-slate-700 text-xs font-semibold mb-1.5">
                   Secondary / Sales Email (Optional)
                 </label>
                 <input
@@ -710,17 +710,17 @@ function SiteSettingsContent() {
                   value={formData.secondary_email}
                   onChange={handleChange}
                   placeholder="e.g. sales@jpec.com.np"
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white text-xs focus:outline-hidden focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-white border border-slate-300 text-slate-900 text-xs focus:outline-hidden focus:border-[#1b3a6e] focus:ring-2 focus:ring-[#1b3a6e]/20 transition"
                 />
-                <span className="text-[11px] text-slate-400 mt-1 block">
-                  💡 Additional contact email displayed on the contact page.
+                <span className="text-[11px] text-slate-500 mt-1 block">
+                  Additional contact email displayed on the contact page.
                 </span>
               </div>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 pt-2">
               <div>
-                <label className="block text-slate-200 text-xs font-semibold mb-1.5">
+                <label className="block text-slate-700 text-xs font-semibold mb-1.5">
                   Physical Office &amp; Factory Address
                 </label>
                 <input
@@ -729,15 +729,15 @@ function SiteSettingsContent() {
                   value={formData.address}
                   onChange={handleChange}
                   placeholder="e.g. Kathmandu, Nepal"
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white text-xs focus:outline-hidden focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-white border border-slate-300 text-slate-900 text-xs focus:outline-hidden focus:border-[#1b3a6e] focus:ring-2 focus:ring-[#1b3a6e]/20 transition"
                 />
-                <span className="text-[11px] text-slate-400 mt-1 block">
-                  💡 Physical street address shown on contact cards and footer.
+                <span className="text-[11px] text-slate-500 mt-1 block">
+                  Physical street address shown on contact cards and footer.
                 </span>
               </div>
 
               <div>
-                <label className="block text-slate-200 text-xs font-semibold mb-1.5">
+                <label className="block text-slate-700 text-xs font-semibold mb-1.5">
                   Operating / Business Hours
                 </label>
                 <input
@@ -746,16 +746,16 @@ function SiteSettingsContent() {
                   value={formData.business_hours}
                   onChange={handleChange}
                   placeholder="e.g. Mon – Sat: 9:00 AM – 6:00 PM"
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white text-xs focus:outline-hidden focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-white border border-slate-300 text-slate-900 text-xs focus:outline-hidden focus:border-[#1b3a6e] focus:ring-2 focus:ring-[#1b3a6e]/20 transition"
                 />
-                <span className="text-[11px] text-slate-400 mt-1 block">
-                  💡 Operating hours shown in the header top bar and footer.
+                <span className="text-[11px] text-slate-500 mt-1 block">
+                  Operating hours shown in the header top bar and footer.
                 </span>
               </div>
             </div>
 
             <div>
-              <label className="block text-slate-200 text-xs font-semibold mb-1.5">
+              <label className="block text-slate-700 text-xs font-semibold mb-1.5">
                 Location Landmark / Directions
               </label>
               <input
@@ -764,10 +764,10 @@ function SiteSettingsContent() {
                 value={formData.map_location_text}
                 onChange={handleChange}
                 placeholder="e.g. Kathmandu, Nepal"
-                className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white text-xs focus:outline-hidden focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
+                className="w-full px-3.5 py-2.5 rounded-xl bg-white border border-slate-300 text-slate-900 text-xs focus:outline-hidden focus:border-[#1b3a6e] focus:ring-2 focus:ring-[#1b3a6e]/20 transition"
               />
-              <span className="text-[11px] text-slate-400 mt-1 block">
-                💡 Helpful driving instructions displayed alongside the map on the Contact Us page.
+              <span className="text-[11px] text-slate-500 mt-1 block">
+                Helpful driving instructions displayed alongside the map on the Contact Us page.
               </span>
             </div>
           </div>
@@ -775,23 +775,23 @@ function SiteSettingsContent() {
 
         {/* TAB 3: Social Media Links */}
         {activeTab === "socials" && (
-          <div className="bg-[#0b1325] border border-slate-800 rounded-2xl p-6 sm:p-8 space-y-6 shadow-xl">
-            <div className="border-b border-slate-800/80 pb-4">
+          <div className="bg-white border border-slate-200 rounded-xl p-6 sm:p-8 space-y-6 shadow-2xs">
+            <div className="border-b border-slate-100 pb-4">
               <div className="flex items-center gap-2">
-                <span className="text-blue-400 font-bold text-sm">Step 3</span>
+                <span className="text-[#1b3a6e] font-bold text-sm">Step 3</span>
                 <span className="text-slate-600">•</span>
-                <h2 className="text-base font-bold text-white">
+                <h2 className="text-base font-bold text-slate-900">
                   Social Media Links
                 </h2>
               </div>
-              <p className="text-slate-400 text-xs mt-1">
+              <p className="text-slate-500 text-xs mt-1">
                 Connect your official social media pages. Icons appear automatically in both the header bar and footer. Leave empty to hide any channel.
               </p>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-              <div className="p-4 rounded-xl bg-slate-900/60 border border-slate-800 space-y-2">
-                <div className="flex items-center gap-2 text-slate-200 text-xs font-semibold">
+              <div className="p-4 rounded-xl bg-slate-900/60 border border-slate-200 space-y-2">
+                <div className="flex items-center gap-2 text-slate-700 text-xs font-semibold">
                   <div className="w-6 h-6 rounded bg-[#1877F2]/20 text-[#1877F2] flex items-center justify-center shrink-0">
                     <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24">
                       <path fillRule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clipRule="evenodd" />
@@ -809,8 +809,8 @@ function SiteSettingsContent() {
                 />
               </div>
 
-              <div className="p-4 rounded-xl bg-slate-900/60 border border-slate-800 space-y-2">
-                <div className="flex items-center gap-2 text-slate-200 text-xs font-semibold">
+              <div className="p-4 rounded-xl bg-slate-900/60 border border-slate-200 space-y-2">
+                <div className="flex items-center gap-2 text-slate-700 text-xs font-semibold">
                   <div className="w-6 h-6 rounded bg-slate-800 text-white flex items-center justify-center shrink-0">
                     <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 24 24">
                       <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
@@ -828,8 +828,8 @@ function SiteSettingsContent() {
                 />
               </div>
 
-              <div className="p-4 rounded-xl bg-slate-900/60 border border-slate-800 space-y-2">
-                <div className="flex items-center gap-2 text-slate-200 text-xs font-semibold">
+              <div className="p-4 rounded-xl bg-slate-900/60 border border-slate-200 space-y-2">
+                <div className="flex items-center gap-2 text-slate-700 text-xs font-semibold">
                   <div className="w-6 h-6 rounded bg-[#0A66C2]/20 text-[#0A66C2] flex items-center justify-center shrink-0">
                     <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24">
                       <path fillRule="evenodd" d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z" clipRule="evenodd" />
@@ -847,8 +847,8 @@ function SiteSettingsContent() {
                 />
               </div>
 
-              <div className="p-4 rounded-xl bg-slate-900/60 border border-slate-800 space-y-2">
-                <div className="flex items-center gap-2 text-slate-200 text-xs font-semibold">
+              <div className="p-4 rounded-xl bg-slate-900/60 border border-slate-200 space-y-2">
+                <div className="flex items-center gap-2 text-slate-700 text-xs font-semibold">
                   <div className="w-6 h-6 rounded bg-[#FF0000]/20 text-[#FF0000] flex items-center justify-center shrink-0">
                     <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24">
                       <path fillRule="evenodd" d="M19.812 5.418c.861.23 1.538.907 1.768 1.768C21.998 8.746 22 12 22 12s0 3.255-.418 4.814a2.504 2.504 0 0 1-1.768 1.768c-1.56.419-7.814.419-7.814.419s-6.255 0-7.814-.419a2.505 2.505 0 0 1-1.768-1.768C2 15.255 2 12 2 12s0-3.255.417-4.814a2.507 2.507 0 0 1 1.768-1.768C5.744 5 11.998 5 11.998 5s6.255 0 7.814.418zM15.194 12 10 15V9l5.194 3z" clipRule="evenodd" />
@@ -871,23 +871,23 @@ function SiteSettingsContent() {
 
         {/* TAB 4: Homepage Hero Banner */}
         {activeTab === "hero" && (
-          <div className="bg-[#0b1325] border border-slate-800 rounded-2xl p-6 sm:p-8 space-y-6 shadow-xl">
-            <div className="border-b border-slate-800/80 pb-4">
+          <div className="bg-white border border-slate-200 rounded-xl p-6 sm:p-8 space-y-6 shadow-2xs">
+            <div className="border-b border-slate-100 pb-4">
               <div className="flex items-center gap-2">
-                <span className="text-blue-400 font-bold text-sm">Step 4</span>
+                <span className="text-[#1b3a6e] font-bold text-sm">Step 4</span>
                 <span className="text-slate-600">•</span>
-                <h2 className="text-base font-bold text-white">
+                <h2 className="text-base font-bold text-slate-900">
                   Homepage Hero Banner
                 </h2>
               </div>
-              <p className="text-slate-400 text-xs mt-1">
+              <p className="text-slate-500 text-xs mt-1">
                 Customize the top welcoming headline, subtext, background photograph, and call-to-action buttons on your homepage.
               </p>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
               <div>
-                <label className="block text-slate-200 text-xs font-semibold mb-1.5">
+                <label className="block text-slate-700 text-xs font-semibold mb-1.5">
                   Top Badge / Tag
                 </label>
                 <input
@@ -896,15 +896,15 @@ function SiteSettingsContent() {
                   value={formData.hero_badge}
                   onChange={handleChange}
                   placeholder="e.g. Nepal's Premier Industrial Machinery"
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white text-xs focus:outline-hidden focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 font-medium"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-white border border-slate-300 text-slate-900 text-xs focus:outline-hidden focus:border-[#1b3a6e] focus:ring-2 focus:ring-[#1b3a6e]/20 transition font-medium"
                 />
-                <span className="text-[11px] text-slate-400 mt-1 block">
+                <span className="text-[11px] text-slate-500 mt-1 block">
                   Small highlighted pill above the title.
                 </span>
               </div>
 
               <div className="sm:col-span-2">
-                <label className="block text-slate-200 text-xs font-semibold mb-1.5">
+                <label className="block text-slate-700 text-xs font-semibold mb-1.5">
                   Main Hero Heading
                 </label>
                 <input
@@ -913,16 +913,16 @@ function SiteSettingsContent() {
                   value={formData.hero_heading}
                   onChange={handleChange}
                   placeholder="e.g. Engineered Machinery & Turnkey Industrial Plants"
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white text-xs focus:outline-hidden focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 font-bold"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-white border border-slate-300 text-slate-900 text-xs focus:outline-hidden focus:border-[#1b3a6e] focus:ring-2 focus:ring-[#1b3a6e]/20 transition font-bold"
                 />
-                <span className="text-[11px] text-slate-400 mt-1 block">
+                <span className="text-[11px] text-slate-500 mt-1 block">
                   The primary large headline visitors see when landing on the website.
                 </span>
               </div>
             </div>
 
             <div>
-              <label className="block text-slate-200 text-xs font-semibold mb-1.5">
+              <label className="block text-slate-700 text-xs font-semibold mb-1.5">
                 Hero Subheading / Paragraph
               </label>
               <textarea
@@ -931,13 +931,13 @@ function SiteSettingsContent() {
                 value={formData.hero_subtext}
                 onChange={handleChange}
                 placeholder="Specializing in cold storage facilities, water purification plants, automated dairy processing..."
-                className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white text-xs focus:outline-hidden focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 leading-relaxed"
+                className="w-full px-3.5 py-2.5 rounded-xl bg-white border border-slate-300 text-slate-900 text-xs focus:outline-hidden focus:border-[#1b3a6e] focus:ring-2 focus:ring-[#1b3a6e]/20 transition leading-relaxed"
               />
             </div>
 
             {/* Hero Background Photo */}
-            <div className="p-4 rounded-xl bg-slate-900/80 border border-slate-800 space-y-3">
-              <label className="block text-slate-200 text-xs font-bold">
+            <div className="p-4 rounded-xl bg-slate-50 border border-slate-200/80 space-y-3">
+              <label className="block text-slate-800 text-xs font-bold">
                 Hero Background Photo
               </label>
               <div className="flex flex-col sm:flex-row items-center gap-5">
@@ -950,7 +950,7 @@ function SiteSettingsContent() {
                     />
                   </div>
                 ) : (
-                  <div className="h-24 w-44 rounded-xl bg-slate-950 border border-slate-800 flex items-center justify-center text-slate-500 text-xs shrink-0">
+                  <div className="h-24 w-44 rounded-xl bg-slate-950 border border-slate-200 flex items-center justify-center text-slate-500 text-xs shrink-0">
                     No photo selected
                   </div>
                 )}
@@ -965,14 +965,14 @@ function SiteSettingsContent() {
                   <button
                     type="button"
                     onClick={() => fileInputRef.current?.click()}
-                    className="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold shadow transition cursor-pointer inline-flex items-center gap-2"
+                    className="px-4 py-2 rounded-lg bg-[#1b3a6e] hover:bg-[#152e57] text-white text-xs font-semibold shadow transition cursor-pointer inline-flex items-center gap-2"
                   >
                     <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
                     </svg>
                     <span>Upload New Background Photo</span>
                   </button>
-                  <p className="text-[11px] text-slate-400">
+                  <p className="text-[11px] text-slate-500">
                     Recommended dimensions: 1920 x 800px (JPG or WebP).
                   </p>
                 </div>
@@ -980,8 +980,8 @@ function SiteSettingsContent() {
             </div>
 
             {/* Hero Buttons */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 pt-2 border-t border-slate-800">
-              <div className="p-4 rounded-xl bg-slate-900/60 border border-slate-800 space-y-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 pt-2 border-t border-slate-200">
+              <div className="p-4 rounded-xl bg-slate-900/60 border border-slate-200 space-y-3">
                 <span className="text-xs font-bold text-slate-200 block">
                   Primary Action Button (Solid Red)
                 </span>
@@ -1009,7 +1009,7 @@ function SiteSettingsContent() {
                 </div>
               </div>
 
-              <div className="p-4 rounded-xl bg-slate-900/60 border border-slate-800 space-y-3">
+              <div className="p-4 rounded-xl bg-slate-900/60 border border-slate-200 space-y-3">
                 <span className="text-xs font-bold text-slate-200 block">
                   Secondary Action Button (Outline)
                 </span>
@@ -1042,26 +1042,26 @@ function SiteSettingsContent() {
 
         {/* TAB 5: Key Numbers & Metric Counters */}
         {activeTab === "stats" && (
-          <div className="bg-[#0b1325] border border-slate-800 rounded-2xl p-6 sm:p-8 space-y-6 shadow-xl">
-            <div className="border-b border-slate-800/80 pb-4">
+          <div className="bg-white border border-slate-200 rounded-xl p-6 sm:p-8 space-y-6 shadow-2xs">
+            <div className="border-b border-slate-100 pb-4">
               <div className="flex items-center gap-2">
-                <span className="text-blue-400 font-bold text-sm">Step 5</span>
+                <span className="text-[#1b3a6e] font-bold text-sm">Step 5</span>
                 <span className="text-slate-600">•</span>
-                <h2 className="text-base font-bold text-white">
+                <h2 className="text-base font-bold text-slate-900">
                   Homepage Highlight Metrics &amp; Achievements
                 </h2>
               </div>
-              <p className="text-slate-400 text-xs mt-1">
+              <p className="text-slate-500 text-xs mt-1">
                 These numbers are showcased in the prominent counter bar on the homepage to establish credibility and trust with prospective clients.
               </p>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              <div className="p-4 rounded-xl bg-slate-900/80 border border-slate-800 space-y-2">
+              <div className="p-4 rounded-xl bg-slate-50 border border-slate-200/80 space-y-2">
                 <div className="w-8 h-8 rounded-lg bg-blue-600/20 text-blue-400 flex items-center justify-center font-bold text-xs mb-1">
                   1
                 </div>
-                <label className="block text-slate-200 text-xs font-semibold">
+                <label className="block text-slate-700 text-xs font-semibold">
                   Years of Experience
                 </label>
                 <input
@@ -1072,14 +1072,14 @@ function SiteSettingsContent() {
                   placeholder="e.g. 10+"
                   className="w-full px-3 py-2 rounded-lg bg-slate-950 border border-slate-700 text-white text-sm font-bold focus:outline-hidden focus:border-blue-500"
                 />
-                <span className="text-[11px] text-slate-400 block">Years active in industry</span>
+                <span className="text-[11px] text-slate-500 block">Years active in industry</span>
               </div>
 
-              <div className="p-4 rounded-xl bg-slate-900/80 border border-slate-800 space-y-2">
+              <div className="p-4 rounded-xl bg-slate-50 border border-slate-200/80 space-y-2">
                 <div className="w-8 h-8 rounded-lg bg-emerald-600/20 text-emerald-400 flex items-center justify-center font-bold text-xs mb-1">
                   2
                 </div>
-                <label className="block text-slate-200 text-xs font-semibold">
+                <label className="block text-slate-700 text-xs font-semibold">
                   Projects Completed
                 </label>
                 <input
@@ -1090,14 +1090,14 @@ function SiteSettingsContent() {
                   placeholder="e.g. 500+"
                   className="w-full px-3 py-2 rounded-lg bg-slate-950 border border-slate-700 text-white text-sm font-bold focus:outline-hidden focus:border-blue-500"
                 />
-                <span className="text-[11px] text-slate-400 block">Turnkey plants delivered</span>
+                <span className="text-[11px] text-slate-500 block">Turnkey plants delivered</span>
               </div>
 
-              <div className="p-4 rounded-xl bg-slate-900/80 border border-slate-800 space-y-2">
+              <div className="p-4 rounded-xl bg-slate-50 border border-slate-200/80 space-y-2">
                 <div className="w-8 h-8 rounded-lg bg-amber-600/20 text-amber-400 flex items-center justify-center font-bold text-xs mb-1">
                   3
                 </div>
-                <label className="block text-slate-200 text-xs font-semibold">
+                <label className="block text-slate-700 text-xs font-semibold">
                   Happy Clients
                 </label>
                 <input
@@ -1108,14 +1108,14 @@ function SiteSettingsContent() {
                   placeholder="e.g. 350+"
                   className="w-full px-3 py-2 rounded-lg bg-slate-950 border border-slate-700 text-white text-sm font-bold focus:outline-hidden focus:border-blue-500"
                 />
-                <span className="text-[11px] text-slate-400 block">Satisfied client companies</span>
+                <span className="text-[11px] text-slate-500 block">Satisfied client companies</span>
               </div>
 
-              <div className="p-4 rounded-xl bg-slate-900/80 border border-slate-800 space-y-2">
+              <div className="p-4 rounded-xl bg-slate-50 border border-slate-200/80 space-y-2">
                 <div className="w-8 h-8 rounded-lg bg-purple-600/20 text-purple-400 flex items-center justify-center font-bold text-xs mb-1">
                   4
                 </div>
-                <label className="block text-slate-200 text-xs font-semibold">
+                <label className="block text-slate-700 text-xs font-semibold">
                   Machinery Sectors
                 </label>
                 <input
@@ -1126,7 +1126,7 @@ function SiteSettingsContent() {
                   placeholder="e.g. 7"
                   className="w-full px-3 py-2 rounded-lg bg-slate-950 border border-slate-700 text-white text-sm font-bold focus:outline-hidden focus:border-blue-500"
                 />
-                <span className="text-[11px] text-slate-400 block">Specialized industrial divisions</span>
+                <span className="text-[11px] text-slate-500 block">Specialized industrial divisions</span>
               </div>
             </div>
           </div>
@@ -1134,22 +1134,22 @@ function SiteSettingsContent() {
 
         {/* TAB 6: Call To Action Banner */}
         {activeTab === "cta" && (
-          <div className="bg-[#0b1325] border border-slate-800 rounded-2xl p-6 sm:p-8 space-y-6 shadow-xl">
-            <div className="border-b border-slate-800/80 pb-4">
+          <div className="bg-white border border-slate-200 rounded-xl p-6 sm:p-8 space-y-6 shadow-2xs">
+            <div className="border-b border-slate-100 pb-4">
               <div className="flex items-center gap-2">
-                <span className="text-blue-400 font-bold text-sm">Step 6</span>
+                <span className="text-[#1b3a6e] font-bold text-sm">Step 6</span>
                 <span className="text-slate-600">•</span>
-                <h2 className="text-base font-bold text-white">
+                <h2 className="text-base font-bold text-slate-900">
                   Bottom Call-To-Action (CTA) Banner
                 </h2>
               </div>
-              <p className="text-slate-400 text-xs mt-1">
+              <p className="text-slate-500 text-xs mt-1">
                 Customize the persistent blue banner displayed above the footer on the homepage encouraging visitors to request a quote.
               </p>
             </div>
 
             <div>
-              <label className="block text-slate-200 text-xs font-semibold mb-1.5">
+              <label className="block text-slate-700 text-xs font-semibold mb-1.5">
                 Banner Headline
               </label>
               <input
@@ -1160,13 +1160,13 @@ function SiteSettingsContent() {
                 placeholder="e.g. Ready to Start Your Project?"
                 className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white text-xs focus:outline-hidden focus:border-blue-500 font-bold"
               />
-              <span className="text-[11px] text-slate-400 mt-1 block">
-                💡 The large heading in the bottom banner.
+              <span className="text-[11px] text-slate-500 mt-1 block">
+                The large heading in the bottom banner.
               </span>
             </div>
 
             <div>
-              <label className="block text-slate-200 text-xs font-semibold mb-1.5">
+              <label className="block text-slate-700 text-xs font-semibold mb-1.5">
                 Banner Subtext
               </label>
               <textarea
@@ -1177,14 +1177,14 @@ function SiteSettingsContent() {
                 placeholder="e.g. Contact our engineering team for a free consultation and project estimate."
                 className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white text-xs focus:outline-hidden focus:border-blue-500 leading-relaxed"
               />
-              <span className="text-[11px] text-slate-400 mt-1 block">
-                💡 Subtitle explaining what happens when they click the button.
+              <span className="text-[11px] text-slate-500 mt-1 block">
+                Subtitle explaining what happens when they click the button.
               </span>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 pt-2 border-t border-slate-800">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 pt-2 border-t border-slate-200">
               <div>
-                <label className="block text-slate-200 text-xs font-semibold mb-1.5">
+                <label className="block text-slate-700 text-xs font-semibold mb-1.5">
                   Button Text
                 </label>
                 <input
@@ -1198,7 +1198,7 @@ function SiteSettingsContent() {
               </div>
 
               <div>
-                <label className="block text-slate-200 text-xs font-semibold mb-1.5">
+                <label className="block text-slate-700 text-xs font-semibold mb-1.5">
                   Button Link Destination
                 </label>
                 <input
@@ -1216,23 +1216,23 @@ function SiteSettingsContent() {
 
         {/* TAB 7: ISO 9001:2015 Certification */}
         {activeTab === "iso" && (
-          <div className="bg-[#0b1325] border border-slate-800 rounded-2xl p-6 sm:p-8 space-y-6 shadow-xl">
-            <div className="border-b border-slate-800/80 pb-4">
+          <div className="bg-white border border-slate-200 rounded-xl p-6 sm:p-8 space-y-6 shadow-2xs">
+            <div className="border-b border-slate-100 pb-4">
               <div className="flex items-center gap-2">
                 <span className="text-emerald-400 font-bold text-sm">Step 7</span>
                 <span className="text-slate-600">•</span>
-                <h2 className="text-base font-bold text-white">
+                <h2 className="text-base font-bold text-slate-900">
                   ISO 9001:2015 Quality Certification
                 </h2>
               </div>
-              <p className="text-slate-400 text-xs mt-1">
+              <p className="text-slate-500 text-xs mt-1">
                 Manage the registration certificate details, accreditation bodies, valid period, and official certificate document shown across the website and homepage showcase.
               </p>
             </div>
 
             {/* Certificate Document Upload */}
-            <div className="p-5 rounded-xl bg-slate-900/60 border border-slate-800 space-y-4">
-              <label className="block text-slate-200 text-xs font-semibold">
+            <div className="p-5 rounded-xl bg-slate-900/60 border border-slate-200 space-y-4">
+              <label className="block text-slate-700 text-xs font-semibold">
                 Official Certificate Document Image (.webp / image)
               </label>
               <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6">
@@ -1262,7 +1262,7 @@ function SiteSettingsContent() {
                   >
                     Upload New Certificate
                   </button>
-                  <p className="text-[11px] text-slate-400 max-w-sm leading-relaxed">
+                  <p className="text-[11px] text-slate-500 max-w-sm leading-relaxed">
                     Upload a high-resolution scan or rendered image of your ISO Certificate of Registration. Converted to WebP for fast loading.
                   </p>
                 </div>
@@ -1271,7 +1271,7 @@ function SiteSettingsContent() {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
               <div>
-                <label className="block text-slate-200 text-xs font-semibold mb-1.5">
+                <label className="block text-slate-700 text-xs font-semibold mb-1.5">
                   ISO Standard Name
                 </label>
                 <input
@@ -1285,7 +1285,7 @@ function SiteSettingsContent() {
               </div>
 
               <div>
-                <label className="block text-slate-200 text-xs font-semibold mb-1.5">
+                <label className="block text-slate-700 text-xs font-semibold mb-1.5">
                   Certificate Number
                 </label>
                 <input
@@ -1299,7 +1299,7 @@ function SiteSettingsContent() {
               </div>
 
               <div>
-                <label className="block text-slate-200 text-xs font-semibold mb-1.5">
+                <label className="block text-slate-700 text-xs font-semibold mb-1.5">
                   Date of Issue
                 </label>
                 <input
@@ -1313,7 +1313,7 @@ function SiteSettingsContent() {
               </div>
 
               <div>
-                <label className="block text-slate-200 text-xs font-semibold mb-1.5">
+                <label className="block text-slate-700 text-xs font-semibold mb-1.5">
                   Certificate Expiry Date
                 </label>
                 <input
@@ -1328,7 +1328,7 @@ function SiteSettingsContent() {
             </div>
 
             <div>
-              <label className="block text-slate-200 text-xs font-semibold mb-1.5">
+              <label className="block text-slate-700 text-xs font-semibold mb-1.5">
                 Accreditation Bodies &amp; Registrar
               </label>
               <input
@@ -1342,7 +1342,7 @@ function SiteSettingsContent() {
             </div>
 
             <div>
-              <label className="block text-slate-200 text-xs font-semibold mb-1.5">
+              <label className="block text-slate-700 text-xs font-semibold mb-1.5">
                 Certified Manufacturing Scope
               </label>
               <textarea
@@ -1360,18 +1360,18 @@ function SiteSettingsContent() {
         {/* Tab 8: Corporate Introduction */}
         {activeTab === "intro" && (
           <div className="space-y-6">
-            <div className="border-b border-slate-800 pb-4">
+            <div className="border-b border-slate-200 pb-4">
               <h3 className="text-white text-base font-bold flex items-center gap-2">
                 <span className="w-2 h-2 rounded-full bg-blue-500" />
                 Corporate Story &amp; Overview Copy
               </h3>
-              <p className="text-slate-400 text-xs mt-1">
+              <p className="text-slate-500 text-xs mt-1">
                 Live backend content driving the homepage &ldquo;Who We Are&rdquo; section and the dedicated Corporate Introduction page (/about/introduction).
               </p>
             </div>
 
             <div>
-              <label className="block text-slate-200 text-xs font-semibold mb-1.5">
+              <label className="block text-slate-700 text-xs font-semibold mb-1.5">
                 Corporate / Brand Title
               </label>
               <input
@@ -1384,7 +1384,7 @@ function SiteSettingsContent() {
             </div>
 
             <div>
-              <label className="block text-slate-200 text-xs font-semibold mb-1.5">
+              <label className="block text-slate-700 text-xs font-semibold mb-1.5">
                 Homepage Short Introduction
               </label>
               <textarea
@@ -1400,7 +1400,7 @@ function SiteSettingsContent() {
             </div>
 
             <div>
-              <label className="block text-slate-200 text-xs font-semibold mb-1.5">
+              <label className="block text-slate-700 text-xs font-semibold mb-1.5">
                 Full Corporate Introduction (/about/introduction)
               </label>
               <textarea
@@ -1418,7 +1418,7 @@ function SiteSettingsContent() {
         )}
 
         {/* Floating / Sticky Save Bar */}
-        <div className="fixed bottom-0 left-0 right-0 z-40 bg-[#070e1c]/95 border-t border-slate-800 backdrop-blur-md px-4 py-3 sm:px-8 shadow-2xl">
+        <div className="fixed bottom-0 left-0 right-0 z-40 bg-[#070e1c]/95 border-t border-slate-200 backdrop-blur-md px-4 py-3 sm:px-8 shadow-2xl">
           <div className="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
             <div className="hidden sm:flex items-center gap-2 text-xs text-slate-400">
               <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
@@ -1428,7 +1428,7 @@ function SiteSettingsContent() {
               <button
                 type="submit"
                 disabled={isSaving}
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold uppercase tracking-wider shadow-lg shadow-blue-900/40 transition disabled:opacity-50 cursor-pointer"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-xl bg-[#1b3a6e] hover:bg-[#152e57] text-white text-xs font-bold uppercase tracking-wider shadow-lg shadow-blue-900/40 transition disabled:opacity-50 cursor-pointer"
               >
                 {isSaving ? (
                   <>

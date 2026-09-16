@@ -99,14 +99,14 @@ function QuotesContent() {
           <h1 className="text-xl font-bold tracking-tight text-white sm:text-2xl">
             Quote Inquiries
           </h1>
-          <p className="mt-1 text-xs text-slate-400">
+          <p className="mt-1 text-xs text-slate-500">
             Review incoming prospective client inquiries and update consultation lifecycle status.
           </p>
         </div>
         <div className="flex items-center gap-2">
           <button
             onClick={() => setSortOrder((prev) => (prev === "desc" ? "asc" : "desc"))}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-slate-200 text-xs font-semibold border border-slate-700 transition"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white hover:bg-slate-50 text-slate-700 text-xs font-semibold border border-slate-300 shadow-2xs transition"
           >
             <svg className="w-4 h-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
@@ -117,15 +117,15 @@ function QuotesContent() {
       </div>
 
       {/* Filter Tabs */}
-      <div className="flex flex-wrap items-center gap-2 border-b border-slate-800 pb-3">
+      <div className="flex flex-wrap items-center gap-2 border-b border-slate-200 pb-3">
         {(["all", "new", "contacted", "closed"] as QuoteStatusFilter[]).map((tab) => (
           <button
             key={tab}
             onClick={() => setStatusFilter(tab)}
             className={`px-3 py-1.5 rounded-lg text-xs font-semibold capitalize transition ${
               statusFilter === tab
-                ? "bg-blue-600 text-white shadow-sm"
-                : "bg-slate-900 text-slate-400 hover:text-slate-200 hover:bg-slate-800 border border-slate-800"
+                ? "bg-[#1b3a6e] text-white shadow-2xs"
+                : "bg-white text-slate-600 hover:bg-slate-50 border border-slate-200 shadow-2xs"
             }`}
           >
             {tab === "all" ? "All Inquiries" : tab}
@@ -134,9 +134,9 @@ function QuotesContent() {
       </div>
 
       {/* Quotes Table */}
-      <div className="rounded-xl bg-slate-900 border border-slate-800 overflow-hidden">
+      <div className="rounded-xl bg-white border border-slate-200 overflow-hidden shadow-2xs">
         {isLoading ? (
-          <div className="p-8 text-center text-xs text-slate-400">Loading quote inquiries...</div>
+          <div className="p-8 text-center text-xs text-slate-500">Loading quote inquiries...</div>
         ) : sortedQuotes.length === 0 ? (
           <div className="p-12 text-center">
             <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-slate-800 text-slate-500 mb-3">
@@ -144,7 +144,7 @@ function QuotesContent() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
               </svg>
             </div>
-            <p className="text-sm font-semibold text-slate-300">No quote requests found</p>
+            <p className="text-sm font-semibold text-slate-700">No quote requests found</p>
             <p className="text-xs text-slate-500 mt-1">
               {statusFilter !== "all"
                 ? `No requests currently marked with status "${statusFilter}".`
@@ -153,8 +153,8 @@ function QuotesContent() {
           </div>
         ) : (
           <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs text-slate-300">
-              <thead className="bg-slate-950/60 text-[11px] uppercase tracking-wider text-slate-400 border-b border-slate-800">
+            <table className="w-full text-left text-xs text-slate-700">
+              <thead className="bg-slate-50 text-[11px] uppercase tracking-wider text-slate-600 border-b border-slate-200 font-semibold">
                 <tr>
                   <th className="px-5 py-3 font-semibold">Requester Name</th>
                   <th className="px-5 py-3 font-semibold">Email & Phone</th>
@@ -164,20 +164,20 @@ function QuotesContent() {
                   <th className="px-5 py-3 font-semibold text-right">Action</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-800/60">
+              <tbody className="divide-y divide-slate-100">
                 {sortedQuotes.map((quote) => (
-                  <tr key={quote.id} className="hover:bg-slate-800/40 transition">
+                  <tr key={quote.id} className="hover:bg-slate-50/60 transition">
                     <td className="px-5 py-3 whitespace-nowrap">
-                      <div className="font-semibold text-white">{quote.full_name}</div>
+                      <div className="font-bold text-slate-900">{quote.full_name}</div>
                       {quote.company && (
-                        <div className="text-[11px] text-slate-400 font-normal">{quote.company}</div>
+                        <div className="text-[11px] text-slate-500 font-normal">{quote.company}</div>
                       )}
                     </td>
                     <td className="px-5 py-3 whitespace-nowrap">
                       <div>
                         <a
                           href={`mailto:${quote.email}`}
-                          className="text-blue-400 hover:underline"
+                          className="text-[#1b3a6e] font-semibold hover:underline"
                         >
                           {quote.email}
                         </a>
@@ -186,7 +186,7 @@ function QuotesContent() {
                     </td>
                     <td className="px-5 py-3 whitespace-nowrap">
                       {quote.product_name ? (
-                        <span className="font-medium text-slate-200">
+                        <span className="font-medium text-slate-700">
                           {quote.product_name}
                         </span>
                       ) : (
@@ -197,10 +197,10 @@ function QuotesContent() {
                       <span
                         className={`inline-flex items-center px-2 py-0.5 rounded text-[10px] font-semibold uppercase tracking-wider ${
                           quote.status === "new"
-                            ? "bg-amber-500/10 text-amber-400 border border-amber-500/30"
+                            ? "bg-amber-50 text-amber-800 border border-amber-200"
                             : quote.status === "contacted"
-                            ? "bg-sky-500/10 text-sky-400 border border-sky-500/30"
-                            : "bg-slate-700/40 text-slate-400 border border-slate-600/40"
+                            ? "bg-blue-50 text-[#1b3a6e] border border-blue-200"
+                            : "bg-slate-100 text-slate-600 border border-slate-200"
                         }`}
                       >
                         {quote.status}
@@ -221,7 +221,7 @@ function QuotesContent() {
                           setSelectedQuote(quote);
                           setStatusUpdateMessage(null);
                         }}
-                        className="text-xs font-semibold text-blue-400 hover:text-blue-300 transition"
+                        className="text-xs font-semibold text-[#1b3a6e] font-semibold hover:underline transition"
                       >
                         View & Update &rarr;
                       </button>
@@ -236,15 +236,15 @@ function QuotesContent() {
 
       {/* Quote Detail View Modal */}
       {selectedQuote && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 backdrop-blur-xs">
-          <div className="w-full max-w-lg rounded-2xl bg-slate-900 border border-slate-800 shadow-2xl p-6 space-y-5 text-xs">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 p-4 backdrop-blur-xs">
+          <div className="w-full max-w-lg rounded-xl bg-white border border-slate-200 shadow-xl p-6 space-y-5 text-xs">
             {/* Modal Header */}
-            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+            <div className="flex items-center justify-between border-b border-slate-200 pb-3">
               <div>
                 <span className="text-[10px] font-mono text-slate-500 uppercase tracking-wider">
                   Inquiry #{selectedQuote.id}
                 </span>
-                <h2 className="text-base font-bold text-white mt-0.5">
+                <h2 className="text-base font-bold text-slate-900 mt-0.5">
                   Quote Details
                 </h2>
               </div>
@@ -265,24 +265,24 @@ function QuotesContent() {
             )}
 
             {/* Requester Info Card */}
-            <div className="rounded-xl bg-slate-950/60 border border-slate-800 p-4 space-y-2.5">
+            <div className="rounded-xl bg-slate-50 border border-slate-200 p-4 space-y-2.5">
               <div className="grid grid-cols-2 gap-2">
                 <div>
                   <span className="text-slate-500 text-[11px] block">Requester Name</span>
-                  <span className="font-semibold text-white text-xs">{selectedQuote.full_name}</span>
+                  <span className="font-bold text-slate-900 text-xs">{selectedQuote.full_name}</span>
                 </div>
                 <div>
                   <span className="text-slate-500 text-[11px] block">Company</span>
-                  <span className="text-slate-300 text-xs">{selectedQuote.company || "N/A"}</span>
+                  <span className="text-slate-700 text-xs">{selectedQuote.company || "N/A"}</span>
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-2 pt-2 border-t border-slate-800/80">
+              <div className="grid grid-cols-2 gap-2 pt-2 border-t border-slate-200">
                 <div>
                   <span className="text-slate-500 text-[11px] block">Email Address</span>
                   <a
                     href={`mailto:${selectedQuote.email}`}
-                    className="text-blue-400 hover:underline text-xs"
+                    className="text-[#1b3a6e] font-semibold hover:underline text-xs"
                   >
                     {selectedQuote.email}
                   </a>
@@ -291,16 +291,16 @@ function QuotesContent() {
                   <span className="text-slate-500 text-[11px] block">Phone Number</span>
                   <a
                     href={`tel:${selectedQuote.phone}`}
-                    className="text-slate-300 hover:text-white text-xs"
+                    className="text-slate-700 hover:text-white text-xs"
                   >
                     {selectedQuote.phone}
                   </a>
                 </div>
               </div>
 
-              <div className="pt-2 border-t border-slate-800/80">
+              <div className="pt-2 border-t border-slate-200">
                 <span className="text-slate-500 text-[11px] block">Target Equipment</span>
-                <span className="text-slate-200 font-medium text-xs">
+                <span className="text-slate-700 font-medium text-xs">
                   {selectedQuote.product_name || "General inquiry (no specific model)"}
                 </span>
               </div>
@@ -311,15 +311,15 @@ function QuotesContent() {
               <span className="text-slate-400 text-xs font-semibold block mb-1.5">
                 Submitted Message / Request:
               </span>
-              <div className="p-4 rounded-xl bg-slate-950 border border-slate-800 text-slate-200 text-xs leading-relaxed whitespace-pre-wrap max-h-48 overflow-y-auto">
+              <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 text-slate-800 text-xs leading-relaxed whitespace-pre-wrap max-h-48 overflow-y-auto">
                 {selectedQuote.message}
               </div>
             </div>
 
             {/* Status Selector */}
-            <div className="rounded-xl bg-slate-950/60 border border-slate-800 p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div className="rounded-xl bg-slate-50 border border-slate-200 p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
               <div>
-                <label className="text-xs font-semibold text-slate-300 block">
+                <label className="text-xs font-semibold text-slate-700 block">
                   Workflow Status:
                 </label>
                 <span className="text-[11px] text-slate-500">
@@ -333,7 +333,7 @@ function QuotesContent() {
                   onChange={(e) =>
                     handleUpdateStatus(e.target.value as "new" | "contacted" | "closed")
                   }
-                  className="px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-700 text-white text-xs focus:outline-hidden focus:border-blue-500 cursor-pointer"
+                  className="px-3 py-1.5 rounded-lg bg-white border border-slate-300 text-slate-900 text-xs focus:outline-hidden focus:border-blue-500 cursor-pointer"
                 >
                   <option value="new">NEW (Unread / Needs Action)</option>
                   <option value="contacted">CONTACTED (In Discussion)</option>
@@ -343,13 +343,13 @@ function QuotesContent() {
             </div>
 
             {/* Footer */}
-            <div className="flex items-center justify-between pt-2 border-t border-slate-800 text-[11px] text-slate-500">
+            <div className="flex items-center justify-between pt-2 border-t border-slate-200 text-[11px] text-slate-500">
               <span>
                 Received: {new Date(selectedQuote.created_at).toLocaleString()}
               </span>
               <button
                 onClick={() => setSelectedQuote(null)}
-                className="px-3 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs transition"
+                className="px-3 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-700 text-xs transition"
               >
                 Close
               </button>
@@ -365,7 +365,7 @@ export default function AdminQuotesPage() {
   return (
     <Suspense
       fallback={
-        <div className="flex h-64 items-center justify-center text-xs text-slate-400">
+        <div className="flex h-64 items-center justify-center text-xs text-slate-500">
           Loading quotes...
         </div>
       }

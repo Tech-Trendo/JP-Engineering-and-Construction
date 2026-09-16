@@ -177,18 +177,20 @@ export default function AdminHeroSlidesPage() {
   };
 
   return (
-    <div className="p-6 md:p-8 max-w-7xl mx-auto space-y-6">
+    <div className="space-y-6 max-w-7xl mx-auto">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 pb-5">
         <div>
-          <h1 className="text-2xl font-bold text-white tracking-tight">Homepage Hero Slides</h1>
-          <p className="text-slate-400 text-sm mt-1">
+          <h1 className="text-xl font-bold tracking-tight text-slate-900 sm:text-2xl">
+            Homepage Hero Slides
+          </h1>
+          <p className="mt-1 text-xs text-slate-500">
             Manage the dynamic hero banner carousel, background machinery photography, headlines, and call-to-action buttons.
           </p>
         </div>
         <button
           onClick={handleOpenCreate}
-          className="inline-flex items-center gap-2 bg-[#c8391a] hover:bg-[#a62d14] text-white font-semibold text-sm px-4 py-2.5 rounded-lg transition-colors shadow-sm cursor-pointer"
+          className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-[#1b3a6e] hover:bg-[#152e57] text-white text-xs font-semibold shadow-2xs transition-colors cursor-pointer"
         >
           <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -199,44 +201,44 @@ export default function AdminHeroSlidesPage() {
 
       {/* Global Error Banner */}
       {errorMessage && !isModalOpen && (
-        <div className="p-4 bg-red-900/40 border border-red-800 text-red-200 rounded-lg text-sm flex items-center justify-between">
+        <div className="p-3.5 bg-red-50 border border-red-200 text-red-700 rounded-lg text-xs font-medium flex items-center justify-between">
           <span>{errorMessage}</span>
-          <button onClick={() => setErrorMessage(null)} className="text-red-400 hover:text-white">
+          <button onClick={() => setErrorMessage(null)} className="text-red-500 hover:text-red-800">
             &times;
           </button>
         </div>
       )}
 
       {/* Table Card */}
-      <div className="bg-[#0a0f1d] border border-slate-800 rounded-xl overflow-hidden shadow-sm">
+      <div className="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-2xs">
         {isLoading ? (
-          <div className="p-12 text-center text-slate-400 flex flex-col items-center justify-center">
+          <div className="p-12 text-center text-xs text-slate-500 flex flex-col items-center justify-center">
             <div className="w-8 h-8 border-2 border-[#1b3a6e] border-t-transparent rounded-full animate-spin mb-3" />
-            <span className="text-sm">Loading hero slides...</span>
+            <span>Loading hero slides...</span>
           </div>
         ) : slides.length === 0 ? (
           <div className="p-12 text-center text-slate-500">
-            <p className="text-sm">No hero slides found.</p>
-            <p className="text-xs mt-1 text-slate-600">Click &quot;Add New Hero Slide&quot; to configure your homepage banner.</p>
+            <p className="text-sm font-bold text-slate-800">No hero slides found.</p>
+            <p className="text-xs mt-1 text-slate-500">Click &quot;Add New Hero Slide&quot; to configure your homepage banner.</p>
           </div>
         ) : (
           <div className="overflow-x-auto">
-            <table className="w-full text-left border-collapse text-sm">
+            <table className="w-full text-left border-collapse text-xs text-slate-700">
               <thead>
-                <tr className="border-b border-slate-800 bg-[#0d1424] text-slate-400 text-xs font-semibold uppercase tracking-wider">
-                  <th className="py-3.5 px-4">Background Image</th>
-                  <th className="py-3.5 px-4">Slide Content</th>
-                  <th className="py-3.5 px-4">CTAs</th>
-                  <th className="py-3.5 px-4">Order</th>
-                  <th className="py-3.5 px-4">Status</th>
-                  <th className="py-3.5 px-4 text-right">Actions</th>
+                <tr className="border-b border-slate-200 bg-slate-50 text-slate-600 text-[11px] font-semibold uppercase tracking-wider">
+                  <th className="py-3.5 px-5">Background Image</th>
+                  <th className="py-3.5 px-5">Slide Content</th>
+                  <th className="py-3.5 px-5">CTAs</th>
+                  <th className="py-3.5 px-5">Order</th>
+                  <th className="py-3.5 px-5">Status</th>
+                  <th className="py-3.5 px-5 text-right">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-800/60">
+              <tbody className="divide-y divide-slate-100">
                 {slides.map((slide) => (
-                  <tr key={slide.id} className="hover:bg-slate-800/30 transition-colors">
-                    <td className="py-3 px-4">
-                      <div className="w-24 h-14 rounded bg-slate-800 overflow-hidden flex items-center justify-center border border-slate-700">
+                  <tr key={slide.id} className="hover:bg-slate-50/80 transition-colors">
+                    <td className="py-3.5 px-5">
+                      <div className="w-24 h-14 rounded-lg bg-slate-100 overflow-hidden flex items-center justify-center border border-slate-200">
                         {slide.image_url || slide.image ? (
                           <img
                             src={getMediaUrl(slide.image_url || (slide.image as string))}
@@ -244,55 +246,54 @@ export default function AdminHeroSlidesPage() {
                             className="w-full h-full object-cover"
                           />
                         ) : (
-                          <span className="text-[10px] text-slate-500 font-bold uppercase">No Img</span>
+                          <span className="text-[10px] text-slate-400 font-bold uppercase">No Img</span>
                         )}
                       </div>
                     </td>
-                    <td className="py-3 px-4 max-w-md">
+                    <td className="py-3.5 px-5 max-w-md">
                       {slide.badge && (
                         <span className="inline-block text-[10px] uppercase font-bold tracking-wider text-[#c8391a] mb-0.5">
                           {slide.badge}
                         </span>
                       )}
-                      <div className="font-semibold text-white text-sm line-clamp-1">{slide.heading}</div>
-                      <div className="text-xs text-slate-400 line-clamp-2 mt-1">{slide.subtext}</div>
+                      <div className="font-bold text-slate-900 text-sm line-clamp-1">{slide.heading}</div>
+                      <div className="text-xs text-slate-500 line-clamp-2 mt-1">{slide.subtext}</div>
                     </td>
-                    <td className="py-3 px-4 text-xs text-slate-300">
+                    <td className="py-3.5 px-5 text-xs text-slate-600">
                       <div className="flex flex-col gap-1">
-                        <span className="text-slate-300 font-medium">
+                        <span className="text-slate-800 font-medium">
                           1: {slide.primary_cta_label} ({slide.primary_cta_link})
                         </span>
                         {slide.secondary_cta_label && (
-                          <span className="text-slate-400">
+                          <span className="text-slate-500">
                             2: {slide.secondary_cta_label} ({slide.secondary_cta_link})
                           </span>
                         )}
                       </div>
                     </td>
-                    <td className="py-3 px-4 text-slate-400 font-mono text-xs">{slide.order}</td>
-                    <td className="py-3 px-4">
+                    <td className="py-3.5 px-5 text-slate-600 font-mono text-xs font-medium">{slide.order}</td>
+                    <td className="py-3.5 px-5">
                       {slide.is_active ? (
-                        <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-xs font-medium bg-emerald-950/80 text-emerald-400 border border-emerald-800">
-                          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+                        <span className="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-semibold uppercase tracking-wider bg-emerald-50 text-emerald-700 border border-emerald-200">
                           Active
                         </span>
                       ) : (
-                        <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-xs font-medium bg-slate-800 text-slate-400 border border-slate-700">
+                        <span className="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-semibold uppercase tracking-wider bg-slate-100 text-slate-600 border border-slate-200">
                           Inactive
                         </span>
                       )}
                     </td>
-                    <td className="py-3 px-4 text-right space-x-2">
+                    <td className="py-3.5 px-5 text-right space-x-3">
                       <button
                         onClick={() => handleOpenEdit(slide)}
-                        className="text-xs text-indigo-400 hover:text-indigo-300 font-medium px-2 py-1 rounded bg-indigo-950/50 border border-indigo-800 hover:bg-indigo-900/50 transition-colors cursor-pointer"
+                        className="text-xs font-semibold text-[#1b3a6e] hover:text-[#152e57] transition-colors cursor-pointer"
                       >
                         Edit
                       </button>
                       <button
                         onClick={() => handleDelete(slide.id)}
                         disabled={deletingId === slide.id}
-                        className="text-xs text-red-400 hover:text-red-300 font-medium px-2 py-1 rounded bg-red-950/50 border border-red-800 hover:bg-red-900/50 transition-colors disabled:opacity-50 cursor-pointer"
+                        className="text-xs font-semibold text-red-600 hover:text-red-700 transition-colors disabled:opacity-50 cursor-pointer"
                       >
                         {deletingId === slide.id ? "Deleting..." : "Delete"}
                       </button>
@@ -307,23 +308,23 @@ export default function AdminHeroSlidesPage() {
 
       {/* Create / Edit Modal */}
       {isModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-xs overflow-y-auto">
-          <div className="bg-[#0e1628] border border-slate-700 rounded-xl w-full max-w-xl overflow-hidden shadow-2xl my-8">
-            <div className="flex items-center justify-between px-6 py-4 border-b border-slate-800 bg-[#0a0f1d]">
-              <h2 className="text-lg font-bold text-white">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs overflow-y-auto">
+          <div className="bg-white border border-slate-200 rounded-2xl w-full max-w-xl overflow-hidden shadow-2xl my-8">
+            <div className="flex items-center justify-between px-6 py-4 border-b border-slate-200 bg-white">
+              <h2 className="text-base font-bold text-slate-900">
                 {formData.id ? "Edit Hero Slide" : "Create Hero Slide"}
               </h2>
               <button
                 onClick={() => setIsModalOpen(false)}
-                className="text-slate-400 hover:text-white transition-colors text-xl leading-none"
+                className="text-slate-400 hover:text-slate-700 p-1.5 rounded-lg hover:bg-slate-100 transition-colors text-xl leading-none"
               >
                 &times;
               </button>
             </div>
 
-            <form onSubmit={handleSubmit} className="p-6 space-y-4">
+            <form onSubmit={handleSubmit} className="p-6 space-y-4 text-xs">
               {errorMessage && (
-                <div className="p-3 bg-red-900/50 border border-red-700 text-red-200 text-xs rounded">
+                <div className="p-3.5 bg-red-50 border border-red-200 text-red-700 rounded-lg font-medium">
                   {errorMessage}
                 </div>
               )}
@@ -331,7 +332,7 @@ export default function AdminHeroSlidesPage() {
               {/* Title & Badge */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">
+                  <label className="block font-semibold text-slate-700 mb-1">
                     Internal Slide Title
                   </label>
                   <input
@@ -339,11 +340,11 @@ export default function AdminHeroSlidesPage() {
                     placeholder="e.g. Turnkey Industrial Machinery"
                     value={formData.title}
                     onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                    className="w-full px-3.5 py-2 bg-slate-900 border border-slate-700 rounded-lg text-sm text-white placeholder-slate-500 focus:outline-hidden focus:border-indigo-500"
+                    className="w-full px-3.5 py-2 bg-white border border-slate-300 rounded-lg text-slate-900 placeholder:text-slate-400 focus:outline-hidden focus:border-[#1b3a6e] focus:ring-2 focus:ring-[#1b3a6e]/15 shadow-2xs"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">
+                  <label className="block font-semibold text-slate-700 mb-1">
                     Badge Pill Text
                   </label>
                   <input
@@ -351,15 +352,15 @@ export default function AdminHeroSlidesPage() {
                     placeholder="e.g. Nepal's Premier Manufacturer"
                     value={formData.badge}
                     onChange={(e) => setFormData({ ...formData, badge: e.target.value })}
-                    className="w-full px-3.5 py-2 bg-slate-900 border border-slate-700 rounded-lg text-sm text-white placeholder-slate-500 focus:outline-hidden focus:border-indigo-500"
+                    className="w-full px-3.5 py-2 bg-white border border-slate-300 rounded-lg text-slate-900 placeholder:text-slate-400 focus:outline-hidden focus:border-[#1b3a6e] focus:ring-2 focus:ring-[#1b3a6e]/15 shadow-2xs"
                   />
                 </div>
               </div>
 
               {/* Main Headline */}
               <div>
-                <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">
-                  Main Headline *
+                <label className="block font-semibold text-slate-700 mb-1">
+                  Main Headline <span className="text-red-500">*</span>
                 </label>
                 <input
                   type="text"
@@ -367,13 +368,13 @@ export default function AdminHeroSlidesPage() {
                   placeholder="e.g. Engineered Machinery & Turnkey Industrial Plants"
                   value={formData.heading}
                   onChange={(e) => setFormData({ ...formData, heading: e.target.value })}
-                  className="w-full px-3.5 py-2 bg-slate-900 border border-slate-700 rounded-lg text-sm text-white placeholder-slate-500 focus:outline-hidden focus:border-indigo-500 font-bold"
+                  className="w-full px-3.5 py-2 bg-white border border-slate-300 rounded-lg text-slate-900 placeholder:text-slate-400 focus:outline-hidden focus:border-[#1b3a6e] focus:ring-2 focus:ring-[#1b3a6e]/15 font-bold shadow-2xs"
                 />
               </div>
 
               {/* Subtext */}
               <div>
-                <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">
+                <label className="block font-semibold text-slate-700 mb-1">
                   Subtext / Description
                 </label>
                 <textarea
@@ -381,32 +382,32 @@ export default function AdminHeroSlidesPage() {
                   placeholder="Specializing in cold storage facilities, water purification plants, automated dairy processing..."
                   value={formData.subtext}
                   onChange={(e) => setFormData({ ...formData, subtext: e.target.value })}
-                  className="w-full px-3.5 py-2 bg-slate-900 border border-slate-700 rounded-lg text-sm text-white placeholder-slate-500 focus:outline-hidden focus:border-indigo-500"
+                  className="w-full px-3.5 py-2 bg-white border border-slate-300 rounded-lg text-slate-900 placeholder:text-slate-400 focus:outline-hidden focus:border-[#1b3a6e] focus:ring-2 focus:ring-[#1b3a6e]/15 shadow-2xs"
                 />
               </div>
 
               {/* Primary CTA */}
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">
+                  <label className="block font-semibold text-slate-700 mb-1">
                     Primary Button Label
                   </label>
                   <input
                     type="text"
                     value={formData.primary_cta_label}
                     onChange={(e) => setFormData({ ...formData, primary_cta_label: e.target.value })}
-                    className="w-full px-3.5 py-2 bg-slate-900 border border-slate-700 rounded-lg text-sm text-white placeholder-slate-500 focus:outline-hidden focus:border-indigo-500"
+                    className="w-full px-3.5 py-2 bg-white border border-slate-300 rounded-lg text-slate-900 placeholder:text-slate-400 focus:outline-hidden focus:border-[#1b3a6e] focus:ring-2 focus:ring-[#1b3a6e]/15 shadow-2xs"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">
+                  <label className="block font-semibold text-slate-700 mb-1">
                     Primary Button Link
                   </label>
                   <input
                     type="text"
                     value={formData.primary_cta_link}
                     onChange={(e) => setFormData({ ...formData, primary_cta_link: e.target.value })}
-                    className="w-full px-3.5 py-2 bg-slate-900 border border-slate-700 rounded-lg text-sm text-white placeholder-slate-500 focus:outline-hidden focus:border-indigo-500 font-mono text-xs"
+                    className="w-full px-3.5 py-2 bg-white border border-slate-300 rounded-lg text-slate-900 placeholder:text-slate-400 focus:outline-hidden focus:border-[#1b3a6e] focus:ring-2 focus:ring-[#1b3a6e]/15 font-mono text-xs shadow-2xs"
                   />
                 </div>
               </div>
@@ -414,25 +415,25 @@ export default function AdminHeroSlidesPage() {
               {/* Secondary CTA */}
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">
+                  <label className="block font-semibold text-slate-700 mb-1">
                     Secondary Button Label
                   </label>
                   <input
                     type="text"
                     value={formData.secondary_cta_label}
                     onChange={(e) => setFormData({ ...formData, secondary_cta_label: e.target.value })}
-                    className="w-full px-3.5 py-2 bg-slate-900 border border-slate-700 rounded-lg text-sm text-white placeholder-slate-500 focus:outline-hidden focus:border-indigo-500"
+                    className="w-full px-3.5 py-2 bg-white border border-slate-300 rounded-lg text-slate-900 placeholder:text-slate-400 focus:outline-hidden focus:border-[#1b3a6e] focus:ring-2 focus:ring-[#1b3a6e]/15 shadow-2xs"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">
+                  <label className="block font-semibold text-slate-700 mb-1">
                     Secondary Button Link
                   </label>
                   <input
                     type="text"
                     value={formData.secondary_cta_link}
                     onChange={(e) => setFormData({ ...formData, secondary_cta_link: e.target.value })}
-                    className="w-full px-3.5 py-2 bg-slate-900 border border-slate-700 rounded-lg text-sm text-white placeholder-slate-500 focus:outline-hidden focus:border-indigo-500 font-mono text-xs"
+                    className="w-full px-3.5 py-2 bg-white border border-slate-300 rounded-lg text-slate-900 placeholder:text-slate-400 focus:outline-hidden focus:border-[#1b3a6e] focus:ring-2 focus:ring-[#1b3a6e]/15 font-mono text-xs shadow-2xs"
                   />
                 </div>
               </div>
@@ -440,7 +441,7 @@ export default function AdminHeroSlidesPage() {
               {/* Order & Active */}
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">
+                  <label className="block font-semibold text-slate-700 mb-1">
                     Display Order
                   </label>
                   <input
@@ -449,16 +450,16 @@ export default function AdminHeroSlidesPage() {
                     onChange={(e) =>
                       setFormData({ ...formData, order: parseInt(e.target.value, 10) || 0 })
                     }
-                    className="w-full px-3.5 py-2 bg-slate-900 border border-slate-700 rounded-lg text-sm text-white placeholder-slate-500 focus:outline-hidden focus:border-indigo-500"
+                    className="w-full px-3.5 py-2 bg-white border border-slate-300 rounded-lg text-slate-900 focus:outline-hidden focus:border-[#1b3a6e] focus:ring-2 focus:ring-[#1b3a6e]/15 shadow-2xs"
                   />
                 </div>
                 <div className="flex items-center pt-6">
-                  <label className="flex items-center gap-2 text-sm text-slate-300 cursor-pointer">
+                  <label className="flex items-center gap-2 text-xs font-medium text-slate-800 cursor-pointer">
                     <input
                       type="checkbox"
                       checked={formData.is_active}
                       onChange={(e) => setFormData({ ...formData, is_active: e.target.checked })}
-                      className="w-4 h-4 rounded text-indigo-600 focus:ring-0"
+                      className="w-4 h-4 rounded border-slate-300 text-[#1b3a6e] focus:ring-0"
                     />
                     <span>Active in hero slider</span>
                   </label>
@@ -467,12 +468,12 @@ export default function AdminHeroSlidesPage() {
 
               {/* Background Image Upload */}
               <div>
-                <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">
+                <label className="block font-semibold text-slate-700 mb-1">
                   Hero Background Image {!formData.id && "*"}
                 </label>
                 <div className="flex items-center gap-4">
                   {formData.current_image && (
-                    <div className="w-24 h-14 rounded bg-slate-800 overflow-hidden shrink-0 border border-slate-700">
+                    <div className="w-24 h-14 rounded-lg bg-slate-100 overflow-hidden shrink-0 border border-slate-200">
                       <img
                         src={getMediaUrl(formData.current_image)}
                         alt="Current background preview"
@@ -489,7 +490,7 @@ export default function AdminHeroSlidesPage() {
                         setFormData({ ...formData, file: e.target.files[0] });
                       }
                     }}
-                    className="text-xs text-slate-400 file:mr-3 file:py-1.5 file:px-3 file:rounded file:border-0 file:text-xs file:font-semibold file:bg-slate-800 file:text-slate-200 hover:file:bg-slate-700 cursor-pointer"
+                    className="text-xs text-slate-600 file:mr-3 file:py-1.5 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-slate-100 file:text-slate-700 hover:file:bg-slate-200 cursor-pointer"
                   />
                 </div>
                 <p className="text-[11px] text-slate-500 mt-1">
@@ -498,18 +499,18 @@ export default function AdminHeroSlidesPage() {
               </div>
 
               {/* Submit Buttons */}
-              <div className="pt-4 border-t border-slate-800 flex justify-end gap-3">
+              <div className="pt-4 border-t border-slate-200 flex justify-end gap-2.5">
                 <button
                   type="button"
                   onClick={() => setIsModalOpen(false)}
-                  className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 text-sm font-medium rounded-lg transition-colors cursor-pointer"
+                  className="px-4 py-2 bg-white hover:bg-slate-50 text-slate-700 text-xs font-medium rounded-lg border border-slate-300 transition-colors shadow-2xs cursor-pointer"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="px-5 py-2 bg-[#c8391a] hover:bg-[#a62d14] text-white text-sm font-semibold rounded-lg transition-colors shadow-sm disabled:opacity-50 cursor-pointer"
+                  className="px-5 py-2 bg-[#1b3a6e] hover:bg-[#152e57] text-white text-xs font-semibold rounded-lg transition-colors shadow-2xs disabled:opacity-50 cursor-pointer"
                 >
                   {isSubmitting ? "Saving..." : formData.id ? "Update Slide" : "Create Slide"}
                 </button>
