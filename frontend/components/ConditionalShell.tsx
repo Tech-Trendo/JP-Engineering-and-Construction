@@ -1,9 +1,10 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Suspense } from "react";
 import { usePathname } from "next/navigation";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import TopLoadingBar from "@/components/TopLoadingBar";
 import {
   getPublicSiteSettings,
   getPublicCategories,
@@ -58,18 +59,32 @@ export default function ConditionalShell({
   }, [isAdmin]);
 
   if (isAdmin) {
-    return <>{children}</>;
+    return (
+      <>
+        <Suspense fallback={null}>
+          <TopLoadingBar />
+        </Suspense>
+        {children}
+      </>
+    );
   }
 
   return (
     <>
+      <Suspense fallback={null}>
+        <TopLoadingBar />
+      </Suspense>
       <Header
         siteSettings={siteSettings}
         categories={categories}
         industries={industries}
         products={products}
       />
-      <main className="flex-1 w-full overflow-x-hidden">{children}</main>
+      <main className="flex-1 w-full overflow-x-clip">
+        <div key={pathname} className="w-full page-top-to-bottom">
+          {children}
+        </div>
+      </main>
       <Footer
         siteSettings={siteSettings}
         categories={categories}

@@ -115,7 +115,7 @@ export default function Header({
 
   return (
     <header
-      className={`w-full z-50 sticky top-0 transition-shadow duration-200 ${scrolled ? "shadow-md" : ""}`}
+      className={`w-full z-50 sticky top-0 bg-white transition-shadow duration-200 ${scrolled ? "shadow-md" : ""}`}
     >
       {/* Top bar */}
       <div className="bg-[#0f2347] text-white text-xs py-2">

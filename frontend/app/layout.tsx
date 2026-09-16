@@ -248,7 +248,7 @@ export default async function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
         />
       </head>
-      <body className={`${poppins.className} flex flex-col min-h-screen text-gray-800 bg-white antialiased overflow-x-hidden w-full font-sans`}>
+      <body className={`${poppins.className} flex flex-col min-h-screen text-gray-800 bg-white antialiased overflow-x-clip w-full font-sans`}>
         <ConditionalShell siteSettings={siteSettings} categories={categories} industries={industries} products={products}>
           {children}
         </ConditionalShell>
