@@ -150,6 +150,7 @@ function SiteSettingsContent() {
     business_hours: "",
     map_location_text: "",
     facebook_url: "",
+    tiktok_url: "",
     twitter_url: "",
     linkedin_url: "",
     youtube_url: "",
@@ -785,15 +786,16 @@ function SiteSettingsContent() {
                 </h2>
               </div>
               <p className="text-slate-500 text-xs mt-1">
-                Connect your official social media pages. Icons appear automatically in both the header bar and footer. Leave empty to hide any channel.
+                Configure your official social media channels. Icons appear automatically in both the header and footer. JP Engineering officially maintains Facebook, TikTok, and YouTube.
               </p>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-              <div className="p-4 rounded-xl bg-slate-900/60 border border-slate-200 space-y-2">
-                <div className="flex items-center gap-2 text-slate-700 text-xs font-semibold">
-                  <div className="w-6 h-6 rounded bg-[#1877F2]/20 text-[#1877F2] flex items-center justify-center shrink-0">
-                    <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
+              {/* Facebook */}
+              <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-2.5">
+                <div className="flex items-center gap-2 text-slate-800 text-xs font-semibold">
+                  <div className="w-7 h-7 rounded-lg bg-[#1877F2]/10 text-[#1877F2] flex items-center justify-center shrink-0 border border-[#1877F2]/20">
+                    <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
                       <path fillRule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clipRule="evenodd" />
                     </svg>
                   </div>
@@ -804,53 +806,36 @@ function SiteSettingsContent() {
                   name="facebook_url"
                   value={formData.facebook_url}
                   onChange={handleChange}
-                  placeholder="https://facebook.com/yourpage"
-                  className="w-full px-3.5 py-2 rounded-lg bg-slate-950 border border-slate-700 text-white text-xs focus:outline-hidden focus:border-blue-500"
+                  placeholder="https://facebook.com/jpengineering"
+                  className="w-full px-3 py-2 rounded-lg bg-white border border-slate-300 text-slate-900 text-xs focus:outline-hidden focus:border-[#1b3a6e] focus:ring-2 focus:ring-[#1b3a6e]/20 transition"
                 />
               </div>
 
-              <div className="p-4 rounded-xl bg-slate-900/60 border border-slate-200 space-y-2">
-                <div className="flex items-center gap-2 text-slate-700 text-xs font-semibold">
-                  <div className="w-6 h-6 rounded bg-slate-800 text-white flex items-center justify-center shrink-0">
-                    <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+              {/* TikTok */}
+              <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-2.5">
+                <div className="flex items-center gap-2 text-slate-800 text-xs font-semibold">
+                  <div className="w-7 h-7 rounded-lg bg-black/10 text-slate-900 flex items-center justify-center shrink-0 border border-black/20">
+                    <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-5.2 1.74 2.89 2.89 0 012.31-4.64c.298-.002.595.042.88.13V9.4a6.33 6.33 0 00-1-.08A6.34 6.34 0 003 15.66a6.34 6.34 0 0010.86 4.43c.25-.26.47-.54.66-.84V10.22a8.28 8.28 0 005.07 1.73V8.5a4.84 4.84 0 01-.0-.01z" />
                     </svg>
                   </div>
-                  <span>X / Twitter Profile</span>
+                  <span>TikTok Profile</span>
                 </div>
                 <input
                   type="url"
-                  name="twitter_url"
-                  value={formData.twitter_url}
+                  name="tiktok_url"
+                  value={formData.tiktok_url || ""}
                   onChange={handleChange}
-                  placeholder="https://twitter.com/yourhandle"
-                  className="w-full px-3.5 py-2 rounded-lg bg-slate-950 border border-slate-700 text-white text-xs focus:outline-hidden focus:border-blue-500"
+                  placeholder="https://tiktok.com/@jpengineering"
+                  className="w-full px-3 py-2 rounded-lg bg-white border border-slate-300 text-slate-900 text-xs focus:outline-hidden focus:border-[#1b3a6e] focus:ring-2 focus:ring-[#1b3a6e]/20 transition"
                 />
               </div>
 
-              <div className="p-4 rounded-xl bg-slate-900/60 border border-slate-200 space-y-2">
-                <div className="flex items-center gap-2 text-slate-700 text-xs font-semibold">
-                  <div className="w-6 h-6 rounded bg-[#0A66C2]/20 text-[#0A66C2] flex items-center justify-center shrink-0">
-                    <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24">
-                      <path fillRule="evenodd" d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z" clipRule="evenodd" />
-                    </svg>
-                  </div>
-                  <span>LinkedIn Company Page</span>
-                </div>
-                <input
-                  type="url"
-                  name="linkedin_url"
-                  value={formData.linkedin_url}
-                  onChange={handleChange}
-                  placeholder="https://linkedin.com/company/yourcompany"
-                  className="w-full px-3.5 py-2 rounded-lg bg-slate-950 border border-slate-700 text-white text-xs focus:outline-hidden focus:border-blue-500"
-                />
-              </div>
-
-              <div className="p-4 rounded-xl bg-slate-900/60 border border-slate-200 space-y-2">
-                <div className="flex items-center gap-2 text-slate-700 text-xs font-semibold">
-                  <div className="w-6 h-6 rounded bg-[#FF0000]/20 text-[#FF0000] flex items-center justify-center shrink-0">
-                    <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24">
+              {/* YouTube */}
+              <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-2.5">
+                <div className="flex items-center gap-2 text-slate-800 text-xs font-semibold">
+                  <div className="w-7 h-7 rounded-lg bg-[#FF0000]/10 text-[#FF0000] flex items-center justify-center shrink-0 border border-[#FF0000]/20">
+                    <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
                       <path fillRule="evenodd" d="M19.812 5.418c.861.23 1.538.907 1.768 1.768C21.998 8.746 22 12 22 12s0 3.255-.418 4.814a2.504 2.504 0 0 1-1.768 1.768c-1.56.419-7.814.419-7.814.419s-6.255 0-7.814-.419a2.505 2.505 0 0 1-1.768-1.768C2 15.255 2 12 2 12s0-3.255.417-4.814a2.507 2.507 0 0 1 1.768-1.768C5.744 5 11.998 5 11.998 5s6.255 0 7.814.418zM15.194 12 10 15V9l5.194 3z" clipRule="evenodd" />
                     </svg>
                   </div>
@@ -861,8 +846,8 @@ function SiteSettingsContent() {
                   name="youtube_url"
                   value={formData.youtube_url}
                   onChange={handleChange}
-                  placeholder="https://youtube.com/@yourchannel"
-                  className="w-full px-3.5 py-2 rounded-lg bg-slate-950 border border-slate-700 text-white text-xs focus:outline-hidden focus:border-blue-500"
+                  placeholder="https://youtube.com/@jpengineering"
+                  className="w-full px-3 py-2 rounded-lg bg-white border border-slate-300 text-slate-900 text-xs focus:outline-hidden focus:border-[#1b3a6e] focus:ring-2 focus:ring-[#1b3a6e]/20 transition"
                 />
               </div>
             </div>

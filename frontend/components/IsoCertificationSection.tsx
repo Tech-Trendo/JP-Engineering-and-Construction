@@ -154,37 +154,59 @@ export default function IsoCertificationSection({ siteSettings }: IsoCertificati
       {/* Full Resolution Certificate Lightbox Modal */}
       {modalOpen && (
         <div
-          className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4"
+          className="fixed inset-0 z-[9999] bg-black/85 backdrop-blur-md flex items-center justify-center p-2 sm:p-4 md:p-6"
           onClick={() => setModalOpen(false)}
         >
           <div
-            className="relative max-w-4xl max-h-[90vh] bg-white rounded-2xl overflow-hidden shadow-2xl p-2 sm:p-4 flex flex-col"
+            className="relative w-full max-w-4xl max-h-[94vh] bg-white rounded-2xl shadow-2xl flex flex-col border border-slate-200 overflow-hidden"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex items-center justify-between pb-3 px-2 border-b border-gray-200">
-              <div className="flex items-center gap-2">
-                <span className="w-2.5 h-2.5 rounded-full bg-emerald-500" />
-                <span className="font-bold text-sm text-[#1b3a6e]">
-                  Official ISO 9001:2015 Certificate of Registration
-                </span>
+            {/* Modal Top Header Bar - Always Visible */}
+            <div className="shrink-0 flex items-center justify-between px-3.5 sm:px-5 py-3 bg-white border-b border-gray-200 z-10">
+              <div className="flex items-center gap-2 min-w-0 pr-2">
+                <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 shrink-0" />
+                <div className="truncate">
+                  <span className="font-bold text-xs sm:text-sm text-[#1b3a6e] block truncate">
+                    Official ISO 9001:2015 Certificate of Registration
+                  </span>
+                  <span className="text-[10.5px] text-gray-500 font-mono hidden sm:block">
+                    URS Registration Certificate No. {certNumber}
+                  </span>
+                </div>
               </div>
-              <button
-                type="button"
-                onClick={() => setModalOpen(false)}
-                className="p-1.5 text-gray-400 hover:text-gray-700 hover:bg-gray-100 rounded-full transition-colors cursor-pointer"
-                aria-label="Close modal"
-              >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </button>
+
+              <div className="flex items-center gap-2 shrink-0">
+                <a
+                  href={certImg}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hidden sm:inline-flex items-center gap-1 text-xs font-bold text-[#1b3a6e] hover:text-[#c8391a] px-2.5 py-1.5 rounded-lg border border-slate-200 hover:border-slate-300 bg-slate-50 transition"
+                  title="Open original file in new browser tab"
+                >
+                  <span>Open Full Size</span>
+                  <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                  </svg>
+                </a>
+                <button
+                  type="button"
+                  onClick={() => setModalOpen(false)}
+                  className="p-1.5 text-gray-400 hover:text-gray-800 hover:bg-gray-100 rounded-full transition-colors cursor-pointer"
+                  aria-label="Close modal"
+                >
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </div>
             </div>
 
-            <div className="overflow-auto max-h-[calc(90vh-80px)] p-2 flex items-center justify-center bg-slate-50 rounded-lg mt-2">
+            {/* Scrollable Container - Starts at exact top (scrollTop: 0) to ensure certificate header is fully visible */}
+            <div className="flex-1 overflow-y-auto overflow-x-hidden p-2 sm:p-4 md:p-5 bg-slate-100/90 text-center">
               <img
                 src={certImg}
                 alt="ISO 9001:2015 Certificate of Registration Full Document"
-                className="max-w-full h-auto object-contain rounded shadow-sm"
+                className="mx-auto max-w-full h-auto block rounded-lg shadow-md border border-gray-200"
               />
             </div>
           </div>

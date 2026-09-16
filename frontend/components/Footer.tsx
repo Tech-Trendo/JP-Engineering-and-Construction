@@ -21,7 +21,7 @@ export default function Footer({
   const socials = [
     {
       name: "Facebook",
-      url: siteSettings?.facebook_url,
+      url: siteSettings?.facebook_url || "https://facebook.com",
       icon: (
         <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
           <path fillRule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clipRule="evenodd" />
@@ -29,26 +29,17 @@ export default function Footer({
       ),
     },
     {
-      name: "X",
-      url: siteSettings?.twitter_url,
+      name: "TikTok",
+      url: siteSettings?.tiktok_url || "https://tiktok.com",
       icon: (
         <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-        </svg>
-      ),
-    },
-    {
-      name: "LinkedIn",
-      url: siteSettings?.linkedin_url,
-      icon: (
-        <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-          <path fillRule="evenodd" d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z" clipRule="evenodd" />
+          <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-5.2 1.74 2.89 2.89 0 012.31-4.64c.298-.002.595.042.88.13V9.4a6.33 6.33 0 00-1-.08A6.34 6.34 0 003 15.66a6.34 6.34 0 0010.86 4.43c.25-.26.47-.54.66-.84V10.22a8.28 8.28 0 005.07 1.73V8.5a4.84 4.84 0 01-.0-.01z" />
         </svg>
       ),
     },
     {
       name: "YouTube",
-      url: siteSettings?.youtube_url,
+      url: siteSettings?.youtube_url || "https://youtube.com",
       icon: (
         <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
           <path fillRule="evenodd" d="M19.812 5.418c.861.23 1.538.907 1.768 1.768C21.998 8.746 22 12 22 12s0 3.255-.418 4.814a2.504 2.504 0 0 1-1.768 1.768c-1.56.419-7.814.419-7.814.419s-6.255 0-7.814-.419a2.505 2.505 0 0 1-1.768-1.768C2 15.255 2 12 2 12s0-3.255.417-4.814a2.507 2.507 0 0 1 1.768-1.768C5.744 5 11.998 5 11.998 5s6.255 0 7.814.418zM15.194 12 10 15V9l5.194 3z" clipRule="evenodd" />
@@ -65,7 +56,8 @@ export default function Footer({
           {/* Company info */}
           <div className="lg:col-span-1">
             <div className="flex items-center gap-3 mb-4">
-              <div className="w-[46px] h-[46px] rounded flex items-center justify-center shrink-0 overflow-hidden bg-white/10 p-1 border border-white/10">
+              {/* White background card for JP engineering logo */}
+              <div className="w-[48px] h-[48px] rounded-lg flex items-center justify-center shrink-0 overflow-hidden bg-white p-1 border border-white/20 shadow-md">
                 <img
                   src={getMediaUrl(siteSettings?.logo_url) || "/assets/logo.webp"}
                   alt={companyName}
@@ -281,9 +273,15 @@ export default function Footer({
 
       {/* Bottom bar */}
       <div className="border-t border-white/10 py-4 bg-[#091122]">
-        <div className="max-w-[1280px] mx-auto px-4 flex flex-col sm:flex-row items-center justify-between text-xs text-gray-500 gap-2">
+        <div className="max-w-[1280px] mx-auto px-4 flex flex-col sm:flex-row items-center justify-between text-xs text-gray-400 gap-2.5">
           <div>
             &copy; {new Date().getFullYear()} {companyName}. All rights reserved.
+          </div>
+          <div className="flex items-center gap-1.5 text-xs text-gray-400">
+            <span>Made by</span>
+            <span className="font-semibold text-white tracking-wide hover:text-[#c8391a] transition-colors">
+              Tech Trendo
+            </span>
           </div>
           <div className="flex gap-4">
             <Link href="/about/company-profile" className="hover:text-gray-300 transition-colors">

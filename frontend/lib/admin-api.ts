@@ -153,6 +153,7 @@ export interface AdminSiteSettings {
   business_hours: string;
   map_location_text: string;
   facebook_url: string;
+  tiktok_url?: string;
   twitter_url: string;
   linkedin_url: string;
   youtube_url: string;

@@ -40,6 +40,7 @@ class SiteSettingsSerializer(serializers.ModelSerializer):
             'business_hours',
             'map_location_text',
             'facebook_url',
+            'tiktok_url',
             'twitter_url',
             'linkedin_url',
             'youtube_url',

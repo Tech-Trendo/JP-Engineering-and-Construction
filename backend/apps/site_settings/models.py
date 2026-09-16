@@ -115,6 +115,11 @@ class SiteSettings(TimeStampedModel):
         default="https://facebook.com",
         help_text="Facebook page URL."
     )
+    tiktok_url = models.URLField(
+        blank=True,
+        default="https://tiktok.com",
+        help_text="TikTok profile URL."
+    )
     twitter_url = models.URLField(
         blank=True,
         default="https://twitter.com",

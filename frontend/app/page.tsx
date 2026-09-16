@@ -13,6 +13,7 @@ import {
   getPublicCategories,
   getPublicProducts,
   getPublicClients,
+  getPublicPartners,
   getPublicHeroSlides,
   getPublicIndustries,
   getMediaUrl,
@@ -21,6 +22,7 @@ import {
   PublicCategory,
   PublicProductListItem,
   PublicClient,
+  PublicPartner,
   PublicHeroSlide,
   PublicIndustry,
 } from "@/lib/public-api";
@@ -32,6 +34,7 @@ export default function HomePage() {
   const [categories, setCategories] = useState<PublicCategory[]>([]);
   const [products, setProducts] = useState<PublicProductListItem[]>([]);
   const [clients, setClients] = useState<PublicClient[]>([]);
+  const [partners, setPartners] = useState<PublicPartner[]>([]);
   const [heroSlides, setHeroSlides] = useState<PublicHeroSlide[]>([]);
   const [industries, setIndustries] = useState<PublicIndustry[]>([]);
 
@@ -48,6 +51,7 @@ export default function HomePage() {
         getPublicCategories(),
         getPublicProducts({ is_featured: true }),
         getPublicClients(),
+        getPublicPartners(),
         getPublicHeroSlides(),
         getPublicIndustries(),
       ]);
@@ -72,8 +76,9 @@ export default function HomePage() {
       }
 
       if (results[4].status === "fulfilled") setClients(results[4].value);
-      if (results[5].status === "fulfilled") setHeroSlides(results[5].value);
-      if (results[6].status === "fulfilled") setIndustries(results[6].value);
+      if (results[5].status === "fulfilled") setPartners(results[5].value);
+      if (results[6].status === "fulfilled") setHeroSlides(results[6].value);
+      if (results[7].status === "fulfilled") setIndustries(results[7].value);
 
       const allFailed = results.every((r) => r.status === "rejected");
       if (allFailed) {
@@ -429,32 +434,96 @@ export default function HomePage() {
         </section>
       )}
 
-      {/* Clients Section */}
+      {/* 1. Valued Clients Section */}
       {clients.length > 0 && (
-        <section className="py-14 bg-[#f8f9fb] border-t border-gray-100">
+        <section className="py-14 bg-white border-t border-gray-200">
           <div className="max-w-[1280px] mx-auto px-4">
-            <div className="text-center mb-8">
-              <span className="text-[#c8391a] text-xs font-semibold uppercase tracking-widest">
-                Trusted By Industry Leaders
-              </span>
-              <h2 className="text-[#1b3a6e] text-xl md:text-2xl font-bold mt-1">
-                Our Valued Clients &amp; Partners
-              </h2>
+            <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-8 gap-4">
+              <div>
+                <span className="text-[#c8391a] text-xs font-semibold uppercase tracking-widest">
+                  Trusted By Industry Leaders
+                </span>
+                <h2 className="text-[#1b3a6e] text-2xl md:text-3xl font-bold mt-1">
+                  Our Valued Clients
+                </h2>
+                <p className="text-gray-500 text-xs sm:text-sm mt-1">
+                  Industrial processors, dairy factories, and engineering institutions that rely on JP Engineering.
+                </p>
+              </div>
+              <Link
+                href="/about/our-clients"
+                className="inline-flex items-center gap-1.5 text-xs font-bold text-[#1b3a6e] hover:text-[#c8391a] transition-colors shrink-0 group"
+              >
+                <span>View All Clients</span>
+                <svg className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                </svg>
+              </Link>
             </div>
+
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4 items-center">
               {clients.map((client) => (
                 <div
                   key={client.id}
-                  className="bg-white border border-gray-200 p-4 h-24 flex flex-col items-center justify-center text-center shadow-sm hover:border-[#1b3a6e] transition-colors"
+                  className="bg-white border border-gray-200 rounded-xl p-4 h-24 flex flex-col items-center justify-center text-center shadow-xs hover:border-[#1b3a6e] hover:shadow-md transition-all group"
                 >
                   {client.logo ? (
                     <img
                       src={getMediaUrl(client.logo)}
                       alt={client.name}
-                      className="max-h-12 max-w-full object-contain"
+                      className="max-h-12 max-w-full object-contain filter grayscale group-hover:grayscale-0 transition-all duration-300"
                     />
                   ) : (
-                    <span className="text-xs font-bold text-[#1b3a6e]">{client.name}</span>
+                    <span className="text-xs font-bold text-[#1b3a6e] line-clamp-2">{client.name}</span>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* 2. Technology & Equipment Partners Section */}
+      {partners.length > 0 && (
+        <section className="py-14 bg-[#f8f9fb] border-t border-b border-gray-200">
+          <div className="max-w-[1280px] mx-auto px-4">
+            <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-8 gap-4">
+              <div>
+                <span className="text-[#c8391a] text-xs font-semibold uppercase tracking-widest">
+                  Global Engineering Collaboration
+                </span>
+                <h2 className="text-[#1b3a6e] text-2xl md:text-3xl font-bold mt-1">
+                  Our Technology Partners
+                </h2>
+                <p className="text-gray-500 text-xs sm:text-sm mt-1">
+                  Premier international component suppliers and technology partners powering our turnkey systems.
+                </p>
+              </div>
+              <Link
+                href="/about/our-partners"
+                className="inline-flex items-center gap-1.5 text-xs font-bold text-[#1b3a6e] hover:text-[#c8391a] transition-colors shrink-0 group"
+              >
+                <span>View All Partners</span>
+                <svg className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                </svg>
+              </Link>
+            </div>
+
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4 items-center">
+              {partners.map((partner) => (
+                <div
+                  key={partner.id}
+                  className="bg-white border border-gray-200 rounded-xl p-4 h-24 flex flex-col items-center justify-center text-center shadow-xs hover:border-[#1b3a6e] hover:shadow-md transition-all group"
+                >
+                  {partner.logo ? (
+                    <img
+                      src={getMediaUrl(partner.logo)}
+                      alt={partner.name}
+                      className="max-h-12 max-w-full object-contain filter grayscale group-hover:grayscale-0 transition-all duration-300"
+                    />
+                  ) : (
+                    <span className="text-xs font-bold text-[#1b3a6e] line-clamp-2">{partner.name}</span>
                   )}
                 </div>
               ))}

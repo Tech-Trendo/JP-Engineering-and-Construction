@@ -150,6 +150,7 @@ export interface PublicSiteSettings {
   business_hours: string;
   map_location_text: string;
   facebook_url: string;
+  tiktok_url?: string;
   twitter_url: string;
   linkedin_url: string;
   youtube_url: string;
@@ -276,8 +277,9 @@ export const DEFAULT_SITE_SETTINGS: PublicSiteSettings = {
   business_hours: "Mon - Sat: 9:00 AM - 6:00 PM",
   map_location_text: "Kathmandu, Nepal",
   facebook_url: "https://facebook.com",
-  twitter_url: "https://twitter.com",
-  linkedin_url: "https://linkedin.com",
+  tiktok_url: "https://tiktok.com",
+  twitter_url: "",
+  linkedin_url: "",
   youtube_url: "https://youtube.com",
   hero_badge: "Engineering Excellence",
   hero_heading: "JP Engineering & Construction Pvt. Ltd.",
