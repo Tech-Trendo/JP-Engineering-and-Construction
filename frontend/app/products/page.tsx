@@ -223,6 +223,7 @@ export default function ProductsPage() {
       </section>
 
       <FaqSection
+        pageKey="products"
         badge="Machinery & Procurement FAQ"
         title="Industrial Machinery FAQs"
         subtitle="Key information regarding manufacturing standards, customization, procurement, and field commissioning in Nepal."

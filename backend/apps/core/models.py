@@ -74,3 +74,54 @@ class SiteContent(TimeStampedModel):
                 full_intro=DEFAULT_FULL_INTRO,
             )
         return obj
+
+
+FAQ_PAGE_CHOICES = [
+    ('all', 'All Pages / Global'),
+    ('products', 'Products Page & Catalog'),
+    ('industries', 'Industries We Serve'),
+    ('contact', 'Contact Us'),
+    ('introduction', 'About Us - Introduction'),
+    ('company-profile', 'About Us - Company Profile'),
+    ('our-team', 'About Us - Our Team'),
+    ('our-clients', 'About Us - Our Clients'),
+    ('our-partners', 'About Us - Business Partners'),
+]
+
+
+class FAQ(TimeStampedModel):
+    """
+    Dynamic FAQ model managed through the CMS.
+    Allows staff to create, edit, reorder, and publish FAQs for specific subpages or site-wide.
+    """
+    question = models.CharField(max_length=500, help_text="The question text.")
+    answer = models.TextField(help_text="The detailed answer text.")
+    page = models.CharField(
+        max_length=50,
+        choices=FAQ_PAGE_CHOICES,
+        default='all',
+        help_text="Target subpage where this FAQ is displayed."
+    )
+    category = models.CharField(
+        max_length=100,
+        blank=True,
+        default='',
+        help_text="Optional topic category (e.g. Fabrication, Warranty, Commissioning)."
+    )
+    order = models.PositiveIntegerField(
+        default=0,
+        help_text="Display order (lower numbers appear first)."
+    )
+    is_active = models.BooleanField(
+        default=True,
+        help_text="Whether this FAQ is published and visible on the website."
+    )
+
+    class Meta:
+        verbose_name = "FAQ"
+        verbose_name_plural = "FAQs"
+        ordering = ['order', 'id']
+
+    def __str__(self):
+        return f"[{self.page}] {self.question[:60]}"
+

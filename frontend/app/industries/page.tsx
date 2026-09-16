@@ -210,6 +210,7 @@ export default function IndustriesPage() {
       </section>
 
       <FaqSection
+        pageKey="industries"
         badge="Industrial Sectors FAQ"
         title="Turnkey Industrial Sectors FAQ"
         subtitle="Technical insights into plant engineering, multidisciplinary contracting, and commissioning across Nepal."

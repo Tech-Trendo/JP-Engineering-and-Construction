@@ -241,6 +241,7 @@ export default function IntroductionPage() {
       </section>
 
       <FaqSection
+        pageKey="introduction"
         badge="Company Overview FAQ"
         title="About JP Engineering & Construction FAQs"
         subtitle="Common questions about our history, manufacturing workshop, ISO credentials, and national engineering presence."

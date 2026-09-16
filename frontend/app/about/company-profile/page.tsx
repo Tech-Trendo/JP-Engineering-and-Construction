@@ -316,6 +316,7 @@ export default function CompanyProfilePage() {
       </section>
 
       <FaqSection
+        pageKey="company-profile"
         badge="Credentials & Profile FAQ"
         title="Corporate Profile & Capabilities FAQ"
         subtitle="Key questions regarding registration, scope of ISO certification, project track record, and AMC maintenance contracts."

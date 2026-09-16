@@ -8,7 +8,7 @@ from apps.showcase.views import (
     AdminPartnerViewSet,
     AdminClientViewSet,
 )
-from .views import AdminSiteContentView
+from .views import AdminSiteContentView, AdminFAQViewSet
 
 router = DefaultRouter()
 router.register('categories', AdminCategoryViewSet, basename='admin-category')
@@ -18,7 +18,9 @@ router.register('quotes', AdminQuoteViewSet, basename='admin-quote')
 router.register('team', AdminTeamMemberViewSet, basename='admin-team')
 router.register('partners', AdminPartnerViewSet, basename='admin-partner')
 router.register('clients', AdminClientViewSet, basename='admin-client')
+router.register('faqs', AdminFAQViewSet, basename='admin-faq')
 
 urlpatterns = [
     path('site-content/', AdminSiteContentView.as_view(), name='admin-site-content'),
 ] + router.urls
+

@@ -141,6 +141,7 @@ export default function OurPartnersPage() {
       </section>
 
       <FaqSection
+        pageKey="our-partners"
         badge="Collaboration FAQ"
         title="Technology Partners & Global Sourcing FAQ"
         subtitle="Common questions regarding international equipment suppliers, original warranties, and component integration."

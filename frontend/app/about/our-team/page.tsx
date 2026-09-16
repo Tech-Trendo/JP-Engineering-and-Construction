@@ -124,6 +124,7 @@ export default function OurTeamPage() {
       </section>
 
       <FaqSection
+        pageKey="our-team"
         badge="Engineering Team FAQ"
         title="Our Technical Specialists & Project Leads FAQ"
         subtitle="Common questions about engineering qualifications, on-site safety, CAD design, and operational operator training."

@@ -420,4 +420,25 @@ export async function getPublicIndustryDetail(
   }
 }
 
+export interface PublicFaq {
+  id: number;
+  question: string;
+  answer: string;
+  page: string;
+  category?: string;
+  order: number;
+}
+
+export async function getPublicFaqs(page?: string): Promise<PublicFaq[]> {
+  try {
+    const endpoint = page ? `public/faqs/?page=${encodeURIComponent(page)}` : "public/faqs/";
+    const data = await apiClient<unknown>(endpoint);
+    return unwrapResults<PublicFaq>(data);
+  } catch (err) {
+    console.warn(`[public-api getPublicFaqs failed for page=${page}]:`, err);
+    return [];
+  }
+}
+
+
 

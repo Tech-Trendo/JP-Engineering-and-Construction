@@ -23,6 +23,7 @@ urlpatterns = [
             path('quotes/', include('apps.quotes.urls')),
             path('site-content/', include('apps.core.public_urls')),
             path('site-settings/', include('apps.site_settings.urls')),
+            path('faqs/', include('apps.core.faq_urls')),
             path('', include('apps.showcase.urls')),
         ])),
         path('admin/', include([

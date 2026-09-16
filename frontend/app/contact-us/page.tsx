@@ -217,6 +217,7 @@ export default function ContactPage() {
       </section>
 
       <FaqSection
+        pageKey="contact"
         badge="Inquiry & Support FAQ"
         title="Frequently Asked Consultation Questions"
         subtitle="Common questions regarding project quotation, on-site feasibility visits, fabrication, and after-sales support."

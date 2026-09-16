@@ -296,3 +296,61 @@ export async function updateAdminSiteContent(
   );
 }
 
+export interface AdminFaq {
+  id: number;
+  question: string;
+  answer: string;
+  page: string;
+  category: string;
+  order: number;
+  is_active: boolean;
+  created_at: string;
+  updated_at: string;
+}
+
+export async function getAdminFaqs(token: string, page?: string): Promise<AdminFaq[]> {
+  const endpoint = page ? `admin/faqs/?page=${encodeURIComponent(page)}` : "admin/faqs/";
+  const data = await adminFetch<unknown>(endpoint, { method: "GET" }, token);
+  return unwrapAdminResults<AdminFaq>(data);
+}
+
+export async function createAdminFaq(
+  token: string,
+  data: Partial<AdminFaq>
+): Promise<AdminFaq> {
+  return adminFetch<AdminFaq>(
+    "admin/faqs/",
+    {
+      method: "POST",
+      body: JSON.stringify(data),
+    },
+    token
+  );
+}
+
+export async function updateAdminFaq(
+  token: string,
+  id: number,
+  data: Partial<AdminFaq>
+): Promise<AdminFaq> {
+  return adminFetch<AdminFaq>(
+    `admin/faqs/${id}/`,
+    {
+      method: "PATCH",
+      body: JSON.stringify(data),
+    },
+    token
+  );
+}
+
+export async function deleteAdminFaq(token: string, id: number): Promise<void> {
+  await adminFetch<unknown>(
+    `admin/faqs/${id}/`,
+    {
+      method: "DELETE",
+    },
+    token
+  );
+}
+
+

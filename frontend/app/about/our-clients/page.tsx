@@ -414,6 +414,7 @@ export default function OurClientsPage() {
       </section>
 
       <FaqSection
+        pageKey="our-clients"
         badge="Client Experience FAQ"
         title="Our Clients & Project Installations FAQ"
         subtitle="Common questions regarding reference sites, institutional clients, and post-installation service across Nepal."
