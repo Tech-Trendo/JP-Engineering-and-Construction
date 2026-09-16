@@ -28,24 +28,96 @@ export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
 export async function generateMetadata(): Promise<Metadata> {
+  let settings: Awaited<ReturnType<typeof getPublicSiteSettings>> | null = null;
   try {
-    const settings = await getPublicSiteSettings();
-    return {
-      title: settings.company_name || "JP Engineering & Construction Pvt. Ltd.",
-      description: settings.company_description,
-      icons: {
-        icon: "/favicon.ico",
-      },
-    };
+    settings = await getPublicSiteSettings();
   } catch {
-    return {
-      title: "JP Engineering & Construction Pvt. Ltd.",
-      description: "Industrial machinery manufacturer and turnkey engineering contractor.",
-      icons: {
-        icon: "/favicon.ico",
-      },
-    };
+    settings = null;
   }
+
+  const companyName = settings?.company_name || "JP Engineering & Construction Pvt. Ltd.";
+  const title = `${companyName} | Industrial Machinery & Turnkey Solutions Nepal`;
+  const description =
+    settings?.company_description ||
+    "Leading manufacturer and engineering contractor in Nepal specializing in dairy processing plants, water treatment (RO) systems, cold storage facilities, industrial chillers, and stainless steel fabrication since 1998.";
+
+  return {
+    metadataBase: new URL("https://jpengineering.com.np"),
+    title: {
+      default: title,
+      template: `%s | ${companyName}`,
+    },
+    description,
+    keywords: [
+      "JP Engineering and Construction",
+      "industrial machinery Nepal",
+      "dairy processing plant Nepal",
+      "reverse osmosis water plant Nepal",
+      "cold storage construction Nepal",
+      "pasteurizer homogenizer Nepal",
+      "chilling vat Nepal",
+      "food processing machinery",
+      "stainless steel fabrication Kathmandu",
+      "turnkey engineering contractor Nepal",
+      "ISO 9001 certified engineering company",
+    ],
+    authors: [{ name: companyName, url: "https://jpengineering.com.np" }],
+    creator: companyName,
+    publisher: companyName,
+    formatDetection: {
+      email: false,
+      address: false,
+      telephone: false,
+    },
+    alternates: {
+      canonical: "/",
+    },
+    openGraph: {
+      type: "website",
+      locale: "en_US",
+      alternateLocale: ["ne_NP"],
+      url: "https://jpengineering.com.np",
+      siteName: companyName,
+      title,
+      description,
+      images: [
+        {
+          url: "/images/hero-machinery.jpg",
+          width: 1200,
+          height: 630,
+          alt: `${companyName} - Industrial Machinery and Turnkey Engineering Solutions`,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: ["/images/hero-machinery.jpg"],
+    },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        "max-video-preview": -1,
+        "max-image-preview": "large",
+        "max-snippet": -1,
+      },
+    },
+    icons: {
+      icon: "/favicon.ico",
+      shortcut: "/favicon.ico",
+      apple: "/assets/logo.png",
+    },
+    other: {
+      "geo.region": "NP-BA",
+      "geo.placename": "Kathmandu, Nepal",
+      "geo.position": "27.7172;85.3240",
+      ICBM: "27.7172, 85.3240",
+    },
+  };
 }
 
 export default async function RootLayout({
@@ -78,8 +150,79 @@ export default async function RootLayout({
     products = prodsRes.value;
   }
 
+  // Schema.org Organization & LocalBusiness Structured Data
+  const organizationSchema = {
+    "@context": "https://schema.org",
+    "@type": ["Organization", "LocalBusiness"],
+    "@id": "https://jpengineering.com.np/#organization",
+    name: siteSettings?.company_name || "JP Engineering & Construction Pvt. Ltd.",
+    alternateName: [
+      "JPEC",
+      "JP Engineering",
+      "JP Engineering Nepal",
+      "JP Engineering and Construction",
+    ],
+    url: "https://jpengineering.com.np",
+    logo: "https://jpengineering.com.np/assets/logo.png",
+    image: "https://jpengineering.com.np/images/hero-machinery.jpg",
+    description:
+      siteSettings?.company_description ||
+      "Leading manufacturer and turnkey engineering contractor in Nepal specializing in dairy processing, water treatment, cold storage, and stainless steel fabrication.",
+    foundingDate: siteSettings?.founding_year || "1998",
+    telephone: siteSettings?.primary_phone || "+977-01-5385552",
+    email: siteSettings?.primary_email || "info@jpec.com.np",
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: siteSettings?.address || "Kathmandu, Nepal",
+      addressLocality: "Kathmandu",
+      addressRegion: "Bagmati",
+      addressCountry: "NP",
+    },
+    geo: {
+      "@type": "GeoCoordinates",
+      latitude: 27.7172,
+      longitude: 85.324,
+    },
+    priceRange: "$$$",
+    openingHoursSpecification: {
+      "@type": "OpeningHoursSpecification",
+      dayOfWeek: [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+      ],
+      opens: "09:00",
+      closes: "18:00",
+    },
+    sameAs: [
+      siteSettings?.facebook_url,
+      siteSettings?.tiktok_url,
+      siteSettings?.youtube_url,
+    ].filter(Boolean),
+    hasCredential: [
+      {
+        "@type": "EducationalOccupationalCredential",
+        name: "ISO 9001:2015 Quality Management System Certification",
+        credentialCategory: "Quality Standard",
+        recognizedBy: {
+          "@type": "Organization",
+          name: "URS / UKAS Management Systems (0043) / IAF Multilateral Recognition Arrangement",
+        },
+      },
+    ],
+  };
+
   return (
     <html lang="en" className={`${poppins.variable} ${poppins.className}`}>
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
+        />
+      </head>
       <body className={`${poppins.className} flex flex-col min-h-screen text-gray-800 bg-white antialiased overflow-x-hidden w-full font-sans`}>
         <ConditionalShell siteSettings={siteSettings} categories={categories} industries={industries} products={products}>
           {children}
