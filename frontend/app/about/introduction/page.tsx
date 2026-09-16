@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import PageBanner from "@/components/PageBanner";
+import FaqSection from "@/components/FaqSection";
 import {
   getPublicSiteContent,
   getPublicSiteSettings,
@@ -238,6 +239,34 @@ export default function IntroductionPage() {
           )}
         </div>
       </section>
+
+      <FaqSection
+        badge="Company Overview FAQ"
+        title="About JP Engineering & Construction FAQs"
+        subtitle="Common questions about our history, manufacturing workshop, ISO credentials, and national engineering presence."
+        faqs={[
+          {
+            question: "When was JP Engineering & Construction established in Nepal?",
+            answer:
+              "JP Engineering & Construction was established in 1998 in Kathmandu and has grown over 25+ years into one of Nepal's leading industrial machinery fabricators and turnkey plant contractors.",
+          },
+          {
+            question: "What is your primary manufacturing workshop infrastructure?",
+            answer:
+              "Our fabrication facility in Kathmandu features hydraulic shearing machines, CNC sheet bending, automated TIG and arc welding stations, metal lathe machinery, and calibrated hydrostatic pressure testing rigs.",
+          },
+          {
+            question: "What credentials and quality certifications does the company hold?",
+            answer:
+              "We hold ISO 9001:2015 Quality Management System Certification (Certificate No: 129594/A/0001/UK/En), accredited by URS and UKAS Management Systems (0043) with IAF recognition.",
+          },
+          {
+            question: "Which geographic areas of Nepal do you support?",
+            answer:
+              "We deliver and commission machinery across all 7 provinces of Nepal, including key industrial belts such as Kathmandu Valley, Birgunj, Chitwan, Pokhara, Butwal, Biratnagar, and Nepalgunj.",
+          },
+        ]}
+      />
     </>
   );
 }

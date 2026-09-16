@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useMemo } from "react";
 import PageBanner from "@/components/PageBanner";
+import FaqSection from "@/components/FaqSection";
 import { getPublicClients, getPublicSiteSettings, getMediaUrl, PublicClient, PublicSiteSettings } from "@/lib/public-api";
 
 // Authentic client directory extracted directly from https://jpec.com.np/pages/our-client
@@ -411,6 +412,34 @@ export default function OurClientsPage() {
           )}
         </div>
       </section>
+
+      <FaqSection
+        badge="Client Experience FAQ"
+        title="Our Clients & Project Installations FAQ"
+        subtitle="Common questions regarding reference sites, institutional clients, and post-installation service across Nepal."
+        faqs={[
+          {
+            question: "Which major national organizations are clients of JP Engineering?",
+            answer:
+              "Our clients include leading government and healthcare bodies such as Nepal Cancer Hospital, National Maize Research Center, Save Life Hospital, along with prominent commercial dairy processors and mineral water plants across Nepal.",
+          },
+          {
+            question: "Can prospective clients visit reference installations in Nepal?",
+            answer:
+              "Yes. With prior coordination, we organize client visits to operational dairy, water treatment, and cold storage facilities so you can inspect machine build quality and talk with plant operating managers.",
+          },
+          {
+            question: "What technical handover documentation is provided to clients?",
+            answer:
+              "We provide complete engineering documentation including as-built CAD drawings, P&ID schematics, electrical circuit diagrams, equipment test certificates, and operation manuals.",
+          },
+          {
+            question: "What ongoing maintenance support is guaranteed after commissioning?",
+            answer:
+              "We support all our client installations with 24/7 technical hotline access, emergency breakdown dispatch within 24 hours, scheduled quarterly servicing, and genuine replacement spare parts.",
+          },
+        ]}
+      />
     </>
   );
 }

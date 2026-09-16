@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import PageBanner from "@/components/PageBanner";
+import FaqSection from "@/components/FaqSection";
 import { getPublicTeam, getMediaUrl, PublicTeamMember } from "@/lib/public-api";
 
 export default function OurTeamPage() {
@@ -121,6 +122,34 @@ export default function OurTeamPage() {
           )}
         </div>
       </section>
+
+      <FaqSection
+        badge="Engineering Team FAQ"
+        title="Our Technical Specialists & Project Leads FAQ"
+        subtitle="Common questions about engineering qualifications, on-site safety, CAD design, and operational operator training."
+        faqs={[
+          {
+            question: "What technical qualifications does the engineering team hold?",
+            answer:
+              "Our engineering team includes certified mechanical engineers, electrical and SCADA automation specialists, ASME-qualified TIG welders, and certified refrigeration technicians with extensive Nepal project experience.",
+          },
+          {
+            question: "How do your engineers handle on-site installation and factory safety?",
+            answer:
+              "Our project managers adhere to strict industrial safety protocols, managing structural foundation alignment, sanitary utility piping, pressure vessel testing, and 3-phase electrical integration with certified equipment.",
+          },
+          {
+            question: "Can your engineering team provide custom CAD layouts before fabrication?",
+            answer:
+              "Yes. Every proposal includes 2D architectural footprints, 3D equipment models, and Process & Instrumentation Diagrams (P&ID) for client review and engineering sign-off before manufacturing begins.",
+          },
+          {
+            question: "Is operator training provided during machine commissioning?",
+            answer:
+              "Yes. During on-site commissioning, our specialists provide comprehensive training to factory operating staff covering daily operations, CIP sanitation cycles, routine lubrication, and safety troubleshooting.",
+          },
+        ]}
+      />
     </>
   );
 }

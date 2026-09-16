@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import PageBanner from "@/components/PageBanner";
+import FaqSection from "@/components/FaqSection";
 import {
   getPublicSiteSettings,
   getPublicCategories,
@@ -313,6 +314,34 @@ export default function CompanyProfilePage() {
           )}
         </div>
       </section>
+
+      <FaqSection
+        badge="Credentials & Profile FAQ"
+        title="Corporate Profile & Capabilities FAQ"
+        subtitle="Key questions regarding registration, scope of ISO certification, project track record, and AMC maintenance contracts."
+        faqs={[
+          {
+            question: "What is the corporate structure and legal registration of JP Engineering?",
+            answer:
+              "JP Engineering & Construction Pvt. Ltd. is a legally registered private limited engineering corporation under the Company Registrar's Office of Nepal, operating continuously since 1998.",
+          },
+          {
+            question: "What is the certified scope under ISO 9001:2015?",
+            answer:
+              "Our official certified scope covers the Manufacturing and Assembly of Reverse Osmosis Plants, Dairy Equipment (Pasteurizers, Homogenizers, Chilling Vats, Road Milk Tankers), Cold Storage Equipment, Solar Energy & Heat Pump Systems, and Steel Fabrication.",
+          },
+          {
+            question: "How many industrial installations has JP Engineering completed?",
+            answer:
+              "Over our 25+ year journey, we have successfully delivered more than 500 industrial installations and turnkey plants for over 300 private, cooperative, and government clients across Nepal.",
+          },
+          {
+            question: "Do you offer Annual Maintenance Contracts (AMC) for completed plants?",
+            answer:
+              "Yes. We offer tailored preventive and breakdown AMC packages including scheduled quarterly visits, thermal diagnostics, valve and pump servicing, and priority emergency technician dispatch.",
+          },
+        ]}
+      />
     </>
   );
 }

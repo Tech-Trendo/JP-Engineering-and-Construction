@@ -6,6 +6,7 @@ import Link from "next/link";
 import PageBanner from "@/components/PageBanner";
 import ProductGallery from "@/components/ProductGallery";
 import ContactForm from "@/components/ContactForm";
+import FaqSection from "@/components/FaqSection";
 import {
   getPublicProductDetail,
   getPublicSiteSettings,
@@ -544,6 +545,38 @@ export default function ProductDetailPage() {
           </div>
         </div>
       </section>
+
+      <FaqSection
+        badge="Machinery FAQ"
+        title={`${product.name} — Technical & Operational FAQs`}
+        subtitle="Common engineering questions regarding throughput customization, food contact metallurgy, and field warranty."
+        faqs={[
+          {
+            question: `Can ${product.name} be customized for our specific production capacity?`,
+            answer: `Yes. We customize ${product.name} to match your required hourly throughput, facility space dimensions, and plant electrical/water utility ratings across Nepal.`,
+          },
+          {
+            question: "What metallurgy and sanitary standards are followed during fabrication?",
+            answer:
+              "All product contact surfaces are manufactured from certified AISI 304 or AISI 316L stainless steel, mirror-polished with food-grade sanitary gaskets and automated Clean-In-Place (CIP) compatibility.",
+          },
+          {
+            question: "Is PLC automation and telemetry logging supported on this machinery?",
+            answer:
+              "Yes. We configure industrial Siemens or Schneider PLCs with intuitive touchscreen HMIs for recipe control, automated process temperature logging, and safety interlocking.",
+          },
+          {
+            question: "What is included in the on-site commissioning and installation package?",
+            answer:
+              "Our engineering team provides on-site positioning, utility pipe fitting, hydrostatic pressure testing, electrical wiring, and hands-on operational training for your factory staff.",
+          },
+          {
+            question: "What warranty and spare parts availability do you provide in Nepal?",
+            answer:
+              "Every unit includes a 1-year comprehensive fabrication and drive warranty, backed by stocked spare parts at our central Kathmandu warehouse and mobile field support across Nepal.",
+          },
+        ]}
+      />
     </>
   );
 }
