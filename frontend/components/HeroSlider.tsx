@@ -23,7 +23,6 @@ interface SlideItem {
 
 export default function HeroSlider({ siteSettings, slides: dynamicSlides = [] }: HeroSliderProps) {
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [isPaused, setIsPaused] = useState(false);
 
   const mainHeroImage =
     (siteSettings && getMediaUrl(siteSettings.hero_image_url || siteSettings.hero_image)) ||
@@ -64,20 +63,18 @@ export default function HeroSlider({ siteSettings, slides: dynamicSlides = [] }:
     setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
   }, [slides.length]);
 
-  // Autoplay timer (5 seconds)
+  // Continuous autoplay timer (5 seconds) - keeps sliding even when mouse is hovered
   useEffect(() => {
-    if (isPaused) return;
+    if (slides.length <= 1) return;
     const timer = setInterval(() => {
       handleNext();
     }, 5000);
     return () => clearInterval(timer);
-  }, [isPaused, handleNext]);
+  }, [handleNext, slides.length]);
 
   return (
     <section
       className="relative min-h-[540px] md:min-h-[620px] flex items-center bg-[#071324] overflow-hidden select-none"
-      onMouseEnter={() => setIsPaused(true)}
-      onMouseLeave={() => setIsPaused(false)}
     >
       {/* Background Image Carousel Slides */}
       {slides.map((slide, index) => {
