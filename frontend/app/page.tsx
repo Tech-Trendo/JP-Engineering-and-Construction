@@ -471,7 +471,7 @@ export default function HomePage() {
                     <img
                       src={getMediaUrl(client.logo)}
                       alt={client.name}
-                      className="max-h-12 max-w-full object-contain filter grayscale group-hover:grayscale-0 transition-all duration-300"
+                      className="max-h-12 max-w-full object-contain transition-transform duration-300 group-hover:scale-105"
                     />
                   ) : (
                     <span className="text-xs font-bold text-[#1b3a6e] line-clamp-2">{client.name}</span>
@@ -520,7 +520,7 @@ export default function HomePage() {
                     <img
                       src={getMediaUrl(partner.logo)}
                       alt={partner.name}
-                      className="max-h-12 max-w-full object-contain filter grayscale group-hover:grayscale-0 transition-all duration-300"
+                      className="max-h-12 max-w-full object-contain transition-transform duration-300 group-hover:scale-105"
                     />
                   ) : (
                     <span className="text-xs font-bold text-[#1b3a6e] line-clamp-2">{partner.name}</span>

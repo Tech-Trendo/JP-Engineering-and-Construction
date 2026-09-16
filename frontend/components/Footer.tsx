@@ -278,7 +278,7 @@ export default function Footer({
             &copy; {new Date().getFullYear()} {companyName}. All rights reserved.
           </div>
           <div className="flex items-center gap-1.5 text-xs text-gray-400">
-            <span>Made by</span>
+            <span>Designed and developed by</span>
             <span className="font-semibold text-white tracking-wide hover:text-[#c8391a] transition-colors">
               Tech Trendo
             </span>
