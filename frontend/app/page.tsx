@@ -461,20 +461,20 @@ export default function HomePage() {
               </Link>
             </div>
 
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4 items-center">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4 sm:gap-5 items-center">
               {clients.map((client) => (
                 <div
                   key={client.id}
-                  className="bg-white border border-gray-200 rounded-xl p-4 h-24 flex flex-col items-center justify-center text-center shadow-xs hover:border-[#1b3a6e] hover:shadow-md transition-all group"
+                  className="bg-white border border-gray-200 rounded-xl p-3 sm:p-4 h-28 sm:h-32 md:h-36 flex flex-col items-center justify-center text-center shadow-xs hover:border-[#1b3a6e] hover:shadow-md transition-all group"
                 >
                   {client.logo ? (
                     <img
                       src={getMediaUrl(client.logo)}
                       alt={client.name}
-                      className="max-h-12 max-w-full object-contain transition-transform duration-300 group-hover:scale-105"
+                      className="max-h-20 sm:max-h-24 max-w-[90%] w-auto object-contain transition-transform duration-300 group-hover:scale-105"
                     />
                   ) : (
-                    <span className="text-xs font-bold text-[#1b3a6e] line-clamp-2">{client.name}</span>
+                    <span className="text-xs sm:text-sm font-bold text-[#1b3a6e] line-clamp-2 px-1">{client.name}</span>
                   )}
                 </div>
               ))}
@@ -510,20 +510,20 @@ export default function HomePage() {
               </Link>
             </div>
 
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4 items-center">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4 sm:gap-5 items-center">
               {partners.map((partner) => (
                 <div
                   key={partner.id}
-                  className="bg-white border border-gray-200 rounded-xl p-4 h-24 flex flex-col items-center justify-center text-center shadow-xs hover:border-[#1b3a6e] hover:shadow-md transition-all group"
+                  className="bg-white border border-gray-200 rounded-xl p-3 sm:p-4 h-28 sm:h-32 md:h-36 flex flex-col items-center justify-center text-center shadow-xs hover:border-[#1b3a6e] hover:shadow-md transition-all group"
                 >
                   {partner.logo ? (
                     <img
                       src={getMediaUrl(partner.logo)}
                       alt={partner.name}
-                      className="max-h-12 max-w-full object-contain transition-transform duration-300 group-hover:scale-105"
+                      className="max-h-20 sm:max-h-24 max-w-[90%] w-auto object-contain transition-transform duration-300 group-hover:scale-105"
                     />
                   ) : (
-                    <span className="text-xs font-bold text-[#1b3a6e] line-clamp-2">{partner.name}</span>
+                    <span className="text-xs sm:text-sm font-bold text-[#1b3a6e] line-clamp-2 px-1">{partner.name}</span>
                   )}
                 </div>
               ))}
