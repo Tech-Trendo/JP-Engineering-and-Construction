@@ -9,7 +9,9 @@ export default function AdminLayout({
 }>) {
   return (
     <AdminAuthProvider>
-      <AdminShell>{children}</AdminShell>
+      <div style={{ fontFamily: "var(--font-poppins, 'Poppins', sans-serif)" }}>
+        <AdminShell>{children}</AdminShell>
+      </div>
     </AdminAuthProvider>
   );
 }

@@ -35,7 +35,10 @@ export default function AdminLoginPage() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-slate-50 px-4 py-12 sm:px-6 lg:px-8 relative overflow-hidden">
+    <div
+      className="flex min-h-screen items-center justify-center bg-slate-50 px-4 py-12 sm:px-6 lg:px-8 relative overflow-hidden"
+      style={{ fontFamily: "var(--font-poppins, 'Poppins', sans-serif)" }}
+    >
       {/* Background decorative brand elements */}
       <div className="absolute top-0 inset-x-0 h-72 bg-gradient-to-b from-[#0f2347] to-[#1b3a6e] pointer-events-none" />
       <div className="absolute -top-24 -right-24 w-96 h-96 rounded-full bg-white/5 blur-2xl pointer-events-none" />

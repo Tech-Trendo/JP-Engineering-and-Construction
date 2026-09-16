@@ -181,7 +181,10 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <div className="min-h-screen flex flex-col md:flex-row bg-[#f8fafc] text-slate-800 font-sans antialiased">
+    <div
+      className="min-h-screen flex flex-col md:flex-row bg-[#f8fafc] text-slate-800 font-sans antialiased"
+      style={{ fontFamily: "var(--font-poppins, 'Poppins', sans-serif)" }}
+    >
       {/* Mobile Top Bar */}
       <div className="md:hidden flex items-center justify-between px-4 py-3 bg-[#0f2347] border-b border-slate-700 text-white">
         <div className="flex items-center gap-2.5">
