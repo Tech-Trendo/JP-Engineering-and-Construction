@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useState, useRef, useEffect } from "react";
 import { getMediaUrl, type PublicSiteSettings, type PublicCategory, type PublicIndustry, type PublicProductListItem } from "@/lib/public-api";
@@ -226,10 +227,13 @@ export default function Header({
           {/* Logo & Brand Identity */}
           <div className="flex items-center min-w-0 mr-2 xl:mr-4 shrink">
             <Link href="/" className="flex items-center gap-2.5 sm:gap-3 min-w-0 group py-1">
-              <div className="w-[38px] h-[38px] sm:w-[46px] sm:h-[46px] rounded-lg flex items-center justify-center shrink-0 overflow-hidden bg-white shadow-xs border border-gray-200 p-0.5">
-                <img
+              <div className="w-[38px] h-[38px] sm:w-[46px] sm:h-[46px] rounded-lg flex items-center justify-center shrink-0 overflow-hidden bg-white shadow-xs border border-gray-200 p-0.5 relative">
+                <Image
                   src={getMediaUrl(siteSettings?.logo_url) || "/assets/logo.webp"}
                   alt={companyName}
+                  width={46}
+                  height={46}
+                  priority
                   className="w-full h-full object-contain"
                 />
               </div>

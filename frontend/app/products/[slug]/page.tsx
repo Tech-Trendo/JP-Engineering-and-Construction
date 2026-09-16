@@ -225,9 +225,9 @@ export default function ProductDetailPage() {
                 </div>
               )}
 
-              <h1 className="text-[#1b3a6e] text-2xl md:text-3xl font-black leading-tight mb-4">
+              <h2 className="text-[#1b3a6e] text-2xl md:text-3xl font-black leading-tight mb-4">
                 {product.name}
-              </h1>
+              </h2>
 
               <p className="text-gray-600 text-sm md:text-base leading-relaxed mb-6">
                 {product.short_description}
@@ -409,6 +409,46 @@ export default function ProductDetailPage() {
                     <h4 className="font-bold text-sm text-[#1b3a6e] mt-2 mb-1">{s.title}</h4>
                     <p className="text-xs text-gray-600 leading-relaxed">{s.desc}</p>
                   </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Industries Served Cross-Linking (Internal Linking) */}
+            <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-2xs">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+                <div>
+                  <span className="text-[#c8391a] text-xs font-bold uppercase tracking-widest block">
+                    Sector Applications
+                  </span>
+                  <h3 className="text-base sm:text-lg font-bold text-[#1b3a6e]">
+                    Turnkey Industrial Sectors Served by this Equipment
+                  </h3>
+                </div>
+                <Link
+                  href="/industries"
+                  className="text-xs font-bold text-[#1b3a6e] hover:text-[#c8391a] transition-colors shrink-0"
+                >
+                  View All Industrial Sectors →
+                </Link>
+              </div>
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2.5">
+                {[
+                  { name: "Dairy & Milk", slug: "dairy-industry" },
+                  { name: "Beverages & Water", slug: "beverage-water-industry" },
+                  { name: "Cold Storage", slug: "cold-storage-solutions" },
+                  { name: "Food Processing", slug: "food-processing-industry" },
+                  { name: "Pharmaceuticals", slug: "pharmaceutical-industry" },
+                  { name: "Meat & Poultry", slug: "meat-processing-industry" },
+                ].map((ind) => (
+                  <Link
+                    key={ind.slug}
+                    href={`/industries/${ind.slug}`}
+                    className="p-3 bg-slate-50 hover:bg-[#1b3a6e]/5 border border-gray-200 hover:border-[#1b3a6e] rounded-lg text-center transition-all group"
+                  >
+                    <span className="text-xs font-semibold text-gray-700 group-hover:text-[#1b3a6e] block line-clamp-1">
+                      {ind.name}
+                    </span>
+                  </Link>
                 ))}
               </div>
             </div>

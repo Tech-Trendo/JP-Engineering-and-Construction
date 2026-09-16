@@ -14,7 +14,12 @@ export default function GlobalError({
   }, [error]);
 
   return (
-    <div className="min-h-[55vh] flex flex-col items-center justify-center p-8 text-center bg-gray-50">
+    <>
+      <head>
+        <title>Server Error | JP Engineering &amp; Construction</title>
+        <meta name="robots" content="noindex, nofollow" />
+      </head>
+      <div className="min-h-[55vh] flex flex-col items-center justify-center p-8 text-center bg-gray-50">
       <div className="w-16 h-16 bg-red-100 text-red-600 rounded-full flex items-center justify-center mb-4 text-2xl font-bold shadow-sm">
         !
       </div>
@@ -31,5 +36,6 @@ export default function GlobalError({
         Retry Connection
       </button>
     </div>
+    </>
   );
 }

@@ -2,7 +2,12 @@ import Link from "next/link";
 
 export default function NotFound() {
   return (
-    <div className="min-h-[60vh] flex items-center justify-center bg-[#f5f6f8]">
+    <>
+      <head>
+        <title>404: Page Not Found | JP Engineering &amp; Construction</title>
+        <meta name="robots" content="noindex, nofollow" />
+      </head>
+      <div className="min-h-[60vh] flex items-center justify-center bg-[#f5f6f8]">
       <div className="text-center px-4">
         <div className="text-[120px] font-bold text-[#1b3a6e] leading-none mb-4 opacity-10">404</div>
         <div className="-mt-16 relative z-10">
@@ -23,9 +28,10 @@ export default function NotFound() {
             >
               Contact Us
             </Link>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }

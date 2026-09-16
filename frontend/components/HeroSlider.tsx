@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { PublicSiteSettings, PublicHeroSlide, getMediaUrl } from "@/lib/public-api";
 
 interface HeroSliderProps {
@@ -86,10 +87,14 @@ export default function HeroSlider({ siteSettings, slides: dynamicSlides = [] }:
               isActive ? "opacity-100 z-10" : "opacity-0 z-0 pointer-events-none"
             }`}
           >
-            {/* Real Background Image */}
-            <img
+            {/* Real Background Image with LCP priority on first slide */}
+            <Image
               src={slide.image}
               alt={slide.heading}
+              fill
+              priority={index === 0}
+              loading={index === 0 ? "eager" : "lazy"}
+              sizes="100vw"
               className={`w-full h-full object-cover object-center transform transition-transform duration-7000 ease-out ${
                 isActive ? "scale-105" : "scale-100"
               }`}

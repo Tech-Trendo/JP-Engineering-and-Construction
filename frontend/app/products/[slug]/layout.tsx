@@ -109,21 +109,19 @@ export default async function ProductDetailLayout({
         "@context": "https://schema.org",
         "@type": "Product",
         name: product.name,
-        image: fullImageUrl,
+        image: {
+          "@type": "ImageObject",
+          url: fullImageUrl,
+          contentUrl: fullImageUrl,
+          caption: product.name,
+        },
         description: product.short_description || product.name,
         sku: `JPEC-${product.id}`,
         mpn: `JPEC-${product.slug}`,
         brand: {
           "@type": "Brand",
           name: "JP Engineering & Construction",
-        },
-        offers: {
-          "@type": "AggregateOffer",
-          priceCurrency: "NPR",
-          lowPrice: "100000",
-          price: "Contact for Quote",
-          availability: "https://schema.org/InStock",
-          url: `https://jpengineering.com.np/products/${slug}`,
+          logo: "https://jpengineering.com.np/assets/logo.png",
         },
         additionalProperty: (product.specifications || []).map((spec) => ({
           "@type": "PropertyValue",

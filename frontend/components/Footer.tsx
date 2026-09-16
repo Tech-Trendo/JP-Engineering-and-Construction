@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { getMediaUrl, type PublicSiteSettings, type PublicCategory, type PublicIndustry } from "@/lib/public-api";
 
 export default function Footer({
@@ -57,10 +58,13 @@ export default function Footer({
           <div className="lg:col-span-1">
             <div className="flex items-center gap-3 mb-4">
               {/* White background card for JP engineering logo */}
-              <div className="w-[48px] h-[48px] rounded-lg flex items-center justify-center shrink-0 overflow-hidden bg-white p-1 border border-white/20 shadow-md">
-                <img
+              <div className="w-[48px] h-[48px] rounded-lg flex items-center justify-center shrink-0 overflow-hidden bg-white p-1 border border-white/20 shadow-md relative">
+                <Image
                   src={getMediaUrl(siteSettings?.logo_url) || "/assets/logo.webp"}
                   alt={companyName}
+                  width={48}
+                  height={48}
+                  loading="lazy"
                   className="w-full h-full object-contain"
                 />
               </div>

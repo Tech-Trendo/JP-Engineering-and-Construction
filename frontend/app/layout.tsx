@@ -71,6 +71,11 @@ export async function generateMetadata(): Promise<Metadata> {
     },
     alternates: {
       canonical: "/",
+      languages: {
+        "en-US": "https://jpengineering.com.np",
+        "ne-NP": "https://jpengineering.com.np",
+        "x-default": "https://jpengineering.com.np",
+      },
     },
     openGraph: {
       type: "website",
@@ -215,12 +220,31 @@ export default async function RootLayout({
     ],
   };
 
+  const websiteSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "@id": "https://jpengineering.com.np/#website",
+    url: "https://jpengineering.com.np",
+    name: siteSettings?.company_name || "JP Engineering & Construction Pvt. Ltd.",
+    description:
+      siteSettings?.company_description ||
+      "Industrial machinery manufacturer and turnkey engineering contractor in Nepal.",
+    publisher: {
+      "@id": "https://jpengineering.com.np/#organization",
+    },
+    inLanguage: ["en-US", "ne-NP"],
+  };
+
   return (
     <html lang="en" className={`${poppins.variable} ${poppins.className}`}>
       <head>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
         />
       </head>
       <body className={`${poppins.className} flex flex-col min-h-screen text-gray-800 bg-white antialiased overflow-x-hidden w-full font-sans`}>

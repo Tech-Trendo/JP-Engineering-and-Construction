@@ -3,6 +3,7 @@
 import { useState, useEffect, Suspense } from "react";
 import PageBanner from "@/components/PageBanner";
 import ContactForm from "@/components/ContactForm";
+import FaqSection from "@/components/FaqSection";
 import { getPublicSiteSettings, PublicSiteSettings } from "@/lib/public-api";
 
 export default function ContactPage() {
@@ -214,6 +215,34 @@ export default function ContactPage() {
           </div>
         </div>
       </section>
+
+      <FaqSection
+        badge="Inquiry & Support FAQ"
+        title="Frequently Asked Consultation Questions"
+        subtitle="Common questions regarding project quotation, on-site feasibility visits, fabrication, and after-sales support."
+        faqs={[
+          {
+            question: "How quickly can I receive a turnkey machinery quotation?",
+            answer:
+              "Our mechanical engineering team reviews your throughput capacity, facility dimensions, and process requirements to prepare a detailed technical specification and budget quotation within 24 to 48 hours.",
+          },
+          {
+            question: "Do you conduct on-site feasibility visits outside Kathmandu Valley?",
+            answer:
+              "Yes. Our senior field engineers regularly travel across Nepal—including Chitwan, Birgunj, Butwal, Pokhara, Nepalgunj, and Biratnagar—for site surveys, piping layouts, and civil foundation assessments.",
+          },
+          {
+            question: "Can machinery be custom-fabricated to fit our specific facility layout?",
+            answer:
+              "Absolutely. All stainless steel storage tanks, pasteurization skids, conveyor networks, and CIP units are custom-designed and fabricated in our workshop to match your ceiling heights and floor plan constraints.",
+          },
+          {
+            question: "What after-sales and spare parts support is available in Nepal?",
+            answer:
+              "We maintain an inventory of genuine spare parts (pumps, valves, seals, PLC cards) at our central warehouse and provide 24/7 technical field support and annual maintenance contracts (AMC) across Nepal.",
+          },
+        ]}
+      />
     </>
   );
 }
