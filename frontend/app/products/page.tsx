@@ -227,33 +227,6 @@ export default function ProductsPage() {
         badge="Machinery & Procurement FAQ"
         title="Industrial Machinery FAQs"
         subtitle="Key information regarding manufacturing standards, customization, procurement, and field commissioning in Nepal."
-        faqs={[
-          {
-            question: "What types of industrial machinery does JP Engineering manufacture in Nepal?",
-            answer:
-              "We manufacture and assemble complete processing equipment for dairy plants (pasteurizers, homogenizers, chilling vats, road tankers), water treatment facilities (commercial Reverse Osmosis, multi-grade filtration), cold storage infrastructure, food processing, and custom stainless steel vessels.",
-          },
-          {
-            question: "Can machinery capacity and footprint be customized to our factory layout?",
-            answer:
-              "Yes. Every machine skid, storage tank, and conveyor assembly is custom engineered to match your target production throughput, ceiling height, and floor space constraints across Nepal.",
-          },
-          {
-            question: "What food safety and steel metallurgy standards are maintained?",
-            answer:
-              "All product contact surfaces are fabricated from certified AISI 304 or AISI 316L stainless steel with sanitary TIG welding, mirror polishing (Ra < 0.8 µm), and full Clean-In-Place (CIP) compatibility.",
-          },
-          {
-            question: "Do you integrate imported components and automation hardware?",
-            answer:
-              "Yes. We partner with and integrate genuine global components including Siemens and Schneider PLCs, Danfoss refrigeration compressors, Grundfos pumps, and Festo pneumatics with local programming and maintenance support.",
-          },
-          {
-            question: "What is the typical fabrication and delivery timeline?",
-            answer:
-              "After engineering sign-off on CAD layouts, standard machinery units take 2 to 4 weeks, while comprehensive turnkey plants take 4 to 8 weeks including on-site pipe fitting and commissioning.",
-          },
-        ]}
       />
     </>
   );

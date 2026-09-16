@@ -39,6 +39,43 @@ FAQ_DATA = [
         "answer": "After engineering sign-off on CAD layouts, standard machinery units take 2 to 4 weeks, while comprehensive turnkey plants take 4 to 8 weeks including on-site pipe fitting and commissioning."
     },
 
+    # Product Detail Page FAQs (Technical & Operational)
+    {
+        "page": "product-detail",
+        "category": "Customization & Capacity",
+        "order": 1,
+        "question": "Can this industrial machinery be customized for our specific production capacity?",
+        "answer": "Yes. We custom engineer equipment to match your required hourly throughput, facility space dimensions, ceiling height, and plant electrical/water utility ratings across Nepal."
+    },
+    {
+        "page": "product-detail",
+        "category": "Metallurgy & Sanitation",
+        "order": 2,
+        "question": "What metallurgy and sanitary standards are followed during fabrication?",
+        "answer": "All product contact surfaces are manufactured from certified AISI 304 or AISI 316L stainless steel, mirror-polished (Ra < 0.8 µm) with food-grade sanitary gaskets and automated Clean-In-Place (CIP) compatibility."
+    },
+    {
+        "page": "product-detail",
+        "category": "Automation & Controls",
+        "order": 3,
+        "question": "Is PLC automation and telemetry logging supported on this machinery?",
+        "answer": "Yes. We configure industrial Siemens or Schneider PLCs with intuitive touchscreen HMIs for automated recipe control, process temperature logging, and safety interlocking."
+    },
+    {
+        "page": "product-detail",
+        "category": "Installation & Commissioning",
+        "order": 4,
+        "question": "What is included in the on-site commissioning and installation package?",
+        "answer": "Our engineering team provides on-site positioning, utility pipe fitting, hydrostatic pressure testing, electrical wiring, and hands-on operational training for your factory operating staff."
+    },
+    {
+        "page": "product-detail",
+        "category": "Warranty & Support",
+        "order": 5,
+        "question": "What warranty and spare parts availability do you provide in Nepal?",
+        "answer": "Every unit includes a 1-year comprehensive fabrication and drive warranty, backed by stocked spare parts at our central Kathmandu warehouse and mobile field support across Nepal."
+    },
+
     # Industries We Serve FAQs
     {
         "page": "industries",
@@ -67,6 +104,43 @@ FAQ_DATA = [
         "order": 4,
         "question": "How does JP Engineering ensure compliance with quality regulations?",
         "answer": "As an ISO 9001:2015 certified manufacturer (accredited by URS and UKAS 0043), our welding, pressure vessel fabrication, and sanitation standards comply with international sanitary engineering guidelines and Department of Food Technology and Quality Control (DFTQC) standards."
+    },
+
+    # Industry Detail Page FAQs (Sector Specific Engineering)
+    {
+        "page": "industry-detail",
+        "category": "Sanitation & Metallurgy",
+        "order": 1,
+        "question": "What sanitation and fabrication standards are applied to specialized industrial equipment?",
+        "answer": "All product-contact components are manufactured from certified AISI 304 or AISI 316L stainless steel with TIG-welded, mirror-polished finishes (Ra < 0.8 µm), fully compliant with automated Clean-In-Place (CIP) sanitation protocols."
+    },
+    {
+        "page": "industry-detail",
+        "category": "Turnkey Plant Execution",
+        "order": 2,
+        "question": "Can JP Engineering provide customized turnkey solutions for our industrial sector?",
+        "answer": "Yes. From initial plant layout drafting and throughput capacity sizing to stainless steel fabrication, utility piping, and on-site commissioning, we deliver complete turnkey installations tailored for commercial facilities across Nepal."
+    },
+    {
+        "page": "industry-detail",
+        "category": "Automation & Telemetry",
+        "order": 3,
+        "question": "What automation and PLC control architectures are supported?",
+        "answer": "We integrate Siemens and Schneider industrial PLCs with intuitive touchscreen HMIs, offering automated process temperature logging, emergency fail-safe interlocks, and remote telemetry monitoring."
+    },
+    {
+        "page": "industry-detail",
+        "category": "Commissioning & Training",
+        "order": 4,
+        "question": "Do you provide on-site installation, pipe fitting, and operator training in Nepal?",
+        "answer": "Our certified mechanical and electrical engineering team provides complete mechanical assembly, hydrostatic pressure testing, electrical wiring, and hands-on operational training for local factory operators."
+    },
+    {
+        "page": "industry-detail",
+        "category": "Warranty & AMC",
+        "order": 5,
+        "question": "What warranty and annual maintenance (AMC) coverage is provided?",
+        "answer": "All industrial machinery units come with a 1-year comprehensive fabrication and drive warranty, backed by genuine spare parts inventory and rapid-response mobile service technicians across Nepal."
     },
 
     # Contact Us FAQs

@@ -317,31 +317,10 @@ export default function DedicatedIndustryPage() {
           {/* Industry Technical FAQ Accordion (Visible + FAQPage JSON-LD) */}
           <div className="my-16">
             <FaqSection
+              pageKey="industry-detail"
               badge="Sector Engineering FAQ"
               title={`${industry.name} — Technical & Project FAQs`}
               subtitle={`Frequently asked engineering questions regarding machinery fabrication, sanitation, automation, and installation for ${industry.name}.`}
-              faqs={[
-                {
-                  question: `What sanitation and fabrication standards are applied to ${industry.name} equipment?`,
-                  answer: `All product-contact components are manufactured from certified AISI 304 or AISI 316L stainless steel with TIG-welded, mirror-polished finishes (Ra < 0.8 µm), fully compliant with automated Clean-In-Place (CIP) sanitation protocols.`,
-                },
-                {
-                  question: `Can JP Engineering provide customized turnkey solutions for ${industry.name}?`,
-                  answer: `Yes. From initial plant layout drafting and throughput capacity sizing to stainless steel fabrication, utility piping, and on-site commissioning, we deliver complete turnkey installations tailored for ${industry.name} across Nepal.`,
-                },
-                {
-                  question: `What automation and PLC control architectures are supported?`,
-                  answer: `We integrate Siemens and Schneider industrial PLCs with intuitive touchscreen HMIs, offering automated process temperature logging, emergency fail-safe interlocks, and remote telemetry monitoring.`,
-                },
-                {
-                  question: `Do you provide on-site installation, pipe fitting, and operator training in Nepal?`,
-                  answer: `Our certified mechanical and electrical engineering team provides complete mechanical assembly, hydrostatic pressure testing, electrical wiring, and hands-on operational training for local factory operators.`,
-                },
-                {
-                  question: `What warranty and annual maintenance (AMC) coverage is provided?`,
-                  answer: `All industrial machinery units come with a 1-year comprehensive fabrication and drive warranty, backed by genuine spare parts inventory and rapid-response mobile service technicians across Nepal.`,
-                },
-              ]}
             />
           </div>
 

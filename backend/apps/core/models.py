@@ -79,7 +79,9 @@ class SiteContent(TimeStampedModel):
 FAQ_PAGE_CHOICES = [
     ('all', 'All Pages / Global'),
     ('products', 'Products Page & Catalog'),
+    ('product-detail', 'Product Detail Pages'),
     ('industries', 'Industries We Serve'),
+    ('industry-detail', 'Industry Detail Pages'),
     ('contact', 'Contact Us'),
     ('introduction', 'About Us - Introduction'),
     ('company-profile', 'About Us - Company Profile'),

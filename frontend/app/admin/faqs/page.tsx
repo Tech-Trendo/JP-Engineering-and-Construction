@@ -31,8 +31,10 @@ const emptyForm: FaqFormData = {
 
 const PAGE_OPTIONS = [
   { value: "all", label: "All Pages / Global" },
-  { value: "products", label: "Products Page & Catalog" },
-  { value: "industries", label: "Industries We Serve" },
+  { value: "products", label: "Products Catalog" },
+  { value: "product-detail", label: "Product Detail (Machines)" },
+  { value: "industries", label: "Industries Main" },
+  { value: "industry-detail", label: "Industry Detail (Sectors)" },
   { value: "contact", label: "Contact Us" },
   { value: "introduction", label: "About Us - Introduction" },
   { value: "company-profile", label: "About Us - Company Profile" },

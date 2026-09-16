@@ -214,28 +214,6 @@ export default function IndustriesPage() {
         badge="Industrial Sectors FAQ"
         title="Turnkey Industrial Sectors FAQ"
         subtitle="Technical insights into plant engineering, multidisciplinary contracting, and commissioning across Nepal."
-        faqs={[
-          {
-            question: "Which key industrial sectors does JP Engineering specialize in?",
-            answer:
-              "We engineer complete turnkey plants and machinery for 6 major sectors in Nepal: Dairy & Milk Processing, Beverages & Mineral Water Bottling, Cold Chain Storage & Blast Freezing, Food & Snack Processing, Pharmaceuticals, and Meat & Poultry Processing.",
-          },
-          {
-            question: "What does 'Turnkey Industrial Execution' include?",
-            answer:
-              "Our turnkey service encompasses initial site surveys, architectural and P&ID layout drafting, stainless steel tank and skid fabrication, utility piping (steam, glycol, compressed air), electrical panel wiring, on-site commissioning, and operator certification.",
-          },
-          {
-            question: "Can you retrofit or expand an existing processing facility in Nepal?",
-            answer:
-              "Yes. We frequently upgrade existing facilities by expanding pasteurization capacity, converting manual washing to automated CIP, installing energy-saving heat pumps, or automating manual processing lines with Siemens PLCs.",
-          },
-          {
-            question: "How does JP Engineering ensure compliance with quality regulations?",
-            answer:
-              "As an ISO 9001:2015 certified manufacturer (accredited by URS and UKAS 0043), our welding, pressure vessel fabrication, and sanitation standards comply with international sanitary engineering guidelines and Department of Food Technology and Quality Control (DFTQC) standards.",
-          },
-        ]}
       />
     </>
   );

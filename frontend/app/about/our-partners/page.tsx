@@ -145,28 +145,6 @@ export default function OurPartnersPage() {
         badge="Collaboration FAQ"
         title="Technology Partners & Global Sourcing FAQ"
         subtitle="Common questions regarding international equipment suppliers, original warranties, and component integration."
-        faqs={[
-          {
-            question: "Who are JP Engineering's global component and technology partners?",
-            answer:
-              "We collaborate with world-leading industrial component manufacturers including Siemens and Schneider Electric for automation, Danfoss and Bitzer for refrigeration compressors, and Grundfos for sanitary fluid pumps.",
-          },
-          {
-            question: "Are integrated international components backed by official warranties?",
-            answer:
-              "Yes. All international components integrated into our machinery skids are genuine, factory-certified, and covered by original manufacturer warranties alongside our local fabrication guarantee.",
-          },
-          {
-            question: "How do international equipment partnerships benefit factory owners in Nepal?",
-            answer:
-              "Clients receive European-grade energy efficiency and reliability paired with local mechanical engineering, immediate on-site maintenance, and domestic pricing.",
-          },
-          {
-            question: "Can new industrial equipment suppliers propose a partnership?",
-            answer:
-              "We welcome inquiries from verified global manufacturers of sanitary valves, high-pressure pumps, heat exchangers, and packaging automation. Contact our procurement desk via our contact form.",
-          },
-        ]}
       />
     </>
   );

@@ -33,6 +33,8 @@ export default function FaqSection({
   const [openIndex, setOpenIndex] = useState<number | null>(0);
   const [activeCategory, setActiveCategory] = useState<string>("All");
 
+  const [isLoading, setIsLoading] = useState<boolean>(Boolean(pageKey && (!initialFaqs || initialFaqs.length === 0)));
+
   // Load real site settings for contact numbers
   useEffect(() => {
     let isMounted = true;
@@ -46,20 +48,24 @@ export default function FaqSection({
     };
   }, []);
 
-  // Dynamically hydrate FAQs from live CMS API
+  // Dynamically load FAQs strictly from live backend database API
   useEffect(() => {
     let isMounted = true;
     if (pageKey) {
+      setIsLoading(true);
       getPublicFaqs(pageKey).then((data) => {
-        if (isMounted && Array.isArray(data) && data.length > 0) {
-          setFaqs(
-            data.map((item) => ({
-              id: item.id,
-              question: item.question,
-              answer: item.answer,
-              category: item.category || undefined,
-            }))
-          );
+        if (isMounted) {
+          if (Array.isArray(data) && data.length > 0) {
+            setFaqs(
+              data.map((item) => ({
+                id: item.id,
+                question: item.question,
+                answer: item.answer,
+                category: item.category || undefined,
+              }))
+            );
+          }
+          setIsLoading(false);
         }
       });
     }
@@ -67,7 +73,6 @@ export default function FaqSection({
       isMounted = false;
     };
   }, [pageKey]);
-
 
   // Keep state updated if initialFaqs changes and no pageKey was set
   useEffect(() => {
@@ -91,7 +96,7 @@ export default function FaqSection({
     return Array.from(set);
   }, [faqs]);
 
-  // Filter if user clicks a category pill (optional convenience when > 5 FAQs)
+  // Filter if user clicks a category pill
   const displayFaqs = React.useMemo(() => {
     if (activeCategory === "All") return faqs;
     return faqs.filter((f) => f.category === activeCategory);
@@ -110,9 +115,31 @@ export default function FaqSection({
     })),
   };
 
-  if (faqs.length === 0) {
+  if (isLoading) {
+    return (
+      <section className={`py-16 sm:py-20 lg:py-24 bg-gradient-to-b from-slate-50 via-white to-slate-50/50 border-t border-slate-200/80 ${className}`}>
+        <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="lg:grid lg:grid-cols-12 lg:gap-12 items-start">
+            <div className="lg:col-span-5 xl:col-span-4 space-y-4">
+              <div className="w-28 h-6 bg-red-100/60 rounded-full animate-pulse" />
+              <div className="w-3/4 h-8 bg-slate-200/70 rounded-lg animate-pulse" />
+              <div className="w-full h-16 bg-slate-100 rounded-lg animate-pulse" />
+            </div>
+            <div className="lg:col-span-7 xl:col-span-8 space-y-3.5 mt-8 lg:mt-0">
+              {[1, 2, 3, 4].map((i) => (
+                <div key={i} className="h-20 bg-white rounded-2xl border border-slate-200/70 animate-pulse" />
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  if (!isLoading && faqs.length === 0) {
     return null;
   }
+
 
   return (
     <section
