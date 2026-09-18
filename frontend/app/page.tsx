@@ -1,5 +1,6 @@
 "use client";
 
+// JP Engineering & Construction - Homepage
 import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import ProductCarousel from "@/components/ProductCarousel";
