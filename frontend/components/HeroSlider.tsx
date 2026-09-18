@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { PublicSiteSettings, PublicHeroSlide, getMediaUrl } from "@/lib/public-api";
 
 interface HeroSliderProps {
@@ -22,26 +21,36 @@ interface SlideItem {
   secondaryLink: string;
 }
 
+const DEFAULT_HERO_IMAGES = [
+  "/images/hero-machinery.webp",
+  "/images/hero-cold-storage.webp",
+  "/images/hero-water-dairy.webp",
+];
+
 export default function HeroSlider({ siteSettings, slides: dynamicSlides = [] }: HeroSliderProps) {
   const [currentSlide, setCurrentSlide] = useState(0);
 
   const mainHeroImage =
     (siteSettings && getMediaUrl(siteSettings.hero_image_url || siteSettings.hero_image)) ||
-    "/images/hero-machinery.webp";
+    DEFAULT_HERO_IMAGES[0];
 
   const slides: SlideItem[] =
     dynamicSlides.length > 0
-      ? dynamicSlides.map((s) => ({
-          id: s.id,
-          image: getMediaUrl(s.image_url || s.image) || mainHeroImage,
-          badge: s.badge || "",
-          heading: s.heading,
-          subtext: s.subtext,
-          primaryLabel: s.primary_cta_label || "Explore Machinery",
-          primaryLink: s.primary_cta_link || "/products",
-          secondaryLabel: s.secondary_cta_label || "Request a Quote",
-          secondaryLink: s.secondary_cta_link || "/contact-us#quote",
-        }))
+      ? dynamicSlides.map((s, idx) => {
+          const fallbackForIndex = DEFAULT_HERO_IMAGES[idx % DEFAULT_HERO_IMAGES.length];
+          const rawImg = getMediaUrl(s.image_url || s.image);
+          return {
+            id: s.id,
+            image: rawImg || fallbackForIndex || mainHeroImage,
+            badge: s.badge || "",
+            heading: s.heading,
+            subtext: s.subtext,
+            primaryLabel: s.primary_cta_label || "Explore Machinery",
+            primaryLink: s.primary_cta_link || "/products",
+            secondaryLabel: s.secondary_cta_label || "Request a Quote",
+            secondaryLink: s.secondary_cta_link || "/contact-us#quote",
+          };
+        })
       : [
           {
             id: 1,
@@ -80,6 +89,8 @@ export default function HeroSlider({ siteSettings, slides: dynamicSlides = [] }:
       {/* Background Image Carousel Slides */}
       {slides.map((slide, index) => {
         const isActive = index === currentSlide;
+        const defaultFallback = DEFAULT_HERO_IMAGES[index % DEFAULT_HERO_IMAGES.length];
+
         return (
           <div
             key={slide.id}
@@ -87,14 +98,18 @@ export default function HeroSlider({ siteSettings, slides: dynamicSlides = [] }:
               isActive ? "opacity-100 z-10" : "opacity-0 z-0 pointer-events-none"
             }`}
           >
-            {/* Real Background Image with LCP priority on first slide */}
-            <Image
+            {/* Real Background Image with high network priority on first slide and resilient fallback */}
+            <img
               src={slide.image}
               alt={slide.heading}
-              fill
-              priority={index === 0}
+              fetchPriority={index === 0 ? "high" : "auto"}
               loading={index === 0 ? "eager" : "lazy"}
-              sizes="100vw"
+              onError={(e) => {
+                const target = e.currentTarget;
+                if (!target.src.endsWith(defaultFallback)) {
+                  target.src = defaultFallback;
+                }
+              }}
               className={`w-full h-full object-cover object-center transform transition-transform duration-7000 ease-out ${
                 isActive ? "scale-105" : "scale-100"
               }`}
