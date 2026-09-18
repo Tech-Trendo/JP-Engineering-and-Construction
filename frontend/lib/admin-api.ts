@@ -462,4 +462,35 @@ export async function updateAdminCoverageSettings(
   );
 }
 
+export async function bulkToggleAdminDistricts(
+  token: string,
+  params: { district_ids?: number[]; province?: string; is_highlighted: boolean }
+): Promise<AdminDistrictCoverage[]> {
+  const data = await adminFetch<unknown>(
+    "admin/coverage-districts/bulk-toggle/",
+    {
+      method: "POST",
+      body: JSON.stringify(params),
+    },
+    token
+  );
+  return unwrapAdminResults<AdminDistrictCoverage>(data);
+}
+
+export async function setProvinceHighlights(
+  token: string,
+  province: string,
+  highlightedIds: number[]
+): Promise<AdminDistrictCoverage[]> {
+  const data = await adminFetch<unknown>(
+    "admin/coverage-districts/set-province-highlights/",
+    {
+      method: "POST",
+      body: JSON.stringify({ province, highlighted_ids: highlightedIds }),
+    },
+    token
+  );
+  return unwrapAdminResults<AdminDistrictCoverage>(data);
+}
+
 

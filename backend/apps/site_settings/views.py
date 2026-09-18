@@ -236,6 +236,32 @@ class AdminDistrictCoverageViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(districts, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
+    @action(detail=False, methods=['post'], url_path='set-province-highlights')
+    def set_province_highlights(self, request):
+        """
+        Set which districts are highlighted within a specific province.
+        Payload: { "province": "Bagmati", "highlighted_ids": [1, 2, 3] } or { "province": "Bagmati", "highlighted_names": ["Kathmandu", "Kaski"] }
+        """
+        province = request.data.get('province')
+        if not province:
+            return Response({"error": "province is required."}, status=status.HTTP_400_BAD_REQUEST)
+
+        highlighted_ids = request.data.get('highlighted_ids')
+        highlighted_names = request.data.get('highlighted_names')
+
+        # Reset all districts in this province to not highlighted
+        DistrictCoverage.objects.filter(province=province).update(is_highlighted=False)
+
+        # Mark selected as highlighted
+        if highlighted_ids is not None:
+            DistrictCoverage.objects.filter(province=province, id__in=highlighted_ids).update(is_highlighted=True)
+        elif highlighted_names is not None:
+            DistrictCoverage.objects.filter(province=province, district_name__in=highlighted_names).update(is_highlighted=True)
+
+        districts = DistrictCoverage.objects.all().order_by('-is_highlighted', 'order', 'district_name')
+        serializer = self.get_serializer(districts, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
 
 class AdminCoverageSettingsView(APIView):
     """

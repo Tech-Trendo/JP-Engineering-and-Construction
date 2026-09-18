@@ -10,6 +10,7 @@ import {
   deleteAdminDistrict,
   getAdminCoverageSettings,
   updateAdminCoverageSettings,
+  bulkToggleAdminDistricts,
   AdminDistrictCoverage,
   AdminCoverageSettings,
 } from "@/lib/admin-api";
@@ -106,6 +107,10 @@ export default function AdminCoveragePage() {
   // Map preview selected province
   const [previewProvince, setPreviewProvince] = useState<Province | null>(null);
   const [togglingId, setTogglingId] = useState<number | null>(null);
+
+  // Dynamic Province Highlighter Control
+  const [activeProvinceTab, setActiveProvinceTab] = useState<Province>("Bagmati");
+  const [isBulkToggling, setIsBulkToggling] = useState(false);
 
   const showToast = (msg: string) => {
     setSuccessToast(msg);
@@ -258,6 +263,29 @@ export default function AdminCoveragePage() {
       );
     } finally {
       setTogglingId(null);
+    }
+  };
+
+  // Bulk toggle all districts in a province
+  const handleBulkProvinceHighlight = async (provinceName: string, highlight: boolean) => {
+    if (!accessToken || isBulkToggling) return;
+    setIsBulkToggling(true);
+    try {
+      const updatedList = await bulkToggleAdminDistricts(accessToken, {
+        province: provinceName,
+        is_highlighted: highlight,
+      });
+      setDistricts(updatedList);
+      showToast(
+        `${highlight ? "Highlighted all" : "Cleared all highlights for"} districts in ${provinceName} Province.`
+      );
+    } catch (err: unknown) {
+      console.error("Bulk toggle error:", err);
+      setErrorMessage(
+        err instanceof Error ? err.message : "Failed to update province highlights."
+      );
+    } finally {
+      setIsBulkToggling(false);
     }
   };
 
@@ -656,6 +684,138 @@ export default function AdminCoveragePage() {
               </div>
             </>
           )}
+        </div>
+      </div>
+
+      {/* Dynamic Province & District Highlight Selector (Backend Synced) */}
+      <div className="bg-white rounded-2xl border border-gray-200/80 shadow-2xs p-5 sm:p-6 mb-8">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-gray-100 pb-4 mb-5">
+          <div>
+            <div className="flex items-center gap-2">
+              <span className="w-2.5 h-2.5 rounded-full bg-[#c8391a]" />
+              <h2 className="text-base font-bold text-[#1b3a6e]">
+                Dynamic Province &amp; District Highlighter
+              </h2>
+            </div>
+            <p className="text-xs text-gray-500 mt-1">
+              Select a province below, then check or uncheck districts to dynamically control what is highlighted on the live website. Every click updates the backend database instantly.
+            </p>
+          </div>
+
+          {/* Quick Province Action Buttons */}
+          <div className="flex items-center gap-2 shrink-0">
+            <button
+              type="button"
+              disabled={isBulkToggling}
+              onClick={() => handleBulkProvinceHighlight(activeProvinceTab, true)}
+              className="px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-red-50 text-[#c8391a] hover:bg-red-100 border border-red-200 transition-colors cursor-pointer disabled:opacity-50"
+            >
+              Highlight All in {activeProvinceTab}
+            </button>
+            <button
+              type="button"
+              disabled={isBulkToggling}
+              onClick={() => handleBulkProvinceHighlight(activeProvinceTab, false)}
+              className="px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-gray-100 hover:bg-gray-200 text-gray-600 transition-colors cursor-pointer disabled:opacity-50"
+            >
+              Clear All in {activeProvinceTab}
+            </button>
+          </div>
+        </div>
+
+        {/* Province Tabs */}
+        <div className="flex items-center gap-2 overflow-x-auto pb-3 mb-5 border-b border-gray-100">
+          {ALL_PROVINCES.map((pName) => {
+            const provinceDistricts = districts.filter((d) => d.province === pName);
+            const highlightedInProv = provinceDistricts.filter((d) => d.is_highlighted).length;
+            const isSelected = activeProvinceTab === pName;
+            const theme = PROVINCE_THEME_COLORS[pName];
+
+            return (
+              <button
+                key={pName}
+                type="button"
+                onClick={() => {
+                  setActiveProvinceTab(pName);
+                  setPreviewProvince(pName);
+                }}
+                className={`px-3.5 py-2 rounded-xl text-xs font-semibold flex items-center gap-2 whitespace-nowrap transition-all cursor-pointer ${
+                  isSelected
+                    ? "bg-[#1b3a6e] text-white shadow-xs"
+                    : "bg-gray-50 hover:bg-gray-100 text-gray-700 border border-gray-200"
+                }`}
+              >
+                <span
+                  className="w-2.5 h-2.5 rounded-xs border border-black/10 shrink-0"
+                  style={{ backgroundColor: theme.fill }}
+                />
+                <span>{pName}</span>
+                <span
+                  className={`text-[10px] px-1.5 py-0.5 rounded-full ${
+                    isSelected
+                      ? "bg-white/20 text-white font-bold"
+                      : highlightedInProv > 0
+                      ? "bg-red-100 text-[#c8391a] font-bold"
+                      : "bg-gray-200 text-gray-600"
+                  }`}
+                >
+                  {highlightedInProv}/{provinceDistricts.length}
+                </span>
+              </button>
+            );
+          })}
+        </div>
+
+        {/* District Checklist Grid for Active Province */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+          {districts
+            .filter((d) => d.province === activeProvinceTab)
+            .map((district) => {
+              const isToggling = togglingId === district.id;
+
+              return (
+                <div
+                  key={district.id}
+                  onClick={() => handleToggleHighlight(district)}
+                  className={`p-3.5 rounded-xl border transition-all cursor-pointer flex items-center justify-between gap-2 select-none ${
+                    district.is_highlighted
+                      ? "border-red-400 bg-red-50/40 shadow-2xs ring-1 ring-red-400"
+                      : "border-gray-200 bg-white hover:border-gray-300 hover:bg-gray-50"
+                  } ${isToggling ? "opacity-60" : ""}`}
+                >
+                  <div className="flex items-center gap-2.5 min-w-0">
+                    <input
+                      type="checkbox"
+                      checked={district.is_highlighted}
+                      onChange={() => {}} // handled by parent onClick
+                      className="w-4 h-4 rounded text-[#dc2626] focus:ring-0 cursor-pointer pointer-events-none"
+                    />
+                    <div className="min-w-0">
+                      <div
+                        className={`text-xs font-bold truncate ${
+                          district.is_highlighted ? "text-[#dc2626]" : "text-gray-800"
+                        }`}
+                      >
+                        {district.district_name}
+                      </div>
+                      <div className="text-[10px] text-gray-500 truncate">
+                        {district.projects_count || 1}+ Projects
+                      </div>
+                    </div>
+                  </div>
+
+                  <span
+                    className={`text-[10px] px-2 py-0.5 rounded font-bold uppercase tracking-wider shrink-0 ${
+                      district.is_highlighted
+                        ? "bg-red-600 text-white"
+                        : "bg-gray-100 text-gray-500"
+                    }`}
+                  >
+                    {district.is_highlighted ? "Active" : "Off"}
+                  </span>
+                </div>
+              );
+            })}
         </div>
       </div>
 
