@@ -92,22 +92,24 @@ export default function CoverageMapSection() {
   }, []);
 
   // Map district data for nepal-district-map
-  // Map district data for nepal-district-map dynamically from backend API
   const { districtMap, highlightedList } = useMemo(() => {
     const map: Record<string, PublicDistrictCoverage> = {};
+    const highlights: string[] = [];
 
     if (coverageData?.districts) {
       coverageData.districts.forEach((d) => {
         map[d.district_name] = d;
+        if (d.is_highlighted) {
+          highlights.push(d.district_name);
+        }
       });
     }
 
-    // Dynamic backend authority:
-    // If backend returns highlighted_districts, respect it completely
+    // If backend returned explicit highlighted_districts array
     const finalHighlights =
-      coverageData?.highlighted_districts !== undefined
-        ? coverageData.highlighted_districts
-        : coverageData?.districts?.filter((d) => d.is_highlighted).map((d) => d.district_name) || [];
+      highlights.length > 0
+        ? highlights
+        : coverageData?.highlighted_districts || [];
 
     return { districtMap: map, highlightedList: finalHighlights };
   }, [coverageData]);
@@ -121,50 +123,41 @@ export default function CoverageMapSection() {
       { color?: string; tooltip?: string; [key: string]: unknown }
     > = {};
 
-    // 1. Populate baseline for all mapped districts
+    // 1. Populate from districtMap if available
     Object.values(districtMap).forEach((d) => {
-      dataObj[d.district_name] = {
-        tooltip: `${d.district_name} (${d.province} Province)`,
-      };
+      if (d.is_highlighted) {
+        dataObj[d.district_name] = {
+          color: d.highlight_color || "#dc2626",
+          tooltip: `${d.district_name}: ${d.projects_count || 1}+ Turnkey Projects`,
+        };
+      } else {
+        // Do NOT set color; colorMode="province" will color it by its province!
+        dataObj[d.district_name] = {
+          tooltip: `${d.district_name} (${d.province} Province)`,
+        };
+      }
     });
 
-    // 2. Assign vibrant crimson highlight ONLY to districts in dynamic backend highlightedList
+    // 2. Guarantee that EVERY single district in highlightedList gets a bold, vibrant crimson highlight color
     highlightedList.forEach((districtName) => {
-      dataObj[districtName] = {
-        ...dataObj[districtName],
-        color: districtMap[districtName]?.highlight_color || "#dc2626",
-        tooltip: `${districtName}: Active Project Hub`,
-      };
+      if (!dataObj[districtName] || !dataObj[districtName].color) {
+        dataObj[districtName] = {
+          ...dataObj[districtName],
+          color: districtMap[districtName]?.highlight_color || "#dc2626",
+          tooltip: `${districtName}: Active Project Hub`,
+        };
+      }
     });
 
     return dataObj;
   }, [districtMap, highlightedList]);
 
   // The district currently displayed in the detail card (hovered or selected)
-  // is_highlighted dynamically derives from backend highlightedList
   const activeDistrictRecord = useMemo(() => {
     const targetName = hoveredDistrictName || selectedDistrictName;
     if (!targetName) return null;
-    const base = districtMap[targetName];
-    if (!base) {
-      return {
-        id: 0,
-        district_name: targetName,
-        province: "",
-        is_highlighted: highlightedList.includes(targetName),
-        projects_count: 0,
-        services_summary: "",
-        description: "",
-        highlight_color: "#dc2626",
-        order: 99,
-        is_active: true,
-      };
-    }
-    return {
-      ...base,
-      is_highlighted: highlightedList.includes(targetName),
-    };
-  }, [hoveredDistrictName, selectedDistrictName, districtMap, highlightedList]);
+    return districtMap[targetName] || null;
+  }, [hoveredDistrictName, selectedDistrictName, districtMap]);
 
   if (!loading && coverageData && coverageData.is_active === false) {
     return null;
