@@ -183,6 +183,13 @@ export interface AdminSiteSettings {
   iso_accreditation?: string;
   iso_issue_date?: string;
   iso_expiry_date?: string;
+  coverage_is_active?: boolean;
+  coverage_badge?: string;
+  coverage_heading?: string;
+  coverage_subtext?: string;
+  coverage_stat_districts?: string;
+  coverage_stat_projects?: string;
+  coverage_stat_provinces?: string;
   updated_at?: string;
 }
 
@@ -348,6 +355,108 @@ export async function deleteAdminFaq(token: string, id: number): Promise<void> {
     `admin/faqs/${id}/`,
     {
       method: "DELETE",
+    },
+    token
+  );
+}
+
+export interface AdminDistrictCoverage {
+  id: number;
+  district_name: string;
+  province: string;
+  is_highlighted: boolean;
+  projects_count: number;
+  services_summary: string;
+  description: string;
+  highlight_color: string;
+  order: number;
+  is_active: boolean;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface AdminCoverageSettings {
+  coverage_is_active: boolean;
+  coverage_badge: string;
+  coverage_heading: string;
+  coverage_subtext: string;
+  coverage_stat_districts: string;
+  coverage_stat_projects: string;
+  coverage_stat_provinces: string;
+}
+
+export async function getAdminDistricts(token: string): Promise<AdminDistrictCoverage[]> {
+  const data = await adminFetch<unknown>("admin/coverage-districts/", { method: "GET" }, token);
+  return unwrapAdminResults<AdminDistrictCoverage>(data);
+}
+
+export async function toggleAdminDistrictHighlight(
+  token: string,
+  id: number,
+  isHighlighted?: boolean
+): Promise<AdminDistrictCoverage> {
+  return adminFetch<AdminDistrictCoverage>(
+    `admin/coverage-districts/${id}/toggle-highlight/`,
+    {
+      method: "POST",
+      body: JSON.stringify(isHighlighted !== undefined ? { is_highlighted: isHighlighted } : {}),
+    },
+    token
+  );
+}
+
+export async function updateAdminDistrict(
+  token: string,
+  id: number,
+  data: Partial<AdminDistrictCoverage>
+): Promise<AdminDistrictCoverage> {
+  return adminFetch<AdminDistrictCoverage>(
+    `admin/coverage-districts/${id}/`,
+    {
+      method: "PATCH",
+      body: JSON.stringify(data),
+    },
+    token
+  );
+}
+
+export async function createAdminDistrict(
+  token: string,
+  data: Partial<AdminDistrictCoverage>
+): Promise<AdminDistrictCoverage> {
+  return adminFetch<AdminDistrictCoverage>(
+    "admin/coverage-districts/",
+    {
+      method: "POST",
+      body: JSON.stringify(data),
+    },
+    token
+  );
+}
+
+export async function deleteAdminDistrict(token: string, id: number): Promise<void> {
+  await adminFetch<unknown>(
+    `admin/coverage-districts/${id}/`,
+    {
+      method: "DELETE",
+    },
+    token
+  );
+}
+
+export async function getAdminCoverageSettings(token: string): Promise<AdminCoverageSettings> {
+  return adminFetch<AdminCoverageSettings>("admin/coverage-settings/", { method: "GET" }, token);
+}
+
+export async function updateAdminCoverageSettings(
+  token: string,
+  data: Partial<AdminCoverageSettings>
+): Promise<AdminCoverageSettings> {
+  return adminFetch<AdminCoverageSettings>(
+    "admin/coverage-settings/",
+    {
+      method: "PUT",
+      body: JSON.stringify(data),
     },
     token
   );

@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from rest_framework import serializers
-from .models import SiteSettings, HeroSlide
+from .models import SiteSettings, HeroSlide, DistrictCoverage
 
 
 class SiteSettingsSerializer(serializers.ModelSerializer):
@@ -70,6 +70,13 @@ class SiteSettingsSerializer(serializers.ModelSerializer):
             'iso_accreditation',
             'iso_issue_date',
             'iso_expiry_date',
+            'coverage_is_active',
+            'coverage_badge',
+            'coverage_heading',
+            'coverage_subtext',
+            'coverage_stat_districts',
+            'coverage_stat_projects',
+            'coverage_stat_provinces',
             'created_at',
             'updated_at',
         ]
@@ -218,4 +225,42 @@ class HeroSlideSerializer(serializers.ModelSerializer):
                 return request.build_absolute_uri(obj.image.url)
             return obj.image.url
         return None
+
+
+class DistrictCoverageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = DistrictCoverage
+        fields = [
+            'id',
+            'district_name',
+            'province',
+            'is_highlighted',
+            'projects_count',
+            'services_summary',
+            'description',
+            'highlight_color',
+            'order',
+            'is_active',
+            'created_at',
+            'updated_at',
+        ]
+        read_only_fields = ['id', 'created_at', 'updated_at']
+
+
+class CoverageSettingsSerializer(serializers.ModelSerializer):
+    """
+    Serializer specifically for updating the coverage section text/stats
+    from the coverage management page in Admin CMS.
+    """
+    class Meta:
+        model = SiteSettings
+        fields = [
+            'coverage_is_active',
+            'coverage_badge',
+            'coverage_heading',
+            'coverage_subtext',
+            'coverage_stat_districts',
+            'coverage_stat_projects',
+            'coverage_stat_provinces',
+        ]
 

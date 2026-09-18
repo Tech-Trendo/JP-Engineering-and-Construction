@@ -7,6 +7,7 @@ import HeroSlider from "@/components/HeroSlider";
 import AnimatedStatCounter from "@/components/AnimatedStatCounter";
 import MapSection from "@/components/MapSection";
 import IsoCertificationSection from "@/components/IsoCertificationSection";
+import CoverageMapSection from "@/components/CoverageMapSection";
 import {
   getPublicSiteSettings,
   getPublicSiteContent,
@@ -531,6 +532,9 @@ export default function HomePage() {
           </div>
         </section>
       )}
+
+      {/* Interactive Nepal Nationwide Coverage Map Section */}
+      <CoverageMapSection />
 
       {/* Google Map Section */}
       <MapSection />

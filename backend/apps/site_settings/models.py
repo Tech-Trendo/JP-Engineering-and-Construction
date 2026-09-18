@@ -279,6 +279,47 @@ class SiteSettings(TimeStampedModel):
         help_text="Certificate expiry date."
     )
 
+    # -------------------------------------------------------------------------
+    # Homepage Coverage Map Section
+    # -------------------------------------------------------------------------
+    coverage_is_active = models.BooleanField(
+        default=True,
+        help_text="Whether to display the Nepal coverage map section on the homepage."
+    )
+    coverage_badge = models.CharField(
+        max_length=100,
+        default="Nationwide Presence",
+        help_text="Small pill badge text above the coverage map heading."
+    )
+    coverage_heading = models.CharField(
+        max_length=255,
+        default="Our Engineering Services Across Nepal",
+        help_text="Main heading for the Nepal coverage map section."
+    )
+    coverage_subtext = models.TextField(
+        default=(
+            "From industrial cold storage and commercial reverse osmosis water treatment plants to "
+            "dairy processing machinery, solar setups, and structural steel fabrication — explore the districts "
+            "across Nepal where JP Engineering & Construction delivers trusted engineering solutions."
+        ),
+        help_text="Descriptive subtext for the coverage map section."
+    )
+    coverage_stat_districts = models.CharField(
+        max_length=50,
+        default="25+",
+        help_text="Districts covered counter display (e.g. '25+')."
+    )
+    coverage_stat_projects = models.CharField(
+        max_length=50,
+        default="150+",
+        help_text="Projects completed counter display (e.g. '150+')."
+    )
+    coverage_stat_provinces = models.CharField(
+        max_length=50,
+        default="7",
+        help_text="Provinces covered counter display (e.g. '7')."
+    )
+
     class Meta:
         verbose_name = "Site Settings"
         verbose_name_plural = "Site Settings"
@@ -362,4 +403,71 @@ class HeroSlide(TimeStampedModel):
 
     def __str__(self):
         return f"Slide: {self.heading} (Order: {self.order})"
+
+
+class DistrictCoverage(TimeStampedModel):
+    """
+    CMS model representing a district in Nepal where JP Engineering & Construction
+    operates or highlights engineering projects and services.
+    """
+    PROVINCE_CHOICES = [
+        ("Koshi", "Koshi Province"),
+        ("Madhesh", "Madhesh Province"),
+        ("Bagmati", "Bagmati Province"),
+        ("Gandaki", "Gandaki Province"),
+        ("Lumbini", "Lumbini Province"),
+        ("Karnali", "Karnali Province"),
+        ("Sudurpashchim", "Sudurpashchim Province"),
+    ]
+
+    district_name = models.CharField(
+        max_length=100,
+        unique=True,
+        help_text="Official district name matching the SVG map (e.g. Kathmandu, Kaski, Morang)."
+    )
+    province = models.CharField(
+        max_length=50,
+        choices=PROVINCE_CHOICES,
+        help_text="Province where this district is located."
+    )
+    is_highlighted = models.BooleanField(
+        default=False,
+        db_index=True,
+        help_text="Whether this district is highlighted on the Nepal map."
+    )
+    projects_count = models.PositiveIntegerField(
+        default=1,
+        help_text="Number of completed or active engineering projects in this district."
+    )
+    services_summary = models.CharField(
+        max_length=255,
+        blank=True,
+        help_text="Key services or machines installed (e.g. Cold Storage, RO Water Plant, Dairy)."
+    )
+    description = models.TextField(
+        blank=True,
+        help_text="Detailed project summary or case study notes displayed on hover / click."
+    )
+    highlight_color = models.CharField(
+        max_length=20,
+        default="#c8391a",
+        help_text="Custom highlight color hex (defaults to brand accent #c8391a)."
+    )
+    order = models.PositiveIntegerField(
+        default=0,
+        help_text="Display order in district lists."
+    )
+    is_active = models.BooleanField(
+        default=True,
+        help_text="Whether this district record is active in the CMS."
+    )
+
+    class Meta:
+        verbose_name = "District Coverage"
+        verbose_name_plural = "District Coverages"
+        ordering = ["-is_highlighted", "order", "district_name"]
+
+    def __str__(self):
+        status = "Highlighted" if self.is_highlighted else "Normal"
+        return f"{self.district_name} ({self.province}) - {status}"
 

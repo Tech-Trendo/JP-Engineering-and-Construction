@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.shortcuts import redirect
 from django.urls import reverse
-from .models import SiteSettings
+from .models import SiteSettings, HeroSlide, DistrictCoverage
 
 
 @admin.register(SiteSettings)
@@ -69,6 +69,15 @@ class SiteSettingsAdmin(admin.ModelAdmin):
                 ("stat_happy_clients", "stat_business_sectors"),
             )
         }),
+        ("Homepage Coverage Map Section", {
+            "description": "Configure heading, badge, and copy for the interactive Nepal district map on the homepage.",
+            "fields": (
+                "coverage_is_active",
+                ("coverage_badge", "coverage_heading"),
+                "coverage_subtext",
+                ("coverage_stat_districts", "coverage_stat_projects", "coverage_stat_provinces"),
+            )
+        }),
         ("Homepage Bottom CTA Banner", {
             "fields": (
                 "cta_heading",
@@ -94,3 +103,38 @@ class SiteSettingsAdmin(admin.ModelAdmin):
 
     def has_delete_permission(self, request, obj=None):
         return False
+
+
+@admin.register(DistrictCoverage)
+class DistrictCoverageAdmin(admin.ModelAdmin):
+    list_display = (
+        'district_name',
+        'province',
+        'is_highlighted',
+        'projects_count',
+        'services_summary',
+        'is_active',
+        'order',
+    )
+    list_editable = ('is_highlighted', 'projects_count', 'is_active', 'order')
+    list_filter = ('is_highlighted', 'province', 'is_active')
+    search_fields = ('district_name', 'province', 'services_summary', 'description')
+    ordering = ('-is_highlighted', 'order', 'district_name')
+    fieldsets = (
+        ("District Information", {
+            "fields": (
+                ("district_name", "province"),
+                ("is_highlighted", "highlight_color"),
+                ("projects_count", "order", "is_active"),
+                "services_summary",
+                "description",
+            )
+        }),
+    )
+
+
+@admin.register(HeroSlide)
+class HeroSlideAdmin(admin.ModelAdmin):
+    list_display = ('heading', 'title', 'badge', 'order', 'is_active')
+    list_editable = ('order', 'is_active')
+    search_fields = ('heading', 'title', 'badge')

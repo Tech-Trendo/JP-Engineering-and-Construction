@@ -182,6 +182,13 @@ export interface PublicSiteSettings {
   iso_accreditation?: string;
   iso_issue_date?: string;
   iso_expiry_date?: string;
+  coverage_is_active?: boolean;
+  coverage_badge?: string;
+  coverage_heading?: string;
+  coverage_subtext?: string;
+  coverage_stat_districts?: string;
+  coverage_stat_projects?: string;
+  coverage_stat_provinces?: string;
   updated_at?: string;
 }
 
@@ -437,6 +444,82 @@ export async function getPublicFaqs(page?: string): Promise<PublicFaq[]> {
   } catch (err) {
     console.warn(`[public-api getPublicFaqs failed for page=${page}]:`, err);
     return [];
+  }
+}
+
+export interface PublicDistrictCoverage {
+  id: number;
+  district_name: string;
+  province: string;
+  is_highlighted: boolean;
+  projects_count: number;
+  services_summary: string;
+  description: string;
+  highlight_color: string;
+  order: number;
+  is_active: boolean;
+}
+
+export interface PublicCoverageStats {
+  highlighted_count: number;
+  total_districts: number;
+  total_projects: number;
+  provinces_count: number;
+}
+
+export interface PublicCoverageData {
+  is_active: boolean;
+  badge: string;
+  heading: string;
+  subtext: string;
+  stat_districts: string;
+  stat_projects: string;
+  stat_provinces: string;
+  highlighted_districts: string[];
+  districts: PublicDistrictCoverage[];
+  stats: PublicCoverageStats;
+}
+
+export async function getPublicCoverage(): Promise<PublicCoverageData> {
+  try {
+    const data = await apiClient<PublicCoverageData>("public/site-settings/coverage/");
+    return data;
+  } catch (err) {
+    console.warn("[public-api getPublicCoverage failed]:", err);
+    return {
+      is_active: true,
+      badge: "Nationwide Service Coverage",
+      heading: "Our Engineering Services Across Nepal",
+      subtext:
+        "From industrial cold storage and commercial reverse osmosis water treatment plants to dairy processing machinery, solar setups, and structural steel fabrication — explore the districts across Nepal where JP Engineering & Construction delivers trusted engineering solutions.",
+      stat_districts: "25+",
+      stat_projects: "150+",
+      stat_provinces: "7",
+      highlighted_districts: [
+        "Kathmandu",
+        "Lalitpur",
+        "Bhaktapur",
+        "Chitawan",
+        "Kaski",
+        "Morang",
+        "Rupandehi",
+        "Sunsari",
+        "Jhapa",
+        "Banke",
+        "Kailali",
+        "Makwanpur",
+        "Tanahu",
+        "Kavrepalanchok",
+        "Surkhet",
+      ],
+      districts: [],
+      stats: {
+        highlighted_count: 15,
+        total_districts: 77,
+        total_projects: 300,
+        provinces_count: 7,
+      },
+    };
   }
 }
 
