@@ -164,134 +164,42 @@ export default function CoverageMapSection() {
   }
 
   return (
-    <section className="py-16 md:py-24 bg-gradient-to-b from-[#f8fafc] via-[#f1f5f9] to-[#ffffff] border-y border-gray-200 relative overflow-hidden">
-      {/* Subtle background tech accents */}
-      <div className="absolute top-0 right-0 w-96 h-96 bg-red-100/30 rounded-full blur-3xl pointer-events-none -mr-32 -mt-32" />
-      <div className="absolute bottom-0 left-0 w-96 h-96 bg-blue-100/30 rounded-full blur-3xl pointer-events-none -ml-32 -mb-32" />
-
-      <div className="max-w-[1280px] mx-auto px-4 sm:px-6 relative z-10">
-        {/* Section Header */}
+    <section className="py-16 bg-[#f5f6f8] border-t border-gray-200" id="coverage-map">
+      <div className="max-w-[1280px] mx-auto px-4">
+        {/* Section Header (Matches site design: clean kicker + bold heading + text intro) */}
         <div className="text-center max-w-3xl mx-auto mb-10">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-red-50 border border-red-200 text-[#c8391a] text-xs font-bold uppercase tracking-wider mb-3 shadow-xs">
-            <span className="w-2 h-2 rounded-full bg-[#c8391a] animate-pulse" />
-            {coverageData?.badge || "Nationwide Service Coverage"}
-          </div>
-
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-[#1b3a6e] tracking-tight mb-4">
+          <span className="text-[#c8391a] text-xs font-semibold uppercase tracking-widest block mb-2">
+            {coverageData?.badge || "Nationwide Footprint"}
+          </span>
+          <h2 className="text-[#1b3a6e] text-2xl md:text-3xl font-bold mb-3">
             {coverageData?.heading || "Our Engineering Services Across Nepal"}
           </h2>
-
-          <p className="text-gray-600 text-sm sm:text-base leading-relaxed">
+          <p className="text-gray-500 text-[14px] leading-relaxed">
             {coverageData?.subtext ||
-              "From industrial cold storage and commercial reverse osmosis water treatment plants to dairy processing machinery, solar setups, and structural steel fabrication — explore the districts across Nepal where JP Engineering & Construction delivers trusted engineering solutions."}
+              "From industrial cold storage and commercial reverse osmosis water treatment plants to dairy processing machinery and structural steel fabrication — explore our project footprint across Nepal."}
           </p>
-        </div>
-
-        {/* Stats Strip */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 max-w-4xl mx-auto mb-10">
-          <div className="bg-white rounded-xl p-4 text-center border border-gray-100 shadow-xs hover:shadow-md transition-shadow">
-            <div className="text-2xl sm:text-3xl font-extrabold text-[#c8391a]">
-              {coverageData?.stat_districts || `${highlightedList.length}+`}
-            </div>
-            <div className="text-xs font-semibold text-gray-500 mt-1 uppercase tracking-wider">
-              Districts Served
-            </div>
-          </div>
-
-          <div className="bg-white rounded-xl p-4 text-center border border-gray-100 shadow-xs hover:shadow-md transition-shadow">
-            <div className="text-2xl sm:text-3xl font-extrabold text-[#1b3a6e]">
-              {coverageData?.stat_projects || "150+"}
-            </div>
-            <div className="text-xs font-semibold text-gray-500 mt-1 uppercase tracking-wider">
-              Projects Completed
-            </div>
-          </div>
-
-          <div className="bg-white rounded-xl p-4 text-center border border-gray-100 shadow-xs hover:shadow-md transition-shadow">
-            <div className="text-2xl sm:text-3xl font-extrabold text-[#c8391a]">
-              {coverageData?.stat_provinces || "7"}
-            </div>
-            <div className="text-xs font-semibold text-gray-500 mt-1 uppercase tracking-wider">
-              Provinces Covered
-            </div>
-          </div>
-
-          <div className="bg-white rounded-xl p-4 text-center border border-gray-100 shadow-xs hover:shadow-md transition-shadow">
-            <div className="text-2xl sm:text-3xl font-extrabold text-[#1b3a6e]">
-              25+
-            </div>
-            <div className="text-xs font-semibold text-gray-500 mt-1 uppercase tracking-wider">
-              Years in Engineering
-            </div>
-          </div>
-        </div>
-
-        {/* Province Filter Pills */}
-        <div className="flex flex-wrap items-center justify-center gap-2 mb-8">
-          <span className="text-xs font-semibold text-gray-400 mr-1 hidden sm:inline">
-            Filter Region:
-          </span>
-          {PROVINCES_LIST.map((item) => {
-            const isSelected =
-              item.id === "all"
-                ? selectedProvince === null
-                : selectedProvince === item.id;
-
-            const provinceColor =
-              item.id !== "all"
-                ? PROVINCE_THEME_COLORS[item.id as Province]?.fill
-                : undefined;
-
-            return (
-              <button
-                key={item.id}
-                type="button"
-                onClick={() => {
-                  setSelectedProvince(item.id === "all" ? null : (item.id as Province));
-                }}
-                className={`inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-medium transition-all cursor-pointer ${
-                  isSelected
-                    ? "bg-[#1b3a6e] text-white shadow-sm font-semibold scale-105"
-                    : "bg-white text-gray-700 hover:bg-gray-100 border border-gray-200"
-                }`}
-              >
-                {provinceColor && (
-                  <span
-                    className="w-2.5 h-2.5 rounded-full border border-black/10 shrink-0"
-                    style={{ backgroundColor: provinceColor }}
-                  />
-                )}
-                <span>{item.label}</span>
-              </button>
-            );
-          })}
         </div>
 
         {/* Map & District Info Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-          {/* Interactive Nepal Map Canvas */}
-          <div className="lg:col-span-8 bg-white rounded-2xl p-4 sm:p-6 border border-gray-200/80 shadow-sm relative min-h-[500px] flex flex-col justify-between">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3">
-              <div className="flex items-center gap-2 flex-wrap">
-                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-red-100 text-[#c8391a] text-xs font-extrabold border border-red-200 shadow-2xs">
-                  <span className="w-2.5 h-2.5 rounded-xs bg-[#c8391a] border border-white" />
-                  <span>Highlighted Hubs ({highlightedList.length} Districts)</span>
-                </span>
-                <span className="text-[11px] text-gray-500 font-medium">
-                  • 7 Provinces Color-Differentiated
-                </span>
+          {/* Interactive Nepal Map Container */}
+          <div className="lg:col-span-8 bg-white border border-gray-200 shadow-sm p-5 sm:p-6 rounded flex flex-col justify-between min-h-[500px]">
+            {/* Clean Card Subheader */}
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 mb-2 border-b border-gray-100">
+              <div className="text-xs text-gray-600">
+                Click any district on the map to inspect engineering projects and installed machinery.
               </div>
-              <div className="text-[11px] text-gray-400 italic">
-                Hover or click any district to inspect projects
+              <div className="text-xs text-gray-500 shrink-0">
+                <span className="font-bold text-[#1b3a6e]">{highlightedList.length}</span> Active Hubs
               </div>
             </div>
 
-            {/* Map Container */}
+            {/* Map Canvas */}
             <div className="w-full flex-1 flex items-center justify-center py-2 relative">
               {loading ? (
                 <div className="flex flex-col items-center justify-center h-80 text-gray-400">
                   <svg
-                    className="animate-spin h-8 w-8 text-[#c8391a] mb-3"
+                    className="animate-spin h-7 w-7 text-[#c8391a] mb-2"
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
                     viewBox="0 0 24 24"
@@ -343,38 +251,34 @@ export default function CoverageMapSection() {
                       const d = districtMap[name];
                       if (!d) {
                         return (
-                          <div className="bg-[#1b3a6e] text-white px-3 py-1.5 rounded-md text-xs shadow-md">
+                          <div className="bg-[#1b3a6e] text-white px-3 py-1.5 rounded text-xs shadow-md">
                             <strong>{name}</strong>
                           </div>
                         );
                       }
 
                       return (
-                        <div className="bg-[#1b3a6e] text-white p-3 rounded-lg text-xs shadow-xl max-w-[240px] pointer-events-none border border-white/20">
+                        <div className="bg-[#1b3a6e] text-white p-3 rounded text-xs shadow-xl max-w-[240px] pointer-events-none border border-white/20">
                           <div className="flex items-center justify-between gap-2 border-b border-blue-400/30 pb-1 mb-1.5">
                             <span className="font-bold text-sm text-white">{name}</span>
-                            <span className="text-[10px] text-blue-200 font-medium">
+                            <span className="text-[10px] text-blue-200">
                               {d.province} Province
                             </span>
                           </div>
                           {d.is_highlighted ? (
                             <>
-                              <div className="text-amber-300 font-extrabold text-xs mb-1 flex items-center gap-1">
-                                <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
-                                <span>{d.projects_count || 1}+ Turnkey Projects</span>
+                              <div className="text-amber-300 font-bold text-xs mb-1">
+                                {d.projects_count || 1}+ Projects Installed
                               </div>
                               {d.services_summary && (
-                                <div className="text-gray-200 text-[10px] line-clamp-2 mb-1">
+                                <div className="text-gray-200 text-[10px] line-clamp-2">
                                   {d.services_summary}
                                 </div>
                               )}
-                              <div className="text-[10px] text-emerald-300 font-bold uppercase tracking-wider">
-                                Active Project Hub
-                              </div>
                             </>
                           ) : (
                             <div className="text-gray-300 text-[10px] leading-snug">
-                              Available for turnkey industrial & engineering deployments
+                              Available for turnkey industrial deployments
                             </div>
                           )}
                         </div>
@@ -385,118 +289,100 @@ export default function CoverageMapSection() {
               )}
             </div>
 
-            {/* Interactive Color Legend for Provinces & Highlights */}
-            <div className="pt-3.5 border-t border-gray-100 flex flex-wrap items-center justify-between text-xs gap-3">
-              <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
-                <span className="text-[11px] font-bold text-gray-500 uppercase tracking-wider">
-                  Provinces:
-                </span>
-                {Object.entries(PROVINCE_THEME_COLORS).map(([pName, pTheme]) => {
-                  const isSelected = selectedProvince === pName;
+            {/* Clean Province Legend Bar */}
+            <div className="pt-3 mt-2 border-t border-gray-100 flex flex-wrap items-center justify-between gap-3 text-xs">
+              <div className="flex flex-wrap items-center gap-1.5">
+                <span className="text-xs text-gray-500 font-medium mr-1">Filter:</span>
+                <button
+                  type="button"
+                  onClick={() => setSelectedProvince(null)}
+                  className={`px-2.5 py-1 rounded text-xs transition-colors cursor-pointer ${
+                    selectedProvince === null
+                      ? "bg-[#1b3a6e] text-white font-semibold"
+                      : "bg-gray-100 hover:bg-gray-200 text-gray-700"
+                  }`}
+                >
+                  All Nepal
+                </button>
+                {PROVINCES_LIST.filter((p) => p.id !== "all").map((p) => {
+                  const isSelected = selectedProvince === p.id;
+                  const color = PROVINCE_THEME_COLORS[p.id as Province]?.fill;
                   return (
                     <button
-                      key={pName}
+                      key={p.id}
                       type="button"
                       onClick={() =>
-                        setSelectedProvince(isSelected ? null : (pName as Province))
+                        setSelectedProvince(isSelected ? null : (p.id as Province))
                       }
-                      className={`inline-flex items-center gap-1.5 px-2 py-1 rounded-md text-[11px] font-medium transition-all cursor-pointer ${
+                      className={`inline-flex items-center gap-1.5 px-2 py-1 rounded text-xs transition-colors cursor-pointer ${
                         isSelected
-                          ? "ring-2 ring-[#1b3a6e] font-bold bg-white shadow-xs"
-                          : "hover:bg-gray-100 text-gray-700"
+                          ? "bg-[#1b3a6e] text-white font-semibold"
+                          : "bg-gray-50 hover:bg-gray-100 text-gray-700 border border-gray-200"
                       }`}
                     >
                       <span
-                        className="w-3 h-3 rounded-xs border border-black/10 shrink-0"
-                        style={{
-                          backgroundColor: pTheme.fill,
-                          borderColor: pTheme.stroke,
-                        }}
+                        className="w-2.5 h-2.5 rounded-xs shrink-0 border border-black/15"
+                        style={{ backgroundColor: color }}
                       />
-                      <span>{pName}</span>
+                      <span>{p.label}</span>
                     </button>
                   );
                 })}
-
-                {/* Highlighted Swatch */}
-                <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-red-600 text-white text-[11px] font-bold shadow-xs">
-                  <span className="w-3 h-3 rounded-xs bg-red-600 shadow-xs border-2 border-white ring-1 ring-red-400" />
-                  <span>Active Hub (Highlighted)</span>
-                </div>
               </div>
 
-              <div className="text-[11px] text-gray-400">
-                Click any province to isolate
+              <div className="inline-flex items-center gap-1.5 text-xs text-gray-700">
+                <span className="w-3 h-3 rounded-xs bg-[#dc2626] border border-white shrink-0 shadow-xs ring-1 ring-red-400" />
+                <span className="font-medium">Active Project Hub</span>
               </div>
             </div>
           </div>
 
           {/* District Spotlight Card */}
-          <div className="lg:col-span-4 bg-white rounded-2xl p-6 border border-gray-200/90 shadow-sm flex flex-col justify-between min-h-[500px]">
+          <div className="lg:col-span-4 bg-white border border-gray-200 shadow-sm p-6 rounded flex flex-col justify-between min-h-[500px]">
             <div>
-              <div className="flex items-center justify-between border-b border-gray-100 pb-3 mb-4">
-                <div>
-                  <span className="text-[11px] font-bold text-gray-400 uppercase tracking-wider block">
+              <div className="border-b border-gray-100 pb-3 mb-4">
+                <div className="flex items-center justify-between">
+                  <span className="text-[11px] font-semibold text-[#c8391a] uppercase tracking-wider">
                     District Spotlight
                   </span>
-                  <h3 className="text-2xl font-bold text-[#1b3a6e] mt-0.5">
-                    {activeDistrictRecord?.district_name || selectedDistrictName || "Nepal"}
-                  </h3>
+                  {activeDistrictRecord?.province && (
+                    <span className="text-xs text-gray-500 font-medium">
+                      {activeDistrictRecord.province} Province
+                    </span>
+                  )}
                 </div>
-                {activeDistrictRecord?.province && (
-                  <span
-                    className="px-2.5 py-1 rounded-full text-xs font-semibold border"
-                    style={{
-                      backgroundColor:
-                        PROVINCE_THEME_COLORS[activeDistrictRecord.province as Province]?.labelBg ||
-                        "#eff6ff",
-                      color: "#1b3a6e",
-                      borderColor:
-                        PROVINCE_THEME_COLORS[activeDistrictRecord.province as Province]?.stroke ||
-                        "#bfdbfe",
-                    }}
-                  >
-                    {activeDistrictRecord.province} Province
-                  </span>
-                )}
+                <h3 className="text-2xl font-bold text-[#1b3a6e] mt-1">
+                  {activeDistrictRecord?.district_name || selectedDistrictName || "Nepal"}
+                </h3>
               </div>
 
               {activeDistrictRecord?.is_highlighted ? (
                 <div className="space-y-4">
-                  {/* Status badge */}
-                  <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-md bg-red-100 border border-red-200 text-[#c8391a] text-xs font-extrabold shadow-2xs">
-                    <span className="w-2 h-2 rounded-full bg-[#c8391a] animate-pulse" />
-                    Active Engineering Operations
-                  </div>
-
-                  {/* Project Counter */}
-                  <div className="bg-gradient-to-r from-red-50 to-orange-50 border border-red-200 rounded-xl p-3.5 shadow-2xs">
-                    <div className="text-xs font-semibold text-gray-700">
-                      Completed & Active Installations
+                  <div>
+                    <div className="text-xs text-gray-500 font-medium uppercase tracking-wider mb-1">
+                      Completed Installations
                     </div>
-                    <div className="text-2xl font-extrabold text-[#c8391a] mt-0.5">
+                    <div className="text-xl font-bold text-[#1b3a6e]">
                       {activeDistrictRecord.projects_count || 1}+ Turnkey Projects
                     </div>
                   </div>
 
-                  {/* Services Delivered */}
                   {activeDistrictRecord.services_summary && (
                     <div>
-                      <h4 className="text-xs font-bold text-gray-700 uppercase tracking-wider mb-1.5">
-                        Key Solutions Deployed:
-                      </h4>
-                      <p className="text-xs sm:text-sm text-gray-800 leading-relaxed font-semibold bg-gray-50 p-2.5 rounded-lg border border-gray-200">
+                      <div className="text-xs font-semibold text-gray-700 uppercase tracking-wider mb-1.5">
+                        Equipment &amp; Systems Deployed
+                      </div>
+                      <p className="text-xs text-gray-800 leading-relaxed font-medium bg-gray-50 p-3 rounded border border-gray-200">
                         {activeDistrictRecord.services_summary}
                       </p>
                     </div>
                   )}
 
-                  {/* Case study / summary notes */}
                   {activeDistrictRecord.description && (
                     <div>
-                      <h4 className="text-xs font-bold text-gray-700 uppercase tracking-wider mb-1.5">
-                        Installation Overview:
-                      </h4>
+                      <div className="text-xs font-semibold text-gray-700 uppercase tracking-wider mb-1">
+                        Installation Overview
+                      </div>
                       <p className="text-xs text-gray-600 leading-relaxed">
                         {activeDistrictRecord.description}
                       </p>
@@ -504,7 +390,7 @@ export default function CoverageMapSection() {
                   )}
                 </div>
               ) : (
-                <div className="py-6 text-center text-gray-500 space-y-3">
+                <div className="py-10 text-center text-gray-500 space-y-3">
                   <div className="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center mx-auto text-gray-400">
                     <svg
                       className="w-6 h-6"
@@ -526,89 +412,42 @@ export default function CoverageMapSection() {
                       />
                     </svg>
                   </div>
-                  <h4 className="text-sm font-bold text-gray-700">
-                    {activeDistrictRecord?.district_name || selectedDistrictName} is Ready for Deployment
-                  </h4>
+                  <div className="text-sm font-bold text-gray-800">
+                    Engineering Services Available
+                  </div>
                   <p className="text-xs text-gray-500 leading-relaxed max-w-xs mx-auto">
-                    JP Engineering & Construction provides full turnkey industrial machinery, cold storage, and water treatment engineering nationwide across all 77 districts.
+                    We supply, install, and commission industrial machinery, cold rooms, and water treatment systems in {activeDistrictRecord?.district_name || selectedDistrictName} and across Nepal.
                   </p>
                 </div>
               )}
             </div>
 
-            {/* Action CTA inside spotlight card */}
+            {/* Action CTA inside spotlight card - Matches site button style */}
             <div className="pt-4 border-t border-gray-100 mt-6">
               <Link
                 href={`/contact-us?district=${encodeURIComponent(
                   activeDistrictRecord?.district_name || selectedDistrictName
                 )}#quote`}
-                className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-[#c8391a] hover:bg-[#b03014] text-white text-xs font-bold transition-all shadow-sm hover:shadow-md cursor-pointer"
+                className="w-full inline-flex items-center justify-center gap-2 bg-[#c8391a] hover:bg-[#a62d14] text-white text-xs font-bold uppercase tracking-wider px-4 py-2.5 rounded shadow-sm hover:shadow transition-all"
               >
-                <span>Request Project in {activeDistrictRecord?.district_name || selectedDistrictName}</span>
+                <span>Request Project Inquiry</span>
                 <svg
                   className="w-3.5 h-3.5"
                   fill="none"
-                  viewBox="0 0 24 24"
                   stroke="currentColor"
+                  strokeWidth={2.5}
+                  viewBox="0 0 24 24"
                 >
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M14 5l7 7m0 0l-7 7m7-7H3"
+                    d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
                   />
                 </svg>
               </Link>
             </div>
           </div>
         </div>
-
-        {/* Quick Select Prominent Hubs Chips */}
-        {highlightedList.length > 0 && (
-          <div className="mt-8 pt-6 border-t border-gray-200/80">
-            <div className="flex flex-wrap items-center gap-2">
-              <span className="text-xs font-bold text-gray-500 mr-2">
-                Quick Explore Key Hubs:
-              </span>
-              {highlightedList.slice(0, 10).map((dName) => {
-                const isSelected =
-                  (hoveredDistrictName || selectedDistrictName) === dName;
-                const distInfo = districtMap[dName];
-
-                return (
-                  <button
-                    key={dName}
-                    type="button"
-                    onClick={() => setSelectedDistrictName(dName)}
-                    className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
-                      isSelected
-                        ? "bg-[#c8391a] text-white shadow-xs"
-                        : "bg-white hover:bg-gray-100 text-gray-700 border border-gray-200"
-                    }`}
-                  >
-                    <span
-                      className={`w-1.5 h-1.5 rounded-full ${
-                        isSelected ? "bg-white" : "bg-[#c8391a]"
-                      }`}
-                    />
-                    <span>{dName}</span>
-                    {distInfo?.projects_count ? (
-                      <span
-                        className={`text-[10px] px-1 rounded ${
-                          isSelected
-                            ? "bg-red-900/40 text-white"
-                            : "bg-gray-100 text-gray-500"
-                        }`}
-                      >
-                        {distInfo.projects_count}
-                      </span>
-                    ) : null}
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-        )}
       </div>
     </section>
   );
