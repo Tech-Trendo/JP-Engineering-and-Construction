@@ -23,7 +23,7 @@ export default function IsoCertificationSection({ siteSettings }: IsoCertificati
     "URS / UKAS Management Systems (0043) / IAF Multilateral Recognition Arrangement";
   const scope =
     siteSettings?.iso_scope ||
-    "Manufacturing and Assembly of Reverse Osmosis Plant, Dairy Equipment's (Pasteurizer, Homogenizer, Chilling Vat, Road Milk Tanker), Cold Storage Equipment's, Solar Energy & Heat Pump System, Steel Fabrication";
+    "Manufacturing and Assembly of Reverse Osmosis Plant, Dairy Equipment's (Pasteurizer, Homogenizer, Road Milk Tanker), Cold Storage Equipment's, Solar Energy & Heat Pump System, Steel Fabrication";
 
   return (
     <section className="py-16 md:py-20 bg-gradient-to-b from-white via-slate-50 to-white border-t border-b border-gray-200" id="iso-certified">
