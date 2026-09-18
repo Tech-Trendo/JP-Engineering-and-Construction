@@ -15,6 +15,7 @@ import {
 } from "@/lib/admin-api";
 import { NepalMap } from "nepal-district-map";
 import type { Province } from "nepal-district-map";
+import { PROVINCE_THEME_COLORS } from "@/components/CoverageMapSection";
 
 const ALL_PROVINCES: Province[] = [
   "Koshi",
@@ -142,6 +143,31 @@ export default function AdminCoveragePage() {
   // Derived highlighted district names for map
   const highlightedNames = useMemo(() => {
     return districts.filter((d) => d.is_highlighted).map((d) => d.district_name);
+  }, [districts]);
+
+  // Formatted data dictionary for Admin NepalMap
+  // Highlighting: Highlighted districts get solid vibrant brand color (#c8391a or custom color)
+  // Non-highlighted districts omit color so they take their respective PROVINCE color!
+  const adminMapData = useMemo(() => {
+    const dataObj: Record<
+      string,
+      { color?: string; tooltip?: string; [key: string]: unknown }
+    > = {};
+
+    districts.forEach((d) => {
+      if (d.is_highlighted) {
+        dataObj[d.district_name] = {
+          color: d.highlight_color || "#c8391a",
+          tooltip: `${d.district_name}: ${d.projects_count || 1}+ Projects (Active)`,
+        };
+      } else {
+        dataObj[d.district_name] = {
+          tooltip: `${d.district_name} (${d.province} Province)`,
+        };
+      }
+    });
+
+    return dataObj;
   }, [districts]);
 
   // Total projects logged
@@ -547,27 +573,78 @@ export default function AdminCoveragePage() {
         </div>
 
         {/* The Live Map */}
-        <div className="w-full flex items-center justify-center py-2 bg-slate-50/50 rounded-xl border border-slate-100 min-h-[350px]">
+        <div className="w-full flex flex-col items-center justify-center py-2 bg-slate-50/50 rounded-xl border border-slate-100 min-h-[360px]">
           {isLoading ? (
-            <div className="text-xs text-gray-400">Loading map preview...</div>
+            <div className="text-xs text-gray-400 py-20">Loading map preview...</div>
           ) : (
-            <div className="w-full max-w-[800px] mx-auto">
-              <NepalMap
-                selectedProvince={previewProvince}
-                highlightedDistricts={highlightedNames}
-                highlightColor="#c8391a"
-                colorMode="flat"
-                baseColor="#e2e8f0"
-                strokeColor="#94a3b8"
-                strokeWidth={0.6}
-                hoverColor="#1b3a6e"
-                showLabels={true}
-                labelFontSize={8}
-                labelColor="#334155"
-                tooltipPosition="follow-cursor"
-                maxHeight="380px"
-              />
-            </div>
+            <>
+              <div className="w-full max-w-[820px] mx-auto [&_text]:[paint-order:stroke_fill] [&_text]:[stroke:rgba(255,255,255,0.95)] [&_text]:[stroke-width:2.5px] [&_text]:[stroke-linejoin:round]">
+                <NepalMap
+                  data={adminMapData}
+                  colorMode="province"
+                  provinceColors={PROVINCE_THEME_COLORS}
+                  selectedProvince={previewProvince}
+                  highlightedDistricts={highlightedNames}
+                  highlightColor="#1b3a6e"
+                  strokeColor="#64748b"
+                  strokeWidth={0.8}
+                  hoverColor="#ffd700"
+                  showLabels={true}
+                  labelFontSize={8}
+                  labelColor="#0f172a"
+                  tooltipPosition="follow-cursor"
+                  maxHeight="390px"
+                  onDistrictClick={(name) => {
+                    const target = districts.find((d) => d.district_name === name);
+                    if (target) handleToggleHighlight(target);
+                  }}
+                />
+              </div>
+
+              {/* Province Color Legend Bar */}
+              <div className="w-full pt-3 px-4 border-t border-slate-200/60 mt-3 flex flex-wrap items-center justify-between gap-2 text-xs">
+                <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5">
+                  <span className="text-[11px] font-bold text-gray-500 uppercase tracking-wider">
+                    Provinces:
+                  </span>
+                  {Object.entries(PROVINCE_THEME_COLORS).map(([pName, pTheme]) => {
+                    const isSelected = previewProvince === pName;
+                    return (
+                      <button
+                        key={pName}
+                        type="button"
+                        onClick={() =>
+                          setPreviewProvince(isSelected ? null : (pName as Province))
+                        }
+                        className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-[11px] font-medium transition-all cursor-pointer ${
+                          isSelected
+                            ? "ring-2 ring-[#1b3a6e] font-bold bg-white shadow-2xs"
+                            : "hover:bg-slate-200/60 text-gray-700"
+                        }`}
+                      >
+                        <span
+                          className="w-2.5 h-2.5 rounded-xs border border-black/10 shrink-0"
+                          style={{
+                            backgroundColor: pTheme.fill,
+                            borderColor: pTheme.stroke,
+                          }}
+                        />
+                        <span>{pName}</span>
+                      </button>
+                    );
+                  })}
+
+                  <div className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-red-100 text-[#c8391a] text-[11px] font-bold border border-red-200">
+                    <span className="w-2.5 h-2.5 rounded-xs bg-[#c8391a] border border-white" />
+                    <span>Active Hub (Highlighted)</span>
+                  </div>
+                </div>
+
+                <span className="text-[10px] text-gray-400 italic">
+                  Click any district directly on the map to toggle its highlight
+                </span>
+              </div>
+            </>
           )}
         </div>
       </div>

@@ -10,6 +10,45 @@ import {
   PublicDistrictCoverage,
 } from "@/lib/public-api";
 
+// Vibrant, distinct colors for all 7 provinces of Nepal
+export const PROVINCE_THEME_COLORS: Record<Province, { fill: string; stroke: string; labelBg: string }> = {
+  Koshi: {
+    fill: "#93c5fd", // Soft Sky Blue
+    stroke: "#2563eb",
+    labelBg: "#dbeafe",
+  },
+  Madhesh: {
+    fill: "#fde68a", // Warm Sun Yellow
+    stroke: "#d97706",
+    labelBg: "#fef9c3",
+  },
+  Bagmati: {
+    fill: "#a7f3d0", // Fresh Emerald Green
+    stroke: "#059669",
+    labelBg: "#dcfce7",
+  },
+  Gandaki: {
+    fill: "#ddd6fe", // Royal Lavender Purple
+    stroke: "#7c3aed",
+    labelBg: "#ede9fe",
+  },
+  Lumbini: {
+    fill: "#fbcfe8", // Soft Rose Pink
+    stroke: "#db2777",
+    labelBg: "#fce7f3",
+  },
+  Karnali: {
+    fill: "#fed7aa", // Warm Amber Orange
+    stroke: "#ea580c",
+    labelBg: "#ffedd5",
+  },
+  Sudurpashchim: {
+    fill: "#99f6e4", // Clean Mint Teal
+    stroke: "#0d9488",
+    labelBg: "#ccfbf1",
+  },
+};
+
 const PROVINCES_LIST: { id: Province | "all"; label: string }[] = [
   { id: "all", label: "All Nepal (77)" },
   { id: "Bagmati", label: "Bagmati" },
@@ -75,7 +114,9 @@ export default function CoverageMapSection() {
     return { districtMap: map, highlightedList: finalHighlights };
   }, [coverageData]);
 
-  // Formatted data dictionary for NepalMap choropleth/coloring
+  // Formatted data dictionary for NepalMap
+  // Highlighting: Highlighted districts get solid vibrant brand color (#c8391a or custom color)
+  // Non-highlighted districts omit color so they take their respective PROVINCE color!
   const nepalMapData = useMemo(() => {
     const dataObj: Record<
       string,
@@ -86,12 +127,12 @@ export default function CoverageMapSection() {
       if (d.is_highlighted) {
         dataObj[d.district_name] = {
           color: d.highlight_color || "#c8391a",
-          tooltip: `${d.district_name}: ${d.projects_count || 1}+ Projects`,
+          tooltip: `${d.district_name}: ${d.projects_count || 1}+ Turnkey Projects`,
         };
       } else {
+        // Do NOT set color; colorMode="province" will color it by its province!
         dataObj[d.district_name] = {
-          color: "#e2e8f0",
-          tooltip: d.district_name,
+          tooltip: `${d.district_name} (${d.province} Province)`,
         };
       }
     });
@@ -184,6 +225,11 @@ export default function CoverageMapSection() {
                 ? selectedProvince === null
                 : selectedProvince === item.id;
 
+            const provinceColor =
+              item.id !== "all"
+                ? PROVINCE_THEME_COLORS[item.id as Province]?.fill
+                : undefined;
+
             return (
               <button
                 key={item.id}
@@ -191,13 +237,19 @@ export default function CoverageMapSection() {
                 onClick={() => {
                   setSelectedProvince(item.id === "all" ? null : (item.id as Province));
                 }}
-                className={`px-3.5 py-1.5 rounded-full text-xs font-medium transition-all cursor-pointer ${
+                className={`inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-medium transition-all cursor-pointer ${
                   isSelected
                     ? "bg-[#1b3a6e] text-white shadow-sm font-semibold scale-105"
                     : "bg-white text-gray-700 hover:bg-gray-100 border border-gray-200"
                 }`}
               >
-                {item.label}
+                {provinceColor && (
+                  <span
+                    className="w-2.5 h-2.5 rounded-full border border-black/10 shrink-0"
+                    style={{ backgroundColor: provinceColor }}
+                  />
+                )}
+                <span>{item.label}</span>
               </button>
             );
           })}
@@ -206,12 +258,15 @@ export default function CoverageMapSection() {
         {/* Map & District Info Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
           {/* Interactive Nepal Map Canvas */}
-          <div className="lg:col-span-8 bg-white rounded-2xl p-4 sm:p-6 border border-gray-200/80 shadow-sm relative min-h-[460px] flex flex-col justify-between">
-            <div className="flex items-center justify-between mb-2">
-              <div className="flex items-center gap-2">
-                <span className="w-3 h-3 rounded-full bg-[#c8391a]" />
-                <span className="text-xs font-bold text-gray-700">
-                  Highlighted Districts ({highlightedList.length} Active Hubs)
+          <div className="lg:col-span-8 bg-white rounded-2xl p-4 sm:p-6 border border-gray-200/80 shadow-sm relative min-h-[500px] flex flex-col justify-between">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3">
+              <div className="flex items-center gap-2 flex-wrap">
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-red-100 text-[#c8391a] text-xs font-extrabold border border-red-200 shadow-2xs">
+                  <span className="w-2.5 h-2.5 rounded-xs bg-[#c8391a] border border-white" />
+                  <span>Highlighted Hubs ({highlightedList.length} Districts)</span>
+                </span>
+                <span className="text-[11px] text-gray-500 font-medium">
+                  • 7 Provinces Color-Differentiated
                 </span>
               </div>
               <div className="text-[11px] text-gray-400 italic">
@@ -246,21 +301,22 @@ export default function CoverageMapSection() {
                   <span className="text-xs">Loading Nepal District Map...</span>
                 </div>
               ) : (
-                <div className="w-full max-w-[850px] mx-auto transition-all">
+                <div className="w-full max-w-[860px] mx-auto transition-all [&_text]:[paint-order:stroke_fill] [&_text]:[stroke:rgba(255,255,255,0.95)] [&_text]:[stroke-width:2.5px] [&_text]:[stroke-linejoin:round]">
                   <NepalMap
+                    data={nepalMapData}
+                    colorMode="province"
+                    provinceColors={PROVINCE_THEME_COLORS}
                     selectedProvince={selectedProvince}
                     highlightedDistricts={highlightedList}
-                    highlightColor="#c8391a"
-                    colorMode="flat"
-                    baseColor="#e2e8f0"
-                    strokeColor="#94a3b8"
-                    strokeWidth={0.6}
-                    hoverColor="#1b3a6e"
+                    highlightColor="#1b3a6e"
+                    strokeColor="#64748b"
+                    strokeWidth={0.8}
+                    hoverColor="#ffd700"
                     showLabels={true}
                     labelFontSize={8.5}
-                    labelColor="#334155"
+                    labelColor="#0f172a"
                     tooltipPosition="follow-cursor"
-                    maxHeight="440px"
+                    maxHeight="460px"
                     onDistrictHover={(name) => {
                       if (name) {
                         setHoveredDistrictName(name);
@@ -282,30 +338,31 @@ export default function CoverageMapSection() {
                       }
 
                       return (
-                        <div className="bg-[#1b3a6e] text-white p-3 rounded-lg text-xs shadow-xl max-w-[220px] pointer-events-none">
+                        <div className="bg-[#1b3a6e] text-white p-3 rounded-lg text-xs shadow-xl max-w-[240px] pointer-events-none border border-white/20">
                           <div className="flex items-center justify-between gap-2 border-b border-blue-400/30 pb-1 mb-1.5">
                             <span className="font-bold text-sm text-white">{name}</span>
-                            <span className="text-[10px] text-blue-200">
-                              {d.province}
+                            <span className="text-[10px] text-blue-200 font-medium">
+                              {d.province} Province
                             </span>
                           </div>
                           {d.is_highlighted ? (
                             <>
-                              <div className="text-amber-300 font-semibold text-[11px] mb-1">
-                                {d.projects_count || 1}+ Turnkey Projects
+                              <div className="text-amber-300 font-extrabold text-xs mb-1 flex items-center gap-1">
+                                <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
+                                <span>{d.projects_count || 1}+ Turnkey Projects</span>
                               </div>
                               {d.services_summary && (
                                 <div className="text-gray-200 text-[10px] line-clamp-2 mb-1">
                                   {d.services_summary}
                                 </div>
                               )}
-                              <div className="text-[9px] text-green-300 font-medium">
-                                Active Service Hub
+                              <div className="text-[10px] text-emerald-300 font-bold uppercase tracking-wider">
+                                Active Project Hub
                               </div>
                             </>
                           ) : (
-                            <div className="text-gray-300 text-[10px]">
-                              Available for turnkey engineering deployments
+                            <div className="text-gray-300 text-[10px] leading-snug">
+                              Available for turnkey industrial & engineering deployments
                             </div>
                           )}
                         </div>
@@ -316,28 +373,54 @@ export default function CoverageMapSection() {
               )}
             </div>
 
-            {/* Map Legend Bar */}
-            <div className="pt-3 border-t border-gray-100 flex flex-wrap items-center justify-between text-xs text-gray-500 gap-2">
-              <div className="flex items-center gap-4">
-                <div className="flex items-center gap-1.5">
-                  <span className="w-3 h-3 rounded-xs bg-[#c8391a]" />
-                  <span className="font-medium text-gray-700">
-                    Active Projects Deployed
-                  </span>
-                </div>
-                <div className="flex items-center gap-1.5">
-                  <span className="w-3 h-3 rounded-xs bg-[#e2e8f0] border border-gray-300" />
-                  <span className="text-gray-500">Service Reachable</span>
+            {/* Interactive Color Legend for Provinces & Highlights */}
+            <div className="pt-3.5 border-t border-gray-100 flex flex-wrap items-center justify-between text-xs gap-3">
+              <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
+                <span className="text-[11px] font-bold text-gray-500 uppercase tracking-wider">
+                  Provinces:
+                </span>
+                {Object.entries(PROVINCE_THEME_COLORS).map(([pName, pTheme]) => {
+                  const isSelected = selectedProvince === pName;
+                  return (
+                    <button
+                      key={pName}
+                      type="button"
+                      onClick={() =>
+                        setSelectedProvince(isSelected ? null : (pName as Province))
+                      }
+                      className={`inline-flex items-center gap-1.5 px-2 py-1 rounded-md text-[11px] font-medium transition-all cursor-pointer ${
+                        isSelected
+                          ? "ring-2 ring-[#1b3a6e] font-bold bg-white shadow-xs"
+                          : "hover:bg-gray-100 text-gray-700"
+                      }`}
+                    >
+                      <span
+                        className="w-3 h-3 rounded-xs border border-black/10 shrink-0"
+                        style={{
+                          backgroundColor: pTheme.fill,
+                          borderColor: pTheme.stroke,
+                        }}
+                      />
+                      <span>{pName}</span>
+                    </button>
+                  );
+                })}
+
+                {/* Highlighted Swatch */}
+                <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-red-100 text-[#c8391a] text-[11px] font-bold border border-red-200 shadow-2xs">
+                  <span className="w-3 h-3 rounded-xs bg-[#c8391a] shadow-xs border border-white" />
+                  <span>Active Hub (Highlighted)</span>
                 </div>
               </div>
+
               <div className="text-[11px] text-gray-400">
-                Data configured directly via Admin CMS
+                Click any province to isolate
               </div>
             </div>
           </div>
 
           {/* District Spotlight Card */}
-          <div className="lg:col-span-4 bg-white rounded-2xl p-6 border border-gray-200/90 shadow-sm flex flex-col justify-between min-h-[460px]">
+          <div className="lg:col-span-4 bg-white rounded-2xl p-6 border border-gray-200/90 shadow-sm flex flex-col justify-between min-h-[500px]">
             <div>
               <div className="flex items-center justify-between border-b border-gray-100 pb-3 mb-4">
                 <div>
@@ -349,8 +432,19 @@ export default function CoverageMapSection() {
                   </h3>
                 </div>
                 {activeDistrictRecord?.province && (
-                  <span className="px-2.5 py-1 rounded-full text-xs font-semibold bg-blue-50 text-[#1b3a6e] border border-blue-100">
-                    {activeDistrictRecord.province}
+                  <span
+                    className="px-2.5 py-1 rounded-full text-xs font-semibold border"
+                    style={{
+                      backgroundColor:
+                        PROVINCE_THEME_COLORS[activeDistrictRecord.province as Province]?.labelBg ||
+                        "#eff6ff",
+                      color: "#1b3a6e",
+                      borderColor:
+                        PROVINCE_THEME_COLORS[activeDistrictRecord.province as Province]?.stroke ||
+                        "#bfdbfe",
+                    }}
+                  >
+                    {activeDistrictRecord.province} Province
                   </span>
                 )}
               </div>
@@ -358,18 +452,18 @@ export default function CoverageMapSection() {
               {activeDistrictRecord?.is_highlighted ? (
                 <div className="space-y-4">
                   {/* Status badge */}
-                  <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-md bg-green-50 border border-green-200 text-green-700 text-xs font-bold">
-                    <span className="w-2 h-2 rounded-full bg-green-500" />
+                  <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-md bg-red-100 border border-red-200 text-[#c8391a] text-xs font-extrabold shadow-2xs">
+                    <span className="w-2 h-2 rounded-full bg-[#c8391a] animate-pulse" />
                     Active Engineering Operations
                   </div>
 
                   {/* Project Counter */}
-                  <div className="bg-gradient-to-r from-red-50 to-orange-50 border border-red-100 rounded-xl p-3.5">
-                    <div className="text-xs font-medium text-gray-600">
+                  <div className="bg-gradient-to-r from-red-50 to-orange-50 border border-red-200 rounded-xl p-3.5 shadow-2xs">
+                    <div className="text-xs font-semibold text-gray-700">
                       Completed & Active Installations
                     </div>
                     <div className="text-2xl font-extrabold text-[#c8391a] mt-0.5">
-                      {activeDistrictRecord.projects_count || 1}+ Projects
+                      {activeDistrictRecord.projects_count || 1}+ Turnkey Projects
                     </div>
                   </div>
 
@@ -379,7 +473,7 @@ export default function CoverageMapSection() {
                       <h4 className="text-xs font-bold text-gray-700 uppercase tracking-wider mb-1.5">
                         Key Solutions Deployed:
                       </h4>
-                      <p className="text-xs sm:text-sm text-gray-800 leading-relaxed font-medium bg-gray-50 p-2.5 rounded-lg border border-gray-100">
+                      <p className="text-xs sm:text-sm text-gray-800 leading-relaxed font-semibold bg-gray-50 p-2.5 rounded-lg border border-gray-200">
                         {activeDistrictRecord.services_summary}
                       </p>
                     </div>
@@ -424,7 +518,7 @@ export default function CoverageMapSection() {
                     {activeDistrictRecord?.district_name || selectedDistrictName} is Ready for Deployment
                   </h4>
                   <p className="text-xs text-gray-500 leading-relaxed max-w-xs mx-auto">
-                    JP Engineering & Construction provides full turnkey industrial machinery, cold storage, and water treatment engineering nationwide.
+                    JP Engineering & Construction provides full turnkey industrial machinery, cold storage, and water treatment engineering nationwide across all 77 districts.
                   </p>
                 </div>
               )}
