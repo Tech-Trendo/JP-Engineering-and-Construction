@@ -64,23 +64,25 @@ export default function CoverageMapSection() {
   const [coverageData, setCoverageData] = useState<PublicCoverageData | null>(null);
   const [loading, setLoading] = useState(true);
   const [selectedProvince, setSelectedProvince] = useState<Province | null>(null);
-  const [selectedDistrictName, setSelectedDistrictName] = useState<string>("Kathmandu");
+  const [selectedDistrictName, setSelectedDistrictName] = useState<string>("");
   const [hoveredDistrictName, setHoveredDistrictName] = useState<string | null>(null);
 
   useEffect(() => {
     let isMounted = true;
     getPublicCoverage()
       .then((data) => {
-        if (isMounted) {
+        if (isMounted && data) {
           setCoverageData(data);
-          // Default to first highlighted district if available
+          // Default to first highlighted district dynamically from backend
           if (data.highlighted_districts && data.highlighted_districts.length > 0) {
             setSelectedDistrictName(data.highlighted_districts[0]);
+          } else if (data.districts && data.districts.length > 0) {
+            setSelectedDistrictName(data.districts[0].district_name);
           }
         }
       })
       .catch((err) => {
-        console.error("Failed to load coverage data:", err);
+        console.error("Failed to load coverage data from backend:", err);
       })
       .finally(() => {
         if (isMounted) setLoading(false);
@@ -166,7 +168,7 @@ export default function CoverageMapSection() {
     };
   }, [hoveredDistrictName, selectedDistrictName, districtMap, highlightedList]);
 
-  if (!loading && coverageData && coverageData.is_active === false) {
+  if (!loading && (!coverageData || coverageData.is_active === false || coverageData.districts.length === 0)) {
     return null;
   }
 
