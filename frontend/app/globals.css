@@ -71,3 +71,53 @@ h1, h2, h3, h4, h5, h6 {
   border-radius: 3px;
 }
 
+/* ==========================================================================
+   Nepal District Map - Ultra-Clear Highlight & Province Styling
+   ========================================================================== */
+.nepal-district-map-container svg {
+  overflow: visible !important;
+}
+
+/* Highlighted districts: Bold crimson fill, pure white border, and glowing 3D elevation */
+.nepal-district-map-container g[aria-label*="Highlighted"] path {
+  fill: #dc2626 !important;
+  stroke: #ffffff !important;
+  stroke-width: 2.5px !important;
+  filter: drop-shadow(0 2px 8px rgba(220, 38, 38, 0.75)) drop-shadow(0 0 2px rgba(0, 0, 0, 0.4)) !important;
+  cursor: pointer !important;
+}
+
+.nepal-district-map-container g[aria-label*="Highlighted"]:hover path {
+  fill: #b91c1c !important;
+  stroke: #fef08a !important;
+  stroke-width: 3.5px !important;
+  filter: drop-shadow(0 0 12px rgba(234, 88, 12, 0.95)) drop-shadow(0 4px 8px rgba(0, 0, 0, 0.5)) !important;
+}
+
+/* Labels on highlighted districts: Crisp white with deep dark-red halo */
+.nepal-district-map-container g[aria-label*="Highlighted"] text {
+  fill: #ffffff !important;
+  font-weight: 900 !important;
+  paint-order: stroke fill !important;
+  stroke: #7f1d1d !important;
+  stroke-width: 3px !important;
+  stroke-linejoin: round !important;
+  cursor: pointer !important;
+}
+
+/* Non-highlighted districts: Crisp subtle border separating provinces nicely */
+.nepal-district-map-container g:not([aria-label*="Highlighted"]) path {
+  stroke: #475569 !important;
+  stroke-width: 0.9px !important;
+}
+
+/* Non-highlighted district labels: Dark slate with clean white outline */
+.nepal-district-map-container g:not([aria-label*="Highlighted"]) text {
+  fill: #0f172a !important;
+  font-weight: 600 !important;
+  paint-order: stroke fill !important;
+  stroke: #ffffff !important;
+  stroke-width: 2.2px !important;
+  stroke-linejoin: round !important;
+}
+

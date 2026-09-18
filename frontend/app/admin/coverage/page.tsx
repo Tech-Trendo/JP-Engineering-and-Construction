@@ -146,7 +146,7 @@ export default function AdminCoveragePage() {
   }, [districts]);
 
   // Formatted data dictionary for Admin NepalMap
-  // Highlighting: Highlighted districts get solid vibrant brand color (#c8391a or custom color)
+  // Highlighting: Highlighted districts get solid vibrant crimson brand color (#dc2626)
   // Non-highlighted districts omit color so they take their respective PROVINCE color!
   const adminMapData = useMemo(() => {
     const dataObj: Record<
@@ -157,7 +157,7 @@ export default function AdminCoveragePage() {
     districts.forEach((d) => {
       if (d.is_highlighted) {
         dataObj[d.district_name] = {
-          color: d.highlight_color || "#c8391a",
+          color: d.highlight_color || "#dc2626",
           tooltip: `${d.district_name}: ${d.projects_count || 1}+ Projects (Active)`,
         };
       } else {
@@ -167,8 +167,18 @@ export default function AdminCoveragePage() {
       }
     });
 
+    highlightedNames.forEach((name) => {
+      if (!dataObj[name] || !dataObj[name].color) {
+        dataObj[name] = {
+          ...dataObj[name],
+          color: "#dc2626",
+          tooltip: `${name}: Active Project Hub`,
+        };
+      }
+    });
+
     return dataObj;
-  }, [districts]);
+  }, [districts, highlightedNames]);
 
   // Total projects logged
   const totalProjectsLogged = useMemo(() => {
@@ -578,16 +588,16 @@ export default function AdminCoveragePage() {
             <div className="text-xs text-gray-400 py-20">Loading map preview...</div>
           ) : (
             <>
-              <div className="w-full max-w-[820px] mx-auto [&_text]:[paint-order:stroke_fill] [&_text]:[stroke:rgba(255,255,255,0.95)] [&_text]:[stroke-width:2.5px] [&_text]:[stroke-linejoin:round]">
+              <div className="w-full max-w-[820px] mx-auto nepal-district-map-container transition-all">
                 <NepalMap
                   data={adminMapData}
                   colorMode="province"
                   provinceColors={PROVINCE_THEME_COLORS}
                   selectedProvince={previewProvince}
                   highlightedDistricts={highlightedNames}
-                  highlightColor="#1b3a6e"
-                  strokeColor="#64748b"
-                  strokeWidth={0.8}
+                  highlightColor="#ffffff"
+                  strokeColor="#475569"
+                  strokeWidth={1}
                   hoverColor="#ffd700"
                   showLabels={true}
                   labelFontSize={8}
@@ -634,8 +644,8 @@ export default function AdminCoveragePage() {
                     );
                   })}
 
-                  <div className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-red-100 text-[#c8391a] text-[11px] font-bold border border-red-200">
-                    <span className="w-2.5 h-2.5 rounded-xs bg-[#c8391a] border border-white" />
+                  <div className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-red-600 text-white text-[11px] font-bold shadow-xs">
+                    <span className="w-2.5 h-2.5 rounded-xs bg-red-600 border-2 border-white ring-1 ring-red-400" />
                     <span>Active Hub (Highlighted)</span>
                   </div>
                 </div>

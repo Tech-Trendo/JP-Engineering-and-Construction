@@ -115,7 +115,7 @@ export default function CoverageMapSection() {
   }, [coverageData]);
 
   // Formatted data dictionary for NepalMap
-  // Highlighting: Highlighted districts get solid vibrant brand color (#c8391a or custom color)
+  // Highlighting: Highlighted districts get solid vibrant crimson brand color (#dc2626)
   // Non-highlighted districts omit color so they take their respective PROVINCE color!
   const nepalMapData = useMemo(() => {
     const dataObj: Record<
@@ -123,10 +123,11 @@ export default function CoverageMapSection() {
       { color?: string; tooltip?: string; [key: string]: unknown }
     > = {};
 
+    // 1. Populate from districtMap if available
     Object.values(districtMap).forEach((d) => {
       if (d.is_highlighted) {
         dataObj[d.district_name] = {
-          color: d.highlight_color || "#c8391a",
+          color: d.highlight_color || "#dc2626",
           tooltip: `${d.district_name}: ${d.projects_count || 1}+ Turnkey Projects`,
         };
       } else {
@@ -137,8 +138,19 @@ export default function CoverageMapSection() {
       }
     });
 
+    // 2. Guarantee that EVERY single district in highlightedList gets a bold, vibrant crimson highlight color
+    highlightedList.forEach((districtName) => {
+      if (!dataObj[districtName] || !dataObj[districtName].color) {
+        dataObj[districtName] = {
+          ...dataObj[districtName],
+          color: districtMap[districtName]?.highlight_color || "#dc2626",
+          tooltip: `${districtName}: Active Project Hub`,
+        };
+      }
+    });
+
     return dataObj;
-  }, [districtMap]);
+  }, [districtMap, highlightedList]);
 
   // The district currently displayed in the detail card (hovered or selected)
   const activeDistrictRecord = useMemo(() => {
@@ -301,16 +313,16 @@ export default function CoverageMapSection() {
                   <span className="text-xs">Loading Nepal District Map...</span>
                 </div>
               ) : (
-                <div className="w-full max-w-[860px] mx-auto transition-all [&_text]:[paint-order:stroke_fill] [&_text]:[stroke:rgba(255,255,255,0.95)] [&_text]:[stroke-width:2.5px] [&_text]:[stroke-linejoin:round]">
+                <div className="w-full max-w-[860px] mx-auto nepal-district-map-container transition-all">
                   <NepalMap
                     data={nepalMapData}
                     colorMode="province"
                     provinceColors={PROVINCE_THEME_COLORS}
                     selectedProvince={selectedProvince}
                     highlightedDistricts={highlightedList}
-                    highlightColor="#1b3a6e"
-                    strokeColor="#64748b"
-                    strokeWidth={0.8}
+                    highlightColor="#ffffff"
+                    strokeColor="#475569"
+                    strokeWidth={1}
                     hoverColor="#ffd700"
                     showLabels={true}
                     labelFontSize={8.5}
@@ -407,8 +419,8 @@ export default function CoverageMapSection() {
                 })}
 
                 {/* Highlighted Swatch */}
-                <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-red-100 text-[#c8391a] text-[11px] font-bold border border-red-200 shadow-2xs">
-                  <span className="w-3 h-3 rounded-xs bg-[#c8391a] shadow-xs border border-white" />
+                <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-red-600 text-white text-[11px] font-bold shadow-xs">
+                  <span className="w-3 h-3 rounded-xs bg-red-600 shadow-xs border-2 border-white ring-1 ring-red-400" />
                   <span>Active Hub (Highlighted)</span>
                 </div>
               </div>
